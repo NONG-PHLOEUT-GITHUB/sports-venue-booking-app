@@ -81,5 +81,13 @@
   "didNotReceiveCode": "មិនទទួលបានកូដ? ",
   "resend": "ផ្ញើម្ដងទៀត",
   "enterVerificationCode": "សូមបញ្ចូលកូដដែលយើងបានផ្ញើទៅអាសយដ្ឋានអ៊ីមែលឬលេសទូរស័ព្ទរបស់អ្នក។",
-  "otpVerification": "ការផ្ទៀងផ្ទាត់ OTP"
+  "otpVerification": "ការផ្ទៀងផ្ទាត់ OTP",
+  "creditPay": "បង់ដោយកាតឥណទាន",
+  "@creditPay": {},
+  "cardName": "ឈ្មោះកាត",
+  "@cardName": {},
+  "cardHolderName": "ឈ្មោះអ្នកកាន់កាត",
+  "@cardHolderName": {},
+  "expiryDate": "ថ្ងៃផុតកំណត់",
+  "@expiryDate": {}
 }

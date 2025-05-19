@@ -308,5 +308,17 @@
   "otpVerification": "OTP Verification",
   "@otpVerification": {
     "description": "Title for the OTP verification screen"
-  }
+  },
+
+  "creditPay": "Credit Pay",
+  "@creditPay": {},
+
+  "cardName": "Card Name",
+  "@cardName": {},
+
+  "cardHolderName": "Card Holder Name",
+  "@cardHolderName": {},
+
+  "expiryDate": "Expiry Date",
+  "@expiryDate": {}
 }

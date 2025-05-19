@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart';
 import 'payment_successful_scrren.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckOutScreen extends StatelessWidget {
   CheckOutScreen({super.key});
 
-  final appBar = AppBar(
-    iconTheme: IconThemeData(color: Colors.white),
-    title: Text(
-      'Payment',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: AppColors.onPrimary,
-      ),
-    ),
-    backgroundColor: AppColors.primary,
-  );
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      iconTheme: IconThemeData(color: Colors.white),
+      title: Text(
+        AppLocalizations.of(context)!.payment,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.onPrimary,
+        ),
+      ),
+      backgroundColor: AppColors.primary,
+    );
     return Scaffold(
       appBar: appBar,
       body: Container(
@@ -59,66 +60,78 @@ class CheckOutScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 16,
-            ),
+            SizedBox(height: 16),
             Expanded(
-                child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.onPrimary,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.onPrimary,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Credit Pay',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          AppLocalizations.of(context)!.creditPay,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
-                    Form(
+                      Form(
                         child: Column(
-                      children: [
-                        _buildTextField("Cardholder's Name", '', Icons.person),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _buildTextField(
-                            "Card Name", '000 000 000', Icons.credit_card),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
                           children: [
-                            Expanded(
-                              child: _buildTextField("Expiry Date", 'MM/YYYY',
-                                  Icons.calendar_today),
+                            _buildTextField(
+                              AppLocalizations.of(context)!.cardHolderName,
+                              '',
+                              Icons.person,
                             ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: _buildTextField("CVV", '000', Icons.lock),
+                            SizedBox(height: 10),
+                            _buildTextField(
+                              AppLocalizations.of(context)!.cardName,
+                              '000 000 000',
+                              Icons.credit_card,
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildTextField(
+                                    AppLocalizations.of(context)!.expiryDate,
+                                    'MM/YYYY',
+                                    Icons.calendar_today,
+                                  ),
+                                ),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: _buildTextField(
+                                    "CVV",
+                                    '000',
+                                    Icons.lock,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ))
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ))
+            ),
           ],
         ),
       ),
-        bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: EdgeInsets.all(5.0),
           child: SizedBox(
@@ -129,7 +142,9 @@ class CheckOutScreen extends StatelessWidget {
                 // Confirm booking logic
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PaymentSuccessfulScrren()),
+                  MaterialPageRoute(
+                    builder: (context) => PaymentSuccessfulScrren(),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -138,8 +153,10 @@ class CheckOutScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text("Pay Now",
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
+              child: Text(
+                AppLocalizations.of(context)!.payNow,
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ),
         ),
@@ -158,31 +175,28 @@ Widget summaryItem(String label, String description) {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         ),
         const SizedBox(
-            width: 8), // Add some space between label and description
+          width: 8,
+        ), // Add some space between label and description
         Text(
           description,
           style: const TextStyle(
-              fontSize: 16, color: Colors.grey), // Gray color for description
+            fontSize: 16,
+            color: Colors.grey,
+          ), // Gray color for description
         ),
       ],
     ),
   );
 }
 
-Widget _buildTextField(
-  String label,
-  String? hint,
-  IconData? icon,
-) {
+Widget _buildTextField(String label, String? hint, IconData? icon) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: TextFormField(
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         prefixIcon: icon != null ? Icon(icon) : null,
       ),
       validator: (value) {
