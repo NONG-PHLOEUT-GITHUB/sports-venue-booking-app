@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "frontend",
+			"path": "frontend"
+		},
+		{
+			"name": "assets",
+			"path": "../../StudioProjects/app/sports_venue_booking/app_frontend/assets"
+		}
+	],
+	"settings": {}
+}

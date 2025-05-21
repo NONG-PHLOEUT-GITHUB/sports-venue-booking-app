@@ -18,7 +18,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   // Pages for each tab
   final List<Widget> _pages = [
-    HomePage(),
+    HomeScreen(),
     CardTest(),
     TicketPage(),
     ProfilePage(),

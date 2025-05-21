@@ -1,61 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../providers/notification_provider.dart'; // where loadFacts is defined
+import 'package:frontend/utils/date_utils.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NotificationPageState createState() => _NotificationPageState();
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  final List<Map<String, dynamic>> notifications = [
-    {
-      "title": "Booking Successfully",
-      "description": "Your booking has been confirmed.",
-      "date": "2025-01-10",
-      "details": {
-        "field": "Soccer Field A",
-        "time": "3:00 PM - 6:00 PM",
-        "duration": "3 Hour",
-        "price": "30\$",
-        "booking_id": "#123456789",
-        "location": "123 Sport St, City, State",
-        "contact": "(885) 66 555 555",
-        "note": "Arrive 15 minutes early for check-in.",
-        "image":
-            "https://via.placeholder.com/300" // Replace with actual image URL
-      }
-    },
-    {
-      "title": "Provide Feedback to Field Agent",
-      "description": "Your feedback helps us improve.",
-      "date": "2025-01-01",
-      "details": {
-        "field": "Soccer Field B",
-        "time": "2:00 PM - 5:00 PM",
-        "duration": "3 Hour",
-        "price": "25\$",
-        "booking_id": "#987654321",
-        "location": "456 Park Ave, City, State",
-        "contact": "(885) 66 777 888",
-        "note": "Let us know about your experience.",
-        "image": "https://via.placeholder.com/300"
-      }
-    }
-  ];
+  late Future<List<Map<String, dynamic>>> _notificationsFuture;
 
-  String formatDate(String dateString) {
-    DateTime date = DateTime.parse(dateString);
-    return DateFormat('MMM dd, yyyy').format(date);
+  @override
+  void initState() {
+    super.initState();
+    _notificationsFuture = loadNotifications();
   }
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    return Scaffold(
+      appBar: _appBar,
+      backgroundColor: AppColors.appBackground,
+      body: _body,
+    );
+  }
+
+  PreferredSizeWidget get _appBar {
+    return AppBar(
       iconTheme: IconThemeData(color: Colors.white),
+      backgroundColor: AppColors.primary,
       title: Text(
         AppLocalizations.of(context)!.notification,
         style: TextStyle(
@@ -64,43 +42,57 @@ class _NotificationPageState extends State<NotificationPage> {
           color: AppColors.onSecondary,
         ),
       ),
-      backgroundColor: AppColors.primary,
     );
+  }
 
-    return Scaffold(
-      appBar: appBar,
-      backgroundColor: AppColors.appBackground,
-      body: ListView.builder(
-        padding: EdgeInsets.all(12),
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final notification = notifications[index];
+  Widget get _body {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _notificationsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text("No notifications available."));
+        }
 
-          return Card(
-            margin: EdgeInsets.symmetric(vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 0,
-            child: ListTile(
-              leading: Icon(Icons.notifications, color: Colors.green, size: 32),
-              title: Text(
-                notification["title"]!,
-                style: TextStyle(fontWeight: FontWeight.bold),
-                overflow: TextOverflow.ellipsis,
+        final notifications = snapshot.data!;
+        return ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: notifications.length,
+          itemBuilder: (context, index) {
+            final notification = notifications[index];
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              subtitle: Text(notification["description"]!),
-              trailing: Text(
-                formatDate(notification["date"]!),
-                style: TextStyle(color: Colors.grey),
+              elevation: 0,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.notifications,
+                  color: Colors.green,
+                  size: 32,
+                ),
+                title: Text(
+                  notification["title"] ?? '',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(notification["description"] ?? ''),
+                trailing: Text(
+                  DateUtilsHelper.formatDate(notification["date"] ?? ''),
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                onTap: () {
+                  _showNotificationDetail(notification);
+                },
               ),
-              onTap: () {
-                _showNotificationDetail(notification);
-              },
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -109,8 +101,9 @@ class _NotificationPageState extends State<NotificationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +118,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
                 SizedBox(height: 10),
                 _detailRow("Soccer Field", notification["details"]["field"]),
-                _detailRow("Date", formatDate(notification["date"]!)),
+                _detailRow("Date", DateUtilsHelper.formatDate(notification["date"]!)),
                 _detailRow("Time", notification["details"]["time"]),
                 _detailRow("Duration", notification["details"]["duration"]),
                 _detailRow("Price", notification["details"]["price"]),
@@ -134,10 +127,15 @@ class _NotificationPageState extends State<NotificationPage> {
                 _detailRow("Contact", notification["details"]["contact"]),
                 _detailRow("Note", notification["details"]["note"]),
                 SizedBox(height: 10),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(notification["details"]["image"]),
+                Image.asset(
+                  notification["details"]["image"],
+                  width: 24,
+                  height: 24,
                 ),
+                // ClipRRect(
+                //   borderRadius: BorderRadius.circular(8),
+                //   child: Image.network(notification["details"]["image"]),
+                // ),
               ],
             ),
           ),

@@ -5,14 +5,72 @@ import 'booking_screen.dart';
 import 'notification_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    final appBar = AppBar(
+      centerTitle: false,
+      backgroundColor: AppColors.primary,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.location_on_outlined,
+                  color: AppColors.onSecondary, size: 20),
+              SizedBox(width: 4),
+              Text(
+                'Phnom Penh',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: AppColors.onSecondary,
+                ),
+              ),
+            ],
+          ),
+
+          // Current date display
+          IconButton(
+            icon: Badge.count(
+              count: 99,
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.notifications_none,
+                  color: AppColors.onSecondary),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    return Scaffold(
+      appBar: appBar,
+      backgroundColor: AppColors.appBackground,
+      body: ListView.builder(
+          itemCount: 1,
+          padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+          itemBuilder: (context, index) {
+            return BookingView();
+          }),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class BookingView extends StatefulWidget {
+  const BookingView({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _BookingViewState createState() => _BookingViewState();
+}
+
+class _BookingViewState extends State<BookingView> {
   String selectedSport = "Football";
 
   final List<Map<String, dynamic>> sports = [
@@ -20,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       "name": "Basketball",
       "icon": Icons.sports_basketball,
-      "color": Colors.orange,
+      "color": Colors.orange
     },
     {"name": "Tennis", "icon": Icons.sports_tennis, "color": Colors.yellow},
     {"name": "Cricket", "icon": Icons.sports_cricket, "color": Colors.blue},
@@ -46,59 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      appBar: _appBar,
-      body: _body,
-    );
-  }
-
-  PreferredSizeWidget get _appBar {
-    return AppBar(
-      centerTitle: false,
-      backgroundColor: AppColors.primary,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: AppColors.onSecondary,
-                size: 20,
-              ),
-              SizedBox(width: 4),
-              Text(
-                'Phnom Penh',
-                style: TextStyle(fontSize: 20, color: AppColors.onSecondary),
-              ),
-            ],
-          ),
-
-          // Current date display
-          IconButton(
-            icon: Badge.count(
-              count: 99,
-              backgroundColor: Colors.red,
-              child: const Icon(
-                Icons.notifications_none,
-                color: AppColors.onSecondary,
-              ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget get _body {
-    return Padding(padding: EdgeInsets.only(left: 16, right: 16, top: 0),
+    return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -107,41 +113,39 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.greatOffers,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              child: Text(AppLocalizations.of(context)!.greatOffers,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[ImageSlider()],
+            children: <Widget>[
+              ImageSlider(),
+            ],
           ),
-
+          
           SizedBox(height: 0),
           // Title
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.bookYourGround,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              child: Text(AppLocalizations.of(context)!.bookYourGround,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
           ),
           Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24))),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 16),
+                SizedBox(
+                  height: 16,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -156,8 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(
-                          width: 12,
-                        ), // Adjust the space between the icon and text
+                            width:
+                                12), // Adjust the space between the icon and text
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -185,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ],
-                        ),
+                        )
                       ],
                     ),
                     Container(
@@ -198,34 +202,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: DropdownButton<String>(
                           value: selectedSport,
                           menuMaxHeight: 350,
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(12), // Rounded corners
                           dropdownColor: Colors.white,
                           onChanged: (newValue) {
                             setState(() {
                               selectedSport = newValue!;
                             });
                           },
-                          items:
-                              sports.map((sport) {
-                                return DropdownMenuItem<String>(
-                                  value: sport["name"],
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        sport["icon"],
-                                        color: sport["color"],
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text(
-                                        sport["name"],
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ],
+                          items: sports.map((sport) {
+                            return DropdownMenuItem<String>(
+                              value: sport["name"],
+                              child: Row(
+                                children: [
+                                  Icon(sport["icon"], color: sport["color"]),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    sport["name"],
+                                    style: TextStyle(fontSize: 16),
                                   ),
-                                );
-                              }).toList(),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
@@ -243,12 +242,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 10,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      color: Colors.grey.shade200,
-                    ),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        color: Colors.grey.shade200),
                   ),
                 ),
                 Expanded(
@@ -261,17 +258,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
-                            (constraints.constrainWidth() / 10).floor(),
-                            (index) => SizedBox(
-                              height: 1,
-                              width: 5,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                            ),
-                          ),
+                              (constraints.constrainWidth() / 10).floor(),
+                              (index) => SizedBox(
+                                    height: 1,
+                                    width: 5,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade400),
+                                    ),
+                                  )),
                         );
                       },
                     ),
@@ -282,12 +277,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 10,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                      ),
-                      color: Colors.grey.shade200,
-                    ),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10)),
+                        color: Colors.grey.shade200),
                   ),
                 ),
               ],
@@ -296,12 +289,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(24),
+                    bottomRight: Radius.circular(24))),
             child: Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -320,10 +311,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   AppLocalizations.of(context)!.makeBooking,
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
@@ -332,10 +322,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Widget get _slider {
-
-  // }
 
   // Convert month number to name
   String _getMonthName(int month) {
@@ -351,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "September",
       "October",
       "November",
-      "December",
+      "December"
     ];
     return months[month - 1];
   }
@@ -365,8 +351,10 @@ class _HomeScreenState extends State<HomeScreen> {
       "Thursday",
       "Friday",
       "Saturday",
-      "Sunday",
+      "Sunday"
     ];
     return weekdays[weekday - 1];
   }
+
+
 }

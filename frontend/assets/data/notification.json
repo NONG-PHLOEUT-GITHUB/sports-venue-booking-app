@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Booking Successfully",
+    "description": "Your booking has been confirmed.",
+    "date": "2025-01-10",
+    "details": {
+      "field": "Soccer Field A",
+      "time": "3:00 PM - 6:00 PM",
+      "duration": "3 Hour",
+      "price": "30$",
+      "booking_id": "#123456789",
+      "location": "123 Sport St, City, State",
+      "contact": "(885) 66 555 555",
+      "note": "Arrive 15 minutes early for check-in.",
+      "image": "assets/images/fb.webp"
+    }
+  },
+  {
+    "title": "Booking Successfully",
+    "description": "Your booking has been confirmed.",
+    "date": "2025-01-10",
+    "details": {
+      "field": "Soccer Field A",
+      "time": "3:00 PM - 6:00 PM",
+      "duration": "3 Hour",
+      "price": "30$",
+      "booking_id": "#123456789",
+      "location": "123 Sport St, City, State",
+      "contact": "(885) 66 555 555",
+      "note": "Arrive 15 minutes early for check-in.",
+      "image": "assets/images/fb.webp"
+    }
+  }
+]
