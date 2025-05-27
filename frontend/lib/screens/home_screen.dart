@@ -76,29 +76,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           // Current date display
-          IconButton(
-            icon: Badge.count(
-              count: 99,
-              backgroundColor: Colors.red,
-              child: const Icon(
-                Icons.notifications_none,
-                color: AppColors.onSecondary,
+          CircleAvatar(
+            backgroundColor: Colors.grey.shade200,
+            child: IconButton(
+              icon: Badge.count(
+                count: 99,
+                backgroundColor: Colors.red,
+                child: const Icon(
+                  Icons.notifications_none,
+                  color: AppColors.onSecondary,
+                ),
               ),
+              // icon: const Icon(Icons.notifications_none, color: Colors.black),
+              onPressed: () {
+                // TODO: Handle notification action
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
-              );
-            },
           ),
+          // IconButton(
+          //   icon: Badge.count(
+          //     count: 99,
+          //     backgroundColor: Colors.red,
+          //     child: const Icon(
+          //       Icons.notifications_none,
+          //       color: AppColors.onSecondary,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => NotificationPage()),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
   }
 
   Widget get _body {
-    return Padding(padding: EdgeInsets.only(left: 16, right: 16, top: 0),
+    return Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

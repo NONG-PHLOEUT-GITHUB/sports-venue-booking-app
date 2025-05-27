@@ -3,33 +3,6 @@ import 'package:frontend/l10n/l10n.dart';
 import 'screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/otp_comfirm_screen.dart';
-// void main() {
-//   final root = MaterialApp(
-//       theme: ThemeData(
-//         useMaterial3: true,
-//         colorScheme: const ColorScheme.light(primary: Color(0xFF62AD14)),
-//         datePickerTheme: const DatePickerThemeData(
-//           backgroundColor: Colors.white,
-//           dividerColor: Color(0xFF62AD14),
-//           headerBackgroundColor: Color(0xFF62AD14),
-//           headerForegroundColor: Colors.white,
-//         ),
-//       ),
-//       localizationsDelegates: const [
-//         AppLocalizations.delegate, // Add this line
-//         GlobalMaterialLocalizations.delegate,
-//         GlobalWidgetsLocalizations.delegate,
-//         GlobalCupertinoLocalizations.delegate,
-//       ],
-//       supportedLocales:L10n.all,
-//       locale: Locale('km'),
-//       home: const MainLayout());
-
-//   runApp(root);
-// }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized;
