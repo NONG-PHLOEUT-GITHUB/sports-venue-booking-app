@@ -4,7 +4,7 @@ import 'home_screen.dart';
 import 'account_screen.dart';
 import 'ticket_screen.dart';
 import '../theme/app_colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});

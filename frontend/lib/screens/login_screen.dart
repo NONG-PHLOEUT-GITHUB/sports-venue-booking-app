@@ -4,7 +4,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/otp_comfirm_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
 
 class LoginPage extends StatefulWidget {

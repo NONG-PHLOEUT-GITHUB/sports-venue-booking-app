@@ -3,7 +3,7 @@ import 'package:frontend/theme/app_colors.dart';
 import '../widgets/carousel_slider.dart';
 import 'booking_screen.dart';
 import 'notification_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

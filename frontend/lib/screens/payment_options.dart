@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart';
 import 'pay_now_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class PaymentScreen extends StatefulWidget {
   @override
