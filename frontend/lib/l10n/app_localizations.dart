@@ -431,7 +431,7 @@ abstract class AppLocalizations {
   /// Bottom navigation tab for Venue selection
   ///
   /// In en, this message translates to:
-  /// **'Venue'**
+  /// **'Venue Details'**
   String get venue;
 
   /// Bottom navigation tab for viewing or managing tickets
@@ -523,6 +523,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap to pay with ABA mobile'**
   String get tapToPayWithABA;
+
+  /// Subtitle for ABA Pay method
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to pay with ACLEDA mobile'**
+  String get tapToPayWithACLEDA;
 
   /// KHQR method label
   ///

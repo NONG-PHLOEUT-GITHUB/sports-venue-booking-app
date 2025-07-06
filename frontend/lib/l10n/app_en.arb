@@ -197,7 +197,7 @@
   "@home": {
     "description": "Bottom navigation tab for Home"
   },
-  "venue": "Venue",
+  "venue": "Venue Details",
   "@venue": {
     "description": "Bottom navigation tab for Venue selection"
   },
@@ -259,6 +259,10 @@
   },
   "tapToPayWithABA": "Tap to pay with ABA mobile",
   "@tapToPayWithABA": {
+    "description": "Subtitle for ABA Pay method"
+  },
+  "tapToPayWithACLEDA": "Tap to pay with ACLEDA mobile",
+  "@tapToPayWithACLEDA": {
     "description": "Subtitle for ABA Pay method"
   },
   "khqr": "KHQR",

@@ -174,7 +174,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get home => 'ទំព័រដើម';
 
   @override
-  String get venue => 'ទីតាំង';
+  String get venue => 'ព័ត៌មានលម្អិតអំពីទីតាំង';
 
   @override
   String get ticket => 'សំបុត្រ';
@@ -220,6 +220,9 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get tapToPayWithABA => 'ចុចដើម្បីទូទាត់ជាមួយ ABA';
+
+  @override
+  String get tapToPayWithACLEDA => 'Tap to pay with ACLEDA mobile';
 
   @override
   String get khqr => 'KHQR';

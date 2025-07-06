@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart';
 import '../widgets/carousel_slider.dart';
-import 'booking_screen.dart';
+import 'explore_venues_screen.dart';
 import 'notification_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 

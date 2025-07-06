@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart';
 import '../widgets/carousel_slider.dart';
-import 'booking_screen.dart';
+import 'explore_venues_screen.dart';
 import 'notification_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedSport = "Football";
+  DateTime selectedDate = DateTime.now(); // Store selected date
 
   final List<Map<String, dynamic>> sports = [
     {"name": "Football", "icon": Icons.sports_soccer, "color": Colors.green},
@@ -27,14 +28,29 @@ class _HomeScreenState extends State<HomeScreen> {
     {"name": "Hockey", "icon": Icons.sports_hockey, "color": Colors.red},
   ];
 
-  DateTime selectedDate = DateTime.now(); // Store selected date
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary, // Header background color
+              onPrimary: AppColors.onSecondary, // Header text color
+              onSurface: Colors.black, // Body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary, // Button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (picked != null && picked != selectedDate) {
@@ -57,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       centerTitle: false,
       backgroundColor: AppColors.primary,
+      elevation: 0, // No shadow for a cleaner look
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -67,211 +84,185 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.onSecondary,
                 size: 20,
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
                 'Phnom Penh',
-                style: TextStyle(fontSize: 20, color: AppColors.onSecondary),
+                style: TextStyle(
+                    fontSize: 20,
+                    color: AppColors.onSecondary,
+                    fontWeight: FontWeight.w500),
               ),
             ],
           ),
-
-          // Current date display
-          CircleAvatar(
-            backgroundColor: Colors.grey.shade200,
-            child: IconButton(
-              icon: Badge.count(
-                count: 99,
-                backgroundColor: Colors.red,
-                child: const Icon(
-                  Icons.notifications_none,
-                  color: AppColors.onSecondary,
-                ),
+          IconButton(
+            icon: Badge.count(
+              count: 99,
+              backgroundColor: Colors.red,
+              alignment: Alignment.topRight, // Adjust badge position
+              child: const Icon(
+                Icons.notifications_none,
+                color: AppColors.onSecondary,
+                size: 28, // Slightly larger icon
               ),
-              // icon: const Icon(Icons.notifications_none, color: Colors.black),
-              onPressed: () {
-                // TODO: Handle notification action
-              },
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
           ),
-          // IconButton(
-          //   icon: Badge.count(
-          //     count: 99,
-          //     backgroundColor: Colors.red,
-          //     child: const Icon(
-          //       Icons.notifications_none,
-          //       color: AppColors.onSecondary,
-          //     ),
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => NotificationPage()),
-          //     );
-          //   },
-          // ),
         ],
       ),
     );
   }
 
   Widget get _body {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // Title
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.greatOffers,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+    return SingleChildScrollView(
+      // Use SingleChildScrollView for scrollability
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Align children to start
+          children: <Widget>[
+            const SizedBox(height: 16), // Added spacing from app bar
+            // Title for offers
+            Text(
+              AppLocalizations.of(context)!.greatOffers,
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold), // Slightly larger font
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[ImageSlider()],
-          ),
+            const SizedBox(height: 16),
+            // Image Slider
+            ImageSlider(),
+            const SizedBox(height: 32), // More space before next section
 
-          SizedBox(height: 0),
-          // Title
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.bookYourGround,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+            // Title for booking
+            Text(
+              AppLocalizations.of(context)!.bookYourGround,
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold), // Consistent font size
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
+            const SizedBox(height: 16),
+
+            // Booking Card
+            Container(
+              padding: const EdgeInsets.all(20), // Increased padding
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20), // More rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // subtle shadow
+                  ),
+                ],
               ),
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        FloatingActionButton(
-                          onPressed: () => _selectDate(context),
-                          backgroundColor: AppColors.primary,
-                          child: const Icon(
-                            Icons.calendar_month_outlined,
-                            color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _selectDate(context),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(12), // Rounded corners for button
+                                ),
+                                padding: const EdgeInsets.all(10), // Padding inside button
+                                child: const Icon(
+                                  Icons.calendar_month_outlined,
+                                  color: Colors.white,
+                                  size: 28, // Larger icon
+                                ),
+                              ),
+                              const SizedBox(width: 16), // More space
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    // Formatted date string (e.g., "June 26")
+                                    "${_getMonthName(selectedDate.month)} ${selectedDate.day}",
+                                    style: TextStyle(
+                                      fontSize: 20, // Larger font for date
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87, // Slightly softer black
+                                    ),
+                                  ),
+                                  Text(
+                                    "${selectedDate.year}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500, // Medium weight
+                                      color: Colors.black54, // Softer color
+                                    ),
+                                  ),
+                                  Text(
+                                    _getWeekdayName(selectedDate.weekday),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey.shade600, // Clearer grey
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 12,
-                        ), // Adjust the space between the icon and text
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${selectedDate.day}/${_getMonthName(selectedDate.month)}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "${selectedDate.year}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              _getWeekdayName(selectedDate.weekday),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedSport,
-                          menuMaxHeight: 350,
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // Rounded corners
-                          dropdownColor: Colors.white,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedSport = newValue!;
-                            });
-                          },
-                          items:
-                              sports.map((sport) {
-                                return DropdownMenuItem<String>(
-                                  value: sport["name"],
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        sport["icon"],
-                                        color: sport["color"],
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text(
-                                        sport["name"],
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
+                      // Sport Dropdown
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50, // Lighter background
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300), // Subtle border
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: selectedSport,
+                            menuMaxHeight: 350,
+                            borderRadius: BorderRadius.circular(12),
+                            dropdownColor: Colors.white,
+                            icon: Icon(Icons.arrow_drop_down, color: AppColors.primary), // Custom dropdown icon
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedSport = newValue!;
+                              });
+                            },
+                            items: sports.map((sport) {
+                              return DropdownMenuItem<String>(
+                                value: sport["name"],
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      sport["icon"],
+                                      color: sport["color"],
+                                      size: 20, // Consistent icon size
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      sport["name"],
+                                      style: TextStyle(fontSize: 17, color: Colors.black87), // Clearer text
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.white,
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                  width: 10,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      color: Colors.grey.shade200,
-                    ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const SizedBox(height: 24), // Space between content and dotted line
+
+                  // Dotted line separator
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return Flex(
@@ -294,66 +285,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                  width: 10,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
+                  const SizedBox(height: 24), // Space between dotted line and button
+
+                  // Make Booking Button
+                  SizedBox(
+                    width: double.infinity, // Make button span full width
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => BookingPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14), // More rounded
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 16), // Increased vertical padding
+                        elevation: 3, // Subtle elevation
                       ),
-                      color: Colors.grey.shade200,
+                      child: Text(
+                        AppLocalizations.of(context)!.makeBooking,
+                        style: TextStyle(
+                          fontSize: 18, // Larger font for button text
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.5, // Slightly spaced out letters
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 16, right: 16, bottom: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
+                ],
               ),
             ),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookingPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 50),
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.makeBooking,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+            const SizedBox(height: 24), // Space at the bottom
+          ],
+        ),
       ),
     );
   }
-
-  // Widget get _slider {
-
-  // }
 
   // Convert month number to name
   String _getMonthName(int month) {

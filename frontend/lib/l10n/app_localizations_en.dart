@@ -174,7 +174,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get venue => 'Venue';
+  String get venue => 'Venue Details';
 
   @override
   String get ticket => 'Ticket';
@@ -220,6 +220,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapToPayWithABA => 'Tap to pay with ABA mobile';
+
+  @override
+  String get tapToPayWithACLEDA => 'Tap to pay with ACLEDA mobile';
 
   @override
   String get khqr => 'KHQR';
