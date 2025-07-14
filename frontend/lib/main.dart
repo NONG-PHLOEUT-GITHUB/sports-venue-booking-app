@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/l10n.dart';
+import 'package:frontend/screens/login_screen.dart';
 import 'screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/l10n/app_localizations.dart';
@@ -52,9 +53,9 @@ class _MyAppState extends State<MyApp> {
           headerForegroundColor: Colors.white,
         ),
       ),
-      // home: const LoginPage(),
+      home: const LoginPage(),
       // home: const OtpVerificationPage(),
-      home: const MainLayout(),
+      // home: const MainLayout(),
       //test change
     );
   }
