@@ -37,6 +37,9 @@ For Desktop (Windows, macOS, Linux):
 ```sh
 flutter run -d windows   # or macos, linux
 ```
+### clearn
+
+flutter clean
 
 ## Project Structure
 ```
