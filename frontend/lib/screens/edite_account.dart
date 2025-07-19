@@ -1,93 +1,259 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/theme/app_colors.dart';
+import 'package:get/get.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
   @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  bool _isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = 'Charlotte King';
+    _emailController.text = 'johnkinggraphics@gmail.com';
+    _passwordController.text = '**********';
+    _phoneController.text = '+91 6895312';
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveProfile() async {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Saving profile...')));
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Normally send data to backend here
+    print('Name: ${_nameController.text}');
+    print('Email: ${_emailController.text}');
+    print('Password: ${_passwordController.text}');
+    print('Phone: ${_phoneController.text}');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile saved successfully!')),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.white, // Color for the back button icon
+    final localization = AppLocalizations.of(context)!;
+
+    final backButton = Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black26, width: 1.2),
+          shape: BoxShape.circle,
+          color: Colors.white,
         ),
-        title: Text(
-          AppLocalizations.of(context)!.editAccount,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.onSecondary,
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
+
+    final saveButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _saveProfile,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
-        backgroundColor: AppColors.primary,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildTextField('Name', 'Charlotte King'),
-                  _buildTextField(
-                      'Email address', 'johnkinggraphics@gmail.com'),
-                  _buildTextField('Password', '**********', isPassword: true),
-                  _buildTextField('Phone number', '+91 6895312'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: SizedBox(
-            width: double.infinity,
-            height: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                // Confirm booking logic
-                // Navigator.push(
-                //   context
-                // );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(AppLocalizations.of(context)!.btnSave,
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-            ),
+        child: Text(
+          AppLocalizations.of(context)!.btnSave,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
+
+    final bottomContainer = Container(
+      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [saveButton],
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: backButton,
+        title: Text(
+          localization.editAccount,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+
+      body: Column(
+        children: [
+          Center(
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                const CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                    'https://via.placeholder.com/150',
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Icon(Icons.edit, size: 20, color: Get.theme.colorScheme.primary),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  _buildTextField(
+                    label: localization.name,
+                    hint: localization.name,
+                    controller: _nameController,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    label: localization.email,
+                    hint: localization.enterEmail,
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    label: localization.password,
+                    hint: '**********',
+                    controller: _passwordController,
+                    isPassword: true,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    label: localization.phoneNumber,
+                    hint: localization.enterPhoneNumber,
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomContainer,
+        ],
+      ),
+    );
   }
 
-  Widget _buildTextField(String label, String hint, {bool isPassword = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          suffixIcon: isPassword ? const Icon(Icons.visibility) : null,
+  Widget _buildTextField({
+    required String label,
+    required String hint,
+    required TextEditingController controller,
+    TextInputType keyboardType = TextInputType.text,
+    bool isPassword = false,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: isPassword && !_isPasswordVisible,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12), // More rounded corners
+          borderSide: BorderSide(color: Colors.grey.shade300), // Subtle border
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: Get.theme.colorScheme.primary,
+            width: 2,
+          ), // Primary color on focus
+        ), // White fill for text fields
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: 16,
+        ),
+        suffixIcon:
+            isPassword
+                ? IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: Get.theme.colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                )
+                : null,
       ),
     );
   }

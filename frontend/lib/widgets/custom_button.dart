@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
+import 'package:get/get.dart';
 
 class CustomButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Color? color;
+  final String text;
+  final Color? colorBorder;
+  final Color? textColor;
+  final double height;
+
   const CustomButton({
     required this.onPressed,
-    this.color = AppColors.primary,
+    this.color, // no default here
     required this.text,
     this.colorBorder,
     this.textColor,
@@ -12,36 +19,22 @@ class CustomButton extends StatelessWidget {
     super.key,
   });
 
-  final String text;
-  final Color color;
-  final VoidCallback onPressed;
-  final Color? colorBorder;
-  final Color? textColor;
-  final double height;
-
   @override
   Widget build(BuildContext context) {
+    final Color buttonColor = Get.theme.colorScheme.onSecondary;
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: color, // Use the provided color
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 12),
-        side: colorBorder != null
-            ? BorderSide(color: colorBorder!)
-            : BorderSide.none,
+        backgroundColor: buttonColor,
+        minimumSize: Size(double.infinity, height),
+        side: colorBorder != null ? BorderSide(color: colorBorder!) : null,
       ),
       onPressed: onPressed,
       child: Text(
-        text, // Use the text parameter
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: textColor ??
-              AppColors.onSecondary, // Use provided textColor or default
-        ),
+        text,
+        style: TextStyle(color: textColor),
       ),
     );
   }
 }
+

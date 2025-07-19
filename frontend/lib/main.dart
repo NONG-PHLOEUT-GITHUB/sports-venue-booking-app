@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/l10n.dart';
-import 'screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/theme/theme.dart';
+import 'package:frontend/utils/theme_notifier.dart';
+import 'screens/layout.dart';
+import 'package:get/get.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized;
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Get.put(ThemeController()); // Put controller into dependency injection
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // Static method for changing locale from anywhere
   static void setLocale(BuildContext context, Locale newLocale) {
     final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state?.setLocale(newLocale);
@@ -23,7 +28,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('en'); // Default to English
+  Locale _locale = const Locale('en'); // Default language is English
 
   void setLocale(Locale locale) {
     setState(() {
@@ -33,29 +38,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: _locale,
-      supportedLocales: L10n.all,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: const ColorScheme.light(primary: Colors.green),
-        datePickerTheme: const DatePickerThemeData(
-          backgroundColor: Colors.white,
-          dividerColor: Colors.green,
-          headerBackgroundColor: Colors.green,
-          headerForegroundColor: Colors.white,
-        ),
+    final ThemeController themeController = Get.find();
+
+    return Obx(
+      () => GetMaterialApp(
+        locale: _locale,
+        supportedLocales: L10n.all,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        debugShowCheckedModeBanner: false,
+        theme: AppThemes.lightTheme,
+        darkTheme: AppThemes.darkTheme,
+        themeMode: themeController.themeMode.value,
+        home: const MainLayout(),
       ),
-      // home: const LoginPage(),
-      // home: const OtpVerificationPage(),
-      home: const MainLayout(),
-      //test change
     );
   }
 }

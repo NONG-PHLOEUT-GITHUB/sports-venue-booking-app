@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// Option to change app language
   ///
   /// In en, this message translates to:
-  /// **'Change Language'**
+  /// **'Language'**
   String get changeLanguage;
 
   /// Option to change app language
@@ -367,6 +367,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Phone Number'**
   String get phoneNumber;
+
+  /// Label for phone number field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// Label for phone number field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get enterANewPassword;
 
   /// Label for phone number field
   ///
@@ -467,7 +479,7 @@ abstract class AppLocalizations {
   /// Bottom navigation tab for user account
   ///
   /// In en, this message translates to:
-  /// **'Edit Account'**
+  /// **'Edit Profile'**
   String get editAccount;
 
   /// Title for payment options screen

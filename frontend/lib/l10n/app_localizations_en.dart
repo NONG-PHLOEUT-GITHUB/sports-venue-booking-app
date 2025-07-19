@@ -123,7 +123,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get khmer => 'Khmer';
 
   @override
-  String get changeLanguage => 'Change Language';
+  String get changeLanguage => 'Language';
 
   @override
   String get languageChanged => 'Language Changed';
@@ -142,6 +142,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phoneNumber => 'Phone Number';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get enterANewPassword => 'Enter Password';
 
   @override
   String get email => 'Email Address';
@@ -192,7 +198,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get editAccount => 'Edit Account';
+  String get editAccount => 'Edit Profile';
 
   @override
   String get paymentOptions => 'Payment Options';

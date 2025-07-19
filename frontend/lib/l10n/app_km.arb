@@ -37,7 +37,7 @@
   "noNotifications": "គ្មានការជូនដំណឹងថ្មី",
   "english": "ភាសាអង់គ្លេស",
   "khmer": "ភាសាខ្មែរ",
-  "changeLanguage": "ផ្លាស់ប្តូរភាសា",
+  "changeLanguage": "ភាសា",
   "languageChanged": "ភាសាត្រូវបានផ្លាស់ប្តូរ",
   "confirmBooking": "បញ្ជាក់ការកក់",
   "yourContactInfo": "ព័ត៌មានទំនាក់ទំនងរបស់អ្នក",
@@ -83,11 +83,7 @@
   "enterVerificationCode": "សូមបញ្ចូលកូដដែលយើងបានផ្ញើទៅអាសយដ្ឋានអ៊ីមែលឬលេសទូរស័ព្ទរបស់អ្នក។",
   "otpVerification": "ការផ្ទៀងផ្ទាត់ OTP",
   "creditPay": "បង់ដោយកាតឥណទាន",
-  "@creditPay": {},
   "cardName": "ឈ្មោះកាត",
-  "@cardName": {},
   "cardHolderName": "ឈ្មោះអ្នកកាន់កាត",
-  "@cardHolderName": {},
-  "expiryDate": "ថ្ងៃផុតកំណត់",
-  "@expiryDate": {}
+  "expiryDate": "ថ្ងៃផុតកំណត់"
 }

@@ -3,6 +3,7 @@ import 'package:frontend/widgets/card_section.dart'; // Ensure this path is corr
 import 'package:frontend/screens/venue_detail_screen.dart'; // Ensure VenueDetailPage is imported
 import 'package:frontend/theme/app_colors.dart'; // Assuming you have this
 import 'package:intl/intl.dart'; // For date formatting
+import 'package:get/get.dart';
 
 class BookingPage extends StatelessWidget {
   BookingPage({super.key});
@@ -68,34 +69,17 @@ class BookingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100, // Consistent light grey background
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color:
-              AppColors.onSecondary, // Back button color for primary background
-        ),
-        backgroundColor: AppColors.primary,
-        elevation: 0, // No shadow for a cleaner look
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Location icon and text
             Row(
               children: [
-                Icon(
-                  Icons.location_on_outlined, // Consistent outlined icon
-                  color: AppColors.onSecondary,
-                  size: 20,
-                ),
+                Icon(Icons.location_on_outlined, size: 20),
                 SizedBox(width: 4),
                 Text(
                   'Phnom Penh', // Location text
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight:
-                        FontWeight.w500, // Slightly less bold than title
-                    color: AppColors.onSecondary,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -106,11 +90,7 @@ class BookingPage extends StatelessWidget {
               DateFormat('dd MMMM yyyy').format(
                 DateTime(2025, 6, 27),
               ), // Use specific date for consistency with image
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: AppColors.onSecondary,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ],
         ),

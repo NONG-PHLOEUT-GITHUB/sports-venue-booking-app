@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/theme/app_colors.dart';
+import 'package:get/get.dart';
 
 class SwitchLanguagePage extends StatefulWidget {
   const SwitchLanguagePage({super.key});
@@ -22,48 +22,89 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Get current locale from context
     final locale = Localizations.localeOf(context);
-
-    // Update selected language according to current locale
-    if (locale.languageCode == 'km') {
-      _selectedLanguage = 'Khmer';
-    } else {
-      _selectedLanguage = 'English';
-    }
+    _selectedLanguage = locale.languageCode == 'km' ? 'Khmer' : 'English';
   }
 
   void _saveLanguageChange() {
     Locale newLocale =
         _selectedLanguage == 'Khmer' ? const Locale('km') : const Locale('en');
-
-    // Make sure MyApp.setLocale is implemented to change the app locale dynamically
     MyApp.setLocale(context, newLocale);
-
-    // Show confirmation message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(AppLocalizations.of(context)!.languageChanged)),
     );
-
-    // Return to previous screen
-    // Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: AppColors.primary,
-        title: Text(
-          AppLocalizations.of(context)!.changeLanguage,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.onSecondary,
+    final titleText = Text(
+      AppLocalizations.of(context)!.changeLanguage,
+    );
+
+    final backButton = Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black26, width: 1.2),
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
+
+    final saveButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _saveLanguageChange,
+        style: ElevatedButton.styleFrom(
+          backgroundColor:Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
+        child: Text(
+          AppLocalizations.of(context)!.btnSave,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+
+    final bottomContainer = Container(
+      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [saveButton],
+      ),
+    );
+
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        leading: backButton,
+        title: titleText,
       ),
       body: Column(
         children: [
@@ -76,75 +117,54 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
                 final language = languages[index];
                 final isSelected = _selectedLanguage == language['label'];
 
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedLanguage = language['label']!;
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColors.primary
-                            : Colors.grey.shade300,
-                        width: 1.0,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade200,
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          language['flag']!,
-                          style: const TextStyle(fontSize: 24),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            language['label']!,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                return _buildLanguageItem(language, isSelected);
               },
             ),
           ),
+          bottomContainer,
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: _saveLanguageChange,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    );
+  }
+
+  Widget _buildLanguageItem(Map<String, String> language, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedLanguage = language['label']!;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Get.theme.colorScheme.primary : Colors.grey.shade300,
+            width: 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Text(language['flag']!, style: const TextStyle(fontSize: 24)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                language['label']!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            child: Text(
-              AppLocalizations.of(context)!.btnSave,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ),
+          ],
         ),
       ),
     );

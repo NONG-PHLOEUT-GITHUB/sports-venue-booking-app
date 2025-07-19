@@ -123,7 +123,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get khmer => 'ភាសាខ្មែរ';
 
   @override
-  String get changeLanguage => 'ផ្លាស់ប្តូរភាសា';
+  String get changeLanguage => 'ភាសា';
 
   @override
   String get languageChanged => 'ភាសាត្រូវបានផ្លាស់ប្តូរ';
@@ -142,6 +142,12 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get phoneNumber => 'លេខទូរស័ព្ទ';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get enterANewPassword => 'Enter Password';
 
   @override
   String get email => 'អាសយដ្ឋានអ៊ីមែល';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class CardTest extends StatelessWidget {
   //
@@ -129,19 +129,19 @@ class CardTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      backgroundColor: AppColors.primary,
+      backgroundColor: Get.theme.colorScheme.background,
       title: Text(
         AppLocalizations.of(context)!.venue,
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: AppColors.onSecondary,
+          color: Get.theme.colorScheme.onSecondary,
         ),
       ),
     );
     return Scaffold(
       appBar: appBar,
-      backgroundColor: AppColors.appBackground,
+      backgroundColor: Get.theme.colorScheme.background,
       body: ListView.builder(
         padding: const EdgeInsets.all(5),
         itemCount: events.length,

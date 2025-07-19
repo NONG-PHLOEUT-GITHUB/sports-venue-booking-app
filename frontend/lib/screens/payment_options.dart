@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'card_payment_screen.dart'; // Assuming this leads to the payment confirmation
 import 'package:frontend/l10n/app_localizations.dart'; // For localization
+import 'package:get/get.dart';
 
 class PaymentOptionsScreen extends StatefulWidget {
   @override
@@ -23,26 +23,13 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
     final double totalAmount = transferAmount + additionalCost;
 
     return Scaffold(
-      backgroundColor:
-          Colors.grey.shade100, // Light grey background as per design
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: AppColors.onSecondary,
-        ), // Back button color
         title: Text(
           AppLocalizations.of(context)!.paymentOptions, // Original title
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.onSecondary,
-          ),
         ),
-        backgroundColor: AppColors.primary, // Original app bar color
-        centerTitle: true, // Center title for a clean look
-        elevation: 0, // No shadow
+        // No shadow
       ),
       body: SingleChildScrollView(
-        // Use SingleChildScrollView for scrollability
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 20.0,
@@ -290,7 +277,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: Get.theme.colorScheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -335,7 +322,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                       : FontWeight.w600, // Value bold/semi-bold
               color:
                   isTotal
-                      ? AppColors.primary
+                      ? Get.theme.colorScheme.primary
                       : Colors.black87, // Total amount in primary color
             ),
           ),
@@ -394,7 +381,9 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                 });
               },
               activeColor:
-                  AppColors
+                  Get
+                      .theme
+                      .colorScheme
                       .primary, // Changed radio button active color to green
               visualDensity:
                   VisualDensity.compact, // Make radio button slightly smaller

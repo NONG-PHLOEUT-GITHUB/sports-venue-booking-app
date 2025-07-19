@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/payment_options.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
   const ConfirmBookingScreen({super.key});
@@ -37,7 +37,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: AppColors.primary,
+          color: Get.theme.colorScheme.primary,
           width: 2,
         ), // Primary color on focus
       ),
@@ -69,23 +69,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     final String totalPrice = '\$50.00'; // From image_e02e66.png
 
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: AppColors.onSecondary, // Color for the back button icon
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.confirmBooking,
-          style: TextStyle(
-            fontSize: 22, // Slightly larger title
-            fontWeight: FontWeight.bold,
-            color: AppColors.onSecondary,
-          ),
-        ),
-        backgroundColor: AppColors.primary,
-        elevation: 0, // No shadow
-        centerTitle: true, // Center the title
-      ),
-      backgroundColor: Colors.grey.shade100, // Consistent background
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.confirmBooking)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -271,7 +255,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                         style: TextStyle(
                           fontSize: 24, // Larger for emphasis
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                          color: Get.theme.colorScheme.primary,
                         ),
                       ),
                     ],
@@ -299,7 +283,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: Get.theme.colorScheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/otp_comfirm_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -198,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: Get.theme.colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

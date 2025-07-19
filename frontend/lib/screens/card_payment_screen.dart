@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'payment_successful_scrren.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class CheckOutScreen extends StatelessWidget {
   CheckOutScreen({super.key});
@@ -11,22 +11,15 @@ class CheckOutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double totalAmount = transferAmount + additionalCost;
-
-    final Color onPrimaryColor = AppColors.onSecondary;
-
     final appBar = AppBar(
-      iconTheme: IconThemeData(
-        color: onPrimaryColor,
-      ), // Back button color on primary
       title: Text(
         AppLocalizations.of(context)!.payment, // "Payment" or "Checkout"
         style: TextStyle(
           fontSize: 22, // Slightly larger title
           fontWeight: FontWeight.bold,
-          color: onPrimaryColor,
         ),
       ),
-      backgroundColor: AppColors.primary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       centerTitle: true, // Center the title for consistency
       elevation: 0, // No shadow for a cleaner look
     );
@@ -70,9 +63,7 @@ class CheckOutScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color:
-                    AppColors
-                        .onSecondary, // White background for the card details section
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(16.0), // Rounded corners
                 boxShadow: [
                   BoxShadow(
@@ -208,7 +199,7 @@ class CheckOutScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -272,7 +263,7 @@ class CheckOutScreen extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: AppColors.primary,
+            color: Get.theme.colorScheme.primary,
             width: 2,
           ), // Primary color on focus
         ),

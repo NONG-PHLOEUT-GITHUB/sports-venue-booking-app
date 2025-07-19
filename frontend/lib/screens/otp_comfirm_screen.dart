@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   const OtpVerificationPage({super.key});
@@ -11,10 +11,7 @@ class OtpVerificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(elevation: 0, backgroundColor: Colors.white),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
@@ -22,10 +19,7 @@ class OtpVerificationPage extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.otpVerification,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -63,7 +57,7 @@ class OtpVerificationPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: Get.theme.colorScheme.background,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -71,14 +65,16 @@ class OtpVerificationPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyApp(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const MyApp()),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.verify,
-                    style:
-                        TextStyle(fontSize: 16, color: AppColors.onSecondary)),
+                child: Text(
+                  AppLocalizations.of(context)!.verify,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Get.theme.colorScheme.onSecondary,
+                  ),
+                ),
               ),
             ),
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import '../widgets/carousel_slider.dart';
 import 'explore_venues_screen.dart';
 import 'notification_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,13 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: AppColors.primary, // Header background color
-              onPrimary: AppColors.onSecondary, // Header text color
+              primary: Get.theme.colorScheme.primary, // Header background color
+              onPrimary: Get.theme.colorScheme.onSecondary, // Header text color
               onSurface: Colors.black, // Body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: AppColors.primary, // Button text color
+                foregroundColor:
+                    Get.theme.colorScheme.primary, // Button text color
               ),
             ),
           ),
@@ -62,36 +63,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      appBar: _appBar,
-      body: _body,
-    );
+    return Scaffold(appBar: _appBar, body: _body);
   }
 
   PreferredSizeWidget get _appBar {
     return AppBar(
-      centerTitle: false,
-      backgroundColor: AppColors.primary,
-      elevation: 0, // No shadow for a cleaner look
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: AppColors.onSecondary,
-                size: 20,
-              ),
+              Icon(Icons.location_on_outlined, size: 20),
               const SizedBox(width: 4),
-              Text(
-                'Phnom Penh',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: AppColors.onSecondary,
-                    fontWeight: FontWeight.w500),
-              ),
+              Text('Phnom Penh'),
             ],
           ),
           IconButton(
@@ -99,9 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
               count: 99,
               backgroundColor: Colors.red,
               alignment: Alignment.topRight, // Adjust badge position
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none,
-                color: AppColors.onSecondary,
                 size: 28, // Slightly larger icon
               ),
             ),
@@ -123,23 +106,29 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align children to start
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Align children to start
           children: <Widget>[
             const SizedBox(height: 16), // Added spacing from app bar
             // Title for offers
             Text(
               AppLocalizations.of(context)!.greatOffers,
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold), // Slightly larger font
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ), // Slightly larger font
             ),
             const SizedBox(height: 16),
             // Image Slider
             ImageSlider(),
             const SizedBox(height: 32), // More space before next section
-
             // Title for booking
             Text(
               AppLocalizations.of(context)!.bookYourGround,
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold), // Consistent font size
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ), // Consistent font size
             ),
             const SizedBox(height: 16),
 
@@ -170,10 +159,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(12), // Rounded corners for button
+                                  color: Get.theme.colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(
+                                    12,
+                                  ), // Rounded corners for button
                                 ),
-                                padding: const EdgeInsets.all(10), // Padding inside button
+                                padding: const EdgeInsets.all(
+                                  10,
+                                ), // Padding inside button
                                 child: const Icon(
                                   Icons.calendar_month_outlined,
                                   color: Colors.white,
@@ -190,14 +183,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     style: TextStyle(
                                       fontSize: 20, // Larger font for date
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black87, // Slightly softer black
+                                      color:
+                                          Colors
+                                              .black87, // Slightly softer black
                                     ),
                                   ),
                                   Text(
                                     "${selectedDate.year}",
                                     style: TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w500, // Medium weight
+                                      fontWeight:
+                                          FontWeight.w500, // Medium weight
                                       color: Colors.black54, // Softer color
                                     ),
                                   ),
@@ -205,7 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     _getWeekdayName(selectedDate.weekday),
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.grey.shade600, // Clearer grey
+                                      color:
+                                          Colors.grey.shade600, // Clearer grey
                                     ),
                                   ),
                                 ],
@@ -216,11 +213,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       // Sport Dropdown
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade50, // Lighter background
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300), // Subtle border
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                          ), // Subtle border
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -228,38 +230,46 @@ class _HomeScreenState extends State<HomeScreen> {
                             menuMaxHeight: 350,
                             borderRadius: BorderRadius.circular(12),
                             dropdownColor: Colors.white,
-                            icon: Icon(Icons.arrow_drop_down, color: AppColors.primary), // Custom dropdown icon
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Get.theme.colorScheme.primary,
+                            ), // Custom dropdown icon
                             onChanged: (newValue) {
                               setState(() {
                                 selectedSport = newValue!;
                               });
                             },
-                            items: sports.map((sport) {
-                              return DropdownMenuItem<String>(
-                                value: sport["name"],
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      sport["icon"],
-                                      color: sport["color"],
-                                      size: 20, // Consistent icon size
+                            items:
+                                sports.map((sport) {
+                                  return DropdownMenuItem<String>(
+                                    value: sport["name"],
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          sport["icon"],
+                                          color: sport["color"],
+                                          size: 20, // Consistent icon size
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          sport["name"],
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.black87,
+                                          ), // Clearer text
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      sport["name"],
-                                      style: TextStyle(fontSize: 17, color: Colors.black87), // Clearer text
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
+                                  );
+                                }).toList(),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24), // Space between content and dotted line
-
+                  const SizedBox(
+                    height: 24,
+                  ), // Space between content and dotted line
                   // Dotted line separator
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -285,8 +295,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 24), // Space between dotted line and button
-
+                  const SizedBox(
+                    height: 24,
+                  ), // Space between dotted line and button
                   // Make Booking Button
                   SizedBox(
                     width: double.infinity, // Make button span full width
@@ -294,15 +305,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => BookingPage()),
+                          MaterialPageRoute(
+                            builder: (context) => BookingPage(),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: Get.theme.colorScheme.primary,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14), // More rounded
+                          borderRadius: BorderRadius.circular(
+                            14,
+                          ), // More rounded
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 16), // Increased vertical padding
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                        ), // Increased vertical padding
                         elevation: 3, // Subtle elevation
                       ),
                       child: Text(

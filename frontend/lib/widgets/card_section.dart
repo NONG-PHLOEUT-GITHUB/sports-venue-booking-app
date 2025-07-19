@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/app_colors.dart'; // Assuming you have AppColors for consistent theming
+import 'package:get/get.dart';
 
 class CardSection extends StatelessWidget {
   final String imageUrl;
@@ -96,7 +97,7 @@ class CardSection extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20, // Larger price font
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary, // Using your primary green color
+                        color: Get.theme.colorScheme.onSecondary, // Using your primary green color
                       ),
                     ),
                     Container(
@@ -110,7 +111,7 @@ class CardSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13, // Smaller font for slots text
                           fontWeight: FontWeight.w600, // Semi-bold
-                          color: AppColors.primary, // Green text color
+                          color: Get.theme.colorScheme.primary, // Green text color
                         ),
                       ),
                     ),

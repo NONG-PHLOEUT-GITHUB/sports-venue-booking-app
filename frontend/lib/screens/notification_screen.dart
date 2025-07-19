@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import '../providers/notification_provider.dart'; // where loadFacts is defined
 import 'package:frontend/utils/date_utils.dart';
+import 'package:get/get.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -25,7 +25,6 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
-      backgroundColor: AppColors.appBackground,
       body: _body,
     );
   }
@@ -33,14 +32,9 @@ class _NotificationPageState extends State<NotificationPage> {
   PreferredSizeWidget get _appBar {
     return AppBar(
       iconTheme: IconThemeData(color: Colors.white),
-      backgroundColor: AppColors.primary,
       title: Text(
         AppLocalizations.of(context)!.notification,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.onSecondary,
-        ),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -118,7 +112,10 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
                 SizedBox(height: 10),
                 _detailRow("Soccer Field", notification["details"]["field"]),
-                _detailRow("Date", DateUtilsHelper.formatDate(notification["date"]!)),
+                _detailRow(
+                  "Date",
+                  DateUtilsHelper.formatDate(notification["date"]!),
+                ),
                 _detailRow("Time", notification["details"]["time"]),
                 _detailRow("Duration", notification["details"]["duration"]),
                 _detailRow("Price", notification["details"]["price"]),

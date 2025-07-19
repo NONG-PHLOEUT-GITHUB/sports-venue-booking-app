@@ -129,7 +129,7 @@
   "@khmer": {
     "description": "Label for Khmer language"
   },
-  "changeLanguage": "Change Language",
+  "changeLanguage": "Language",
   "@changeLanguage": {
     "description": "Option to change app language"
   },
@@ -155,6 +155,14 @@
   },
   "phoneNumber": "Phone Number",
   "@phoneNumber": {
+    "description": "Label for phone number field"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Label for phone number field"
+  },
+  "enterANewPassword": "Enter Password",
+  "@enterANewPassword": {
     "description": "Label for phone number field"
   },
   "email": "Email Address",
@@ -221,7 +229,7 @@
   "@language": {
     "description": "Label for language settings"
   },
-  "editAccount": "Edit Account",
+  "editAccount": "Edit Profile",
   "@editAccount": {
     "description": "Bottom navigation tab for user account"
   },

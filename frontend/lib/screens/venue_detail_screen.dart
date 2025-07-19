@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/screens/confirm_booking_screen.dart';
-import 'package:frontend/theme/app_colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
 
 class VenueDetailPage extends StatefulWidget {
   @override
@@ -19,22 +19,13 @@ class _VenueDetailState extends State<VenueDetailPage> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      backgroundColor: AppColors.primary,
-      iconTheme: IconThemeData(
-        color: Colors.white, // Color for the back button icon
-      ),
       title: Text(
         AppLocalizations.of(context)!.venue,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.onSecondary,
-        ),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: appBar,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -62,39 +53,44 @@ class _VenueDetailState extends State<VenueDetailPage> {
                         });
                       },
                     ),
-                    items: imagePaths.map((imagePath) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              imagePath,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                            ),
+                    items:
+                        imagePaths.map((imagePath) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  imagePath,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }).toList(),
+                        }).toList(),
                   ),
                   const SizedBox(height: 10),
 
                   // Dot Indicator with active width effect
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: imagePaths.asMap().entries.map((entry) {
-                      bool isActive = _currentIndex == entry.key;
-                      return AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                        height: 8.0,
-                        width: isActive ? 20.0 : 8.0,
-                        decoration: BoxDecoration(
-                          color: isActive ? Colors.green : Colors.grey.shade400,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      );
-                    }).toList(),
+                    children:
+                        imagePaths.asMap().entries.map((entry) {
+                          bool isActive = _currentIndex == entry.key;
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            height: 8.0,
+                            width: isActive ? 20.0 : 8.0,
+                            decoration: BoxDecoration(
+                              color:
+                                  isActive
+                                      ? Colors.green
+                                      : Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          );
+                        }).toList(),
                   ),
 
                   const SizedBox(height: 12),
@@ -103,9 +99,13 @@ class _VenueDetailState extends State<VenueDetailPage> {
                     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('Phnom Penh Champain',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      child: Text(
+                        'Phnom Penh Champain',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -119,8 +119,10 @@ class _VenueDetailState extends State<VenueDetailPage> {
                       Icon(Icons.star, color: Colors.orange, size: 20),
                       Icon(Icons.star, color: Colors.orange, size: 20),
                       SizedBox(width: 8),
-                      Text("0 Review",
-                          style: TextStyle(fontWeight: FontWeight.w500)),
+                      Text(
+                        "0 Review",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
 
@@ -148,21 +150,25 @@ class _VenueDetailState extends State<VenueDetailPage> {
                     label: const Text("Map Location"),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       side: const BorderSide(color: Colors.teal),
                       foregroundColor: Colors.teal,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
+                        vertical: 10,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 20),
 
                   // Owner Details
-                  const Text("Owner Details",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-               
+                  const Text(
+                    "Owner Details",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+
                   const SizedBox(height: 12),
 
                   // Date and Time
@@ -178,17 +184,20 @@ class _VenueDetailState extends State<VenueDetailPage> {
                     children: const [
                       Icon(Icons.access_time, size: 18),
                       SizedBox(width: 8),
-                      Text("08:00 PM To 09:00 PM",
-                          style: TextStyle(fontSize: 16)),
+                      Text(
+                        "08:00 PM To 09:00 PM",
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ],
                   ),
 
                   const SizedBox(height: 20),
 
                   // Amenities
-                  const Text("Amenities",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text(
+                    "Amenities",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 10,
@@ -219,7 +228,7 @@ class _VenueDetailState extends State<VenueDetailPage> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Get.theme.colorScheme.background,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

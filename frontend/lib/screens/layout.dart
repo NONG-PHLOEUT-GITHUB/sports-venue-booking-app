@@ -5,6 +5,7 @@ import 'account_screen.dart';
 import 'ticket_screen.dart';
 import '../theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -56,7 +57,7 @@ class _MainLayoutState extends State<MainLayout> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: AppColors.primary,
+        selectedItemColor: Get.theme.colorScheme.primary,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
         selectedLabelStyle: const TextStyle(fontSize: 12),
