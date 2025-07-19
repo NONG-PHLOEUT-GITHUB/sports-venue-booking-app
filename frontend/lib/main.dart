@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/theme/theme.dart';
@@ -11,7 +12,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   Get.put(ThemeController()); // Put controller into dependency injection
-
+  Get.put(LocaleController());
   runApp(const MyApp());
 }
 
@@ -39,10 +40,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();
+    final LocaleController localeController = Get.find();
 
     return Obx(
       () => GetMaterialApp(
-        locale: _locale,
+        locale: localeController.currentLocale.value,
         supportedLocales: L10n.all,
         localizationsDelegates: const [
           AppLocalizations.delegate,

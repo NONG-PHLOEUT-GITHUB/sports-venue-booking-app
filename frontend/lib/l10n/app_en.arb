@@ -321,16 +321,24 @@
   "@otpVerification": {
     "description": "Title for the OTP verification screen"
   },
-
   "creditPay": "Credit Pay",
   "@creditPay": {},
-
   "cardName": "Card Name",
   "@cardName": {},
-
   "cardHolderName": "Card Holder Name",
   "@cardHolderName": {},
-
   "expiryDate": "Expiry Date",
-  "@expiryDate": {}
+  "@expiryDate": {},
+  "theme": "Theme",
+  "@theme": {},
+  "dark": "Dark",
+  "@dark": {},
+  "light": "Light",
+  "@light": {},
+  "helpsSupports": "Helps & Supports",
+  "@helpsSupports": {},
+  "orderHistory": "Order History",
+  "@orderHistory": {},
+  "changePassword": "Change Password",
+  "@changePassword": {}
 }

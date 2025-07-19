@@ -1,337 +1,263 @@
 import 'package:flutter/material.dart';
-import 'card_payment_screen.dart'; // Assuming this leads to the payment confirmation
-import 'package:frontend/l10n/app_localizations.dart'; // For localization
+import 'package:frontend/widgets/custom_back_button.dart';
+import 'card_payment_screen.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
+enum PaymentMethod { abaPay, acledaPay, creditCard }
+
 class PaymentOptionsScreen extends StatefulWidget {
+  const PaymentOptionsScreen({Key? key}) : super(key: key);
+
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentOptionsScreen> {
-  // Using an enum for clarity and type safety for selected payment method
-  PaymentMethod? _selectedPaymentMethod =
-      PaymentMethod.abaPay; // Default to ABA Pay
+  PaymentMethod? _selectedPaymentMethod = PaymentMethod.abaPay;
 
-  // Dummy values for demonstration
   final double transferAmount = 7.20;
   final double additionalCost = 0.50;
 
   @override
   Widget build(BuildContext context) {
-    // Calculate total
     final double totalAmount = transferAmount + additionalCost;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.paymentOptions, // Original title
+    final Widget checkoutButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CheckOutScreen()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
-        // No shadow
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 20.0,
-        ), // Overall padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.0), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalizations.of(
-                      context,
-                    )!.summaryInformation, // Use localization for this text
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ), // Slightly larger and darker
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSummaryInfo(
-                    AppLocalizations.of(context)!.name,
-                    'Basketball Court',
-                  ),
-                  _buildSummaryInfo(
-                    AppLocalizations.of(context)!.date,
-                    '02/28/2025',
-                  ),
-                  _buildSummaryInfo(
-                    AppLocalizations.of(context)!.time,
-                    '7AM - 9AM',
-                  ),
-                  _buildSummaryInfo(
-                    AppLocalizations.of(context)!.duration,
-                    '2 Hours',
-                  ),
-                  _buildSummaryInfo(
-                    AppLocalizations.of(context)!.field,
-                    'Field A, Field B',
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Payment Methods Section
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  16.0,
-                ), // Slightly more rounded
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // ABA Pay Option
-                  _buildPaymentOption(
-                    context: context,
-                    title: "ABA Pay",
-                    subtitle:
-                        AppLocalizations.of(
-                          context,
-                        )!.tapToPayWithABA, // Use localized string
-                    imagePath:
-                        "assets/images/aba_pay.png", // Ensure this path is correct
-                    value: PaymentMethod.abaPay,
-                  ),
-                  // ACLEDA Pay Option (added as requested)
-                  _buildPaymentOption(
-                    context: context,
-                    title: "ACLEDA Pay",
-                    subtitle:
-                        AppLocalizations.of(
-                          context,
-                        )!.tapToPayWithACLEDA, // You might need to add this to your app_localizations.dart
-                    imagePath:
-                        "assets/images/acleda.jpg", // Ensure this path is correct
-                    value: PaymentMethod.acledaPay,
-                  ),
-                  // Credit Card (from Dribbble design)
-                  _buildPaymentOption(
-                    context: context,
-                    title: "Credit Card",
-                    subtitle: "+16006 **** 24",
-                    imagePath:
-                        "assets/images/visa_card.jpg", // Placeholder path
-                    value: PaymentMethod.creditCard,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24), // Spacing between sections
-            // Promo Code Section
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(
-                  0xFFFDD446,
-                ), // Golden yellow color from design
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 16),
-                  const Icon(
-                    Icons.confirmation_num_outlined,
-                    color: Colors.black87,
-                  ), // Promo code icon
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Promo Code",
-                        hintStyle: TextStyle(color: Colors.black54),
-                        border: InputBorder.none, // No underline border
-                        contentPadding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    // Use InkWell for a ripple effect on tap
-                    onTap: () {
-                      // TODO: Implement promo code apply logic
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Apply button pressed!")),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(
-                      12,
-                    ), // Match button corner radius
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color:
-                            Colors.black, // Dark button as per Dribbble design
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        "Apply",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8), // Small space from right edge
-                ],
-              ),
-            ),
-            const SizedBox(height: 24), // Spacing
-            // Payment Summary Section
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  _buildSummaryRow(
-                    "Transfer Amount",
-                    "\$${transferAmount.toStringAsFixed(2)}",
-                  ),
-                  const SizedBox(height: 10),
-                  _buildSummaryRow(
-                    "Additional Cost",
-                    "\$${additionalCost.toStringAsFixed(2)}",
-                  ),
-                  const SizedBox(height: 10),
-                  const Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: Colors.grey,
-                  ), // Separator
-                  const SizedBox(height: 10),
-                  _buildSummaryRow(
-                    "Total",
-                    "\$${totalAmount.toStringAsFixed(2)}",
-                    isTotal: true,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: SizedBox(
-            width: double.infinity,
-            height: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                // Confirm booking logic
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CheckOutScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Get.theme.colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.checkOut,
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
+        child: Text(
+          AppLocalizations.of(context)!.checkOut,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
+
+    final Widget bottomCard = Card(
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      elevation: 1,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+        child: checkoutButton,
+      ),
+    );
+
+    final Widget summaryCard = Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.summaryInformation,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            _buildSummaryInfo(
+              AppLocalizations.of(context)!.name,
+              'Basketball Court',
+            ),
+            _buildSummaryInfo(AppLocalizations.of(context)!.date, '02/28/2025'),
+            _buildSummaryInfo(AppLocalizations.of(context)!.time, '7AM - 9AM'),
+            _buildSummaryInfo(
+              AppLocalizations.of(context)!.duration,
+              '2 Hours',
+            ),
+            _buildSummaryInfo(
+              AppLocalizations.of(context)!.field,
+              'Field A, Field B',
+            ),
+          ],
+        ),
+      ),
+    );
+
+    final Widget paymentMethodsCard = Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      child: Column(
+        children: [
+          _buildPaymentOption(
+            context: context,
+            title: "ABA Pay",
+            subtitle: AppLocalizations.of(context)!.tapToPayWithABA,
+            imagePath: "assets/images/aba_pay.png",
+            value: PaymentMethod.abaPay,
+          ),
+          const Divider(height: 1),
+          _buildPaymentOption(
+            context: context,
+            title: "ACLEDA Pay",
+            subtitle: AppLocalizations.of(context)!.tapToPayWithACLEDA,
+            imagePath: "assets/images/acleda.jpg",
+            value: PaymentMethod.acledaPay,
+          ),
+          const Divider(height: 1),
+          _buildPaymentOption(
+            context: context,
+            title: "Credit Card",
+            subtitle: "+16006 **** 24",
+            imagePath: "assets/images/visa_card.jpg",
+            value: PaymentMethod.creditCard,
+          ),
+        ],
+      ),
+    );
+
+    final Widget promoCodeCard = Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: const Color(0xFFFDD446),
+      elevation: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            const SizedBox(width: 4),
+            const Icon(Icons.confirmation_num_outlined, color: Colors.black87),
+            const SizedBox(width: 12),
+            Expanded(
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: "Promo Code",
+                  hintStyle: TextStyle(color: Colors.black54),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 14),
+                ),
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Apply button pressed!")),
+                );
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text(
+                  "Apply",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+      ),
+    );
+
+    final Widget paymentSummaryCard = Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildSummaryRow(
+              "Transfer Amount",
+              "\$${transferAmount.toStringAsFixed(2)}",
+            ),
+            const SizedBox(height: 10),
+            _buildSummaryRow(
+              "Additional Cost",
+              "\$${additionalCost.toStringAsFixed(2)}",
+            ),
+            const SizedBox(height: 10),
+            const Divider(height: 1, thickness: 1, color: Colors.grey),
+            const SizedBox(height: 10),
+            _buildSummaryRow(
+              "Total",
+              "\$${totalAmount.toStringAsFixed(2)}",
+              isTotal: true,
+            ),
+          ],
+        ),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.paymentOptions),
+        leading: const CustomBackButton(),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            summaryCard,
+            const SizedBox(height: 12),
+            paymentMethodsCard,
+            const SizedBox(height: 24),
+            promoCodeCard,
+            const SizedBox(height: 24),
+            paymentSummaryCard,
+          ],
+        ),
+      ),
+      bottomNavigationBar: bottomCard,
+    );
   }
 
-  Widget _buildSummaryInfo(String label, String value, {bool isTotal = false}) {
+  Widget _buildSummaryInfo(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 4.0,
-      ), // Adjusted vertical padding
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute space
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight:
-                  isTotal
-                      ? FontWeight.bold
-                      : FontWeight.normal, // Label bold if total
-              color: isTotal ? Colors.black87 : Colors.grey.shade700,
-            ),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
           ),
           Text(
             value,
-            style: TextStyle(
-              fontSize: isTotal ? 18 : 16, // Value larger if total
-              fontWeight:
-                  isTotal
-                      ? FontWeight.bold
-                      : FontWeight.w600, // Value bold/semi-bold
-              color:
-                  isTotal
-                      ? Get.theme.colorScheme.primary
-                      : Colors.black87, // Total amount in primary color
-            ),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
   }
 
-  // Helper widget for payment options
   Widget _buildPaymentOption({
     required BuildContext context,
     required String title,
@@ -339,18 +265,15 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
     required String imagePath,
     required PaymentMethod value,
   }) {
+    final bool isSelected = _selectedPaymentMethod == value;
+
     return InkWell(
-      // Use InkWell for a nice ripple effect on tap
-      onTap: () {
-        setState(() {
-          _selectedPaymentMethod = value;
-        });
-      },
+      onTap: () => setState(() => _selectedPaymentMethod = value),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Row(
           children: [
-            Image.asset(imagePath, width: 40), // Payment logo, adjusted size
+            Image.asset(imagePath, width: 40, height: 40, fit: BoxFit.contain),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -358,17 +281,13 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600, // Semi-bold
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
                       fontSize: 17,
-                      color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-                  ),
+                  Text(subtitle, style: TextStyle(fontSize: 14)),
                 ],
               ),
             ),
@@ -376,17 +295,10 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
               value: value,
               groupValue: _selectedPaymentMethod,
               onChanged: (PaymentMethod? newValue) {
-                setState(() {
-                  _selectedPaymentMethod = newValue;
-                });
+                setState(() => _selectedPaymentMethod = newValue);
               },
-              activeColor:
-                  Get
-                      .theme
-                      .colorScheme
-                      .primary, // Changed radio button active color to green
-              visualDensity:
-                  VisualDensity.compact, // Make radio button slightly smaller
+              activeColor: Get.theme.colorScheme.primary,
+              visualDensity: VisualDensity.compact,
             ),
           ],
         ),
@@ -394,7 +306,6 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
     );
   }
 
-  // Helper widget for summary rows
   Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,9 +313,8 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
         Text(
           label,
           style: TextStyle(
-            fontSize: isTotal ? 20 : 16, // Larger for Total
+            fontSize: isTotal ? 20 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            color: isTotal ? Colors.black87 : Colors.grey.shade700,
           ),
         ),
         Text(
@@ -412,13 +322,9 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
           style: TextStyle(
             fontSize: isTotal ? 20 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
-            color: isTotal ? Colors.black87 : Colors.black87,
           ),
         ),
       ],
     );
   }
 }
-
-// Define an enum for payment methods for better type safety
-enum PaymentMethod { abaPay, acledaPay, creditCard }

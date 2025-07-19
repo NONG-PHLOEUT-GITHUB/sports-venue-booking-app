@@ -1,180 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'payment_successful_scrren.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 class CheckOutScreen extends StatelessWidget {
   CheckOutScreen({super.key});
+
   final double transferAmount = 7.20;
   final double additionalCost = 0.50;
 
   @override
   Widget build(BuildContext context) {
     final double totalAmount = transferAmount + additionalCost;
+
     final appBar = AppBar(
-      title: Text(
-        AppLocalizations.of(context)!.payment, // "Payment" or "Checkout"
-        style: TextStyle(
-          fontSize: 22, // Slightly larger title
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      centerTitle: true, // Center the title for consistency
-      elevation: 0, // No shadow for a cleaner look
+      title: Text(AppLocalizations.of(context)!.payment),
+      leading: const CustomBackButton(),
     );
 
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: appBar,
-      body: SingleChildScrollView(
-        // Make the body scrollable
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 20.0,
-        ), // Overall padding
+    final Widget paymentButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PaymentSuccessfulScrren()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.payNow,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+
+    final Widget creditCardFormCard = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Summary Information Section
-            // Container(
-            //   padding: const EdgeInsets.all(16.0),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(16.0), // Rounded corners
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.grey.withOpacity(0.05),
-            //         spreadRadius: 1,
-            //         blurRadius: 5,
-            //         offset: Offset(0, 3),
-            //       ),
-            //     ],
-            //   ),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       // put card here
-            //     ],
-            //   ),
-            // ),
-            // const SizedBox(height: 24), // Spacing between sections
-            // Credit Card Payment Section
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(16.0), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start, // Align text to start
-                  children: [
-                    Text(
-                      AppLocalizations.of(
-                        context,
-                      )!.creditPay, // "Credit/Debit Card Details"
-                      style: TextStyle(
-                        fontSize: 18, // Consistent title size
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 16), // Space between title and form
-                    Form(
-                      child: Column(
-                        children: [
-                          _buildModernTextField(
-                            AppLocalizations.of(context)!.cardHolderName,
-                            Icons.person,
-                          ),
-                          const SizedBox(height: 16), // Increased spacing
-                          _buildModernTextField(
-                            AppLocalizations.of(
-                              context,
-                            )!.cardName, // Changed from Card Name to Card Number
-                            Icons.credit_card,
-                            hintText:
-                                '0000 0000 0000 0000', // More realistic hint
-                            keyboardType: TextInputType.number,
-                          ),
-                          const SizedBox(height: 16), // Increased spacing
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildModernTextField(
-                                  AppLocalizations.of(context)!.expiryDate,
-                                  Icons.calendar_today,
-                                  hintText: 'MM/YYYY',
-                                  keyboardType: TextInputType.datetime,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: _buildModernTextField(
-                                  "CVV", // No localization for CVV usually
-                                  Icons.lock,
-                                  hintText: '000',
-                                  keyboardType: TextInputType.number,
-                                  isObscureText: true, // Hide CVV input
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            Text(
+              AppLocalizations.of(context)!.creditPay,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 24), // Spacing between sections
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
+            const SizedBox(height: 16),
+            Form(
               child: Column(
                 children: [
-                  _buildSummaryRow(
-                    "Transfer Amount",
-                    "\$${transferAmount.toStringAsFixed(2)}",
+                  _buildModernTextField(
+                    AppLocalizations.of(context)!.cardHolderName,
+                    Icons.person,
                   ),
-                  const SizedBox(height: 10),
-                  _buildSummaryRow(
-                    "Additional Cost",
-                    "\$${additionalCost.toStringAsFixed(2)}",
+                  const SizedBox(height: 16),
+                  _buildModernTextField(
+                    AppLocalizations.of(context)!.cardName,
+                    Icons.credit_card,
+                    hintText: '0000 0000 0000 0000',
+                    keyboardType: TextInputType.number,
                   ),
-                  const SizedBox(height: 10),
-                  const Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: Colors.grey,
-                  ), // Separator
-                  const SizedBox(height: 10),
-                  _buildSummaryRow(
-                    "Total",
-                    "\$${totalAmount.toStringAsFixed(2)}",
-                    isTotal: true,
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildModernTextField(
+                          AppLocalizations.of(context)!.expiryDate,
+                          Icons.calendar_today,
+                          hintText: 'MM/YYYY',
+                          keyboardType: TextInputType.datetime,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildModernTextField(
+                          "CVV",
+                          Icons.lock,
+                          hintText: '000',
+                          keyboardType: TextInputType.number,
+                          isObscureText: true,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -182,40 +102,66 @@ class CheckOutScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: SizedBox(
-            width: double.infinity,
-            height: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                // Confirm booking logic
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentSuccessfulScrren(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.payNow,
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+    );
+
+    final Widget paymentSummaryCard = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 2,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildSummaryRow(
+              "Transfer Amount",
+              "\$${transferAmount.toStringAsFixed(2)}",
             ),
-          ),
+            const SizedBox(height: 10),
+            _buildSummaryRow(
+              "Additional Cost",
+              "\$${additionalCost.toStringAsFixed(2)}",
+            ),
+            const SizedBox(height: 10),
+            const Divider(height: 1, thickness: 1, color: Colors.grey),
+            const SizedBox(height: 10),
+            _buildSummaryRow(
+              "Total",
+              "\$${totalAmount.toStringAsFixed(2)}",
+              isTotal: true,
+            ),
+          ],
         ),
       ),
     );
+
+    final Widget bottomCard = Card(
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      elevation: 6,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+        child: paymentButton,
+      ),
+    );
+
+    return Scaffold(
+      appBar: appBar,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          children: [
+            creditCardFormCard,
+            const SizedBox(height: 24),
+            paymentSummaryCard,
+          ],
+        ),
+      ),
+      bottomNavigationBar: bottomCard,
+    );
   }
 
-  // Refined helper widget for summary rows
   Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,9 +169,8 @@ class CheckOutScreen extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: isTotal ? 20 : 16, // Larger for Total
+            fontSize: isTotal ? 20 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            color: isTotal ? Colors.black87 : Colors.grey.shade700,
           ),
         ),
         Text(
@@ -233,17 +178,15 @@ class CheckOutScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: isTotal ? 20 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
-            color: isTotal ? Colors.black87 : Colors.black87,
           ),
         ),
       ],
     );
   }
 
-  // Refined TextField helper for modern look
   Widget _buildModernTextField(
     String label,
-    IconData? icon, {
+    IconData icon, {
     String? hintText,
     TextInputType? keyboardType,
     bool isObscureText = false,
@@ -252,35 +195,23 @@ class CheckOutScreen extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12), // More rounded corners
-          borderSide: BorderSide(color: Colors.grey.shade300), // Lighter border
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Get.theme.colorScheme.primary,
-            width: 2,
-          ), // Primary color on focus
+       
         ),
-        prefixIcon:
-            icon != null
-                ? Icon(icon, color: Colors.grey.shade600)
-                : null, // Icon color
         filled: true,
-        fillColor: Colors.grey.shade50, // Light fill color
         contentPadding: const EdgeInsets.symmetric(
           vertical: 16,
           horizontal: 12,
-        ), // Adjust padding
+        ),
       ),
       keyboardType: keyboardType,
       obscureText: isObscureText,
-      style: TextStyle(color: Colors.black87, fontSize: 16),
+      style: const TextStyle(fontSize: 16),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter $label';

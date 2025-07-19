@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/payment_options.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
@@ -25,14 +26,12 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     return InputDecoration(
       labelText: labelText, // Use labelText for floating label effect
       hintText: hintText,
-      floatingLabelBehavior: FloatingLabelBehavior.auto, // Make label float
+      filled: true,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12), // More rounded corners
-        borderSide: BorderSide(color: Colors.grey.shade300), // Subtle border
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.grey.shade300),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -41,15 +40,11 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
           width: 2,
         ), // Primary color on focus
       ),
-      filled: true,
-      fillColor: Colors.white, // White fill for text fields
       contentPadding: const EdgeInsets.symmetric(
         vertical: 16,
         horizontal: 16,
       ), // Adjusted padding
       suffixIcon: suffixIcon,
-      labelStyle: TextStyle(color: Colors.grey.shade700), // Style for the label
-      hintStyle: TextStyle(color: Colors.grey.shade400), // Style for the hint
     );
   }
 
@@ -62,240 +57,210 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Current date from image_e02e66.png is 14-2-2025.
-    // For a dynamic date, use DateTime.now().
     final String bookingDate = '14-2-2025';
-    final String bookingTime = '14:00 PM - 16:00 PM'; // From image_e02e66.png
-    final String totalPrice = '\$50.00'; // From image_e02e66.png
+    final String bookingTime = '14:00 PM - 16:00 PM';
+    final String totalPrice = '\$50.00';
 
-    return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.confirmBooking)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+    // AppBar
+    final appBar = AppBar(
+      title: Text(AppLocalizations.of(context)!.confirmBooking),
+      leading: CustomBackButton(),
+    );
+
+    // Contact Info Card
+    final contactInfoCard = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      margin: EdgeInsets.zero, // since you already control padding outside
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          children: <Widget>[
-            // Contact Info Card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  // Subtle shadow
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.yourContactInfo,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 16), // Increased spacing
-                  // Full Name Input
-                  // Removed redundant Text widget for label, using InputDecoration's labelText
-                  TextField(
-                    controller: nameController,
-                    decoration: _buildInputDecoration(
-                      AppLocalizations.of(context)!.fullName,
-                      AppLocalizations.of(context)!.enterFullName,
-                    ),
-                  ),
-                  const SizedBox(height: 16), // Consistent spacing
-                  // Phone Number Input
-                  // Removed redundant Text widget for label
-                  TextField(
-                    controller: phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: _buildInputDecoration(
-                      AppLocalizations.of(context)!.phoneNumber,
-                      AppLocalizations.of(context)!.enterPhoneNumber,
-                    ),
-                  ),
-                ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.yourContactInfo,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: nameController,
+              decoration: _buildInputDecoration(
+                AppLocalizations.of(context)!.fullName,
+                AppLocalizations.of(context)!.enterFullName,
               ),
             ),
-            const SizedBox(height: 16), // Spacing between cards
-            // Booking Details Card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  // Subtle shadow
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.bookingDetails,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 16), // Increased spacing
-                  // Select Field Dropdown
-                  // Removed redundant Text widget for label
-                  DropdownButtonFormField<String>(
-                    value: selectedField,
-                    decoration: _buildInputDecoration(
-                      AppLocalizations.of(context)!.selectField,
-                      '', // Hint text not typically needed for dropdown label
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey.shade600,
-                      ), // Explicit dropdown icon
-                    ),
-                    items:
-                        ['Field A', 'Field B', 'Field C']
-                            .map(
-                              (field) => DropdownMenuItem(
-                                value: field,
-                                child: Text(field),
-                              ),
-                            )
-                            .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedField = value!;
-                      });
-                    },
-                    // Style the dropdown button text
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
-                    icon:
-                        SizedBox.shrink(), // Hide default dropdown icon if suffixIcon is used
-                  ),
-                  const SizedBox(height: 20), // Spacing before date/time
-                  // Date Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.date,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                      Text(
-                        bookingDate,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ), // Stronger font
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12), // Consistent spacing
-                  // Time Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.time,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                      Text(
-                        bookingTime,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ), // Stronger font
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12), // Consistent spacing
-                  // Divider for Separation
-                  const Divider(
-                    height: 20,
-                    thickness: 1,
-                    color: Colors.grey,
-                  ), // Thicker and more visible divider
-                  // Total Price
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.totalPrice,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ), // Slightly bolder
-                      ),
-                      Text(
-                        totalPrice,
-                        style: TextStyle(
-                          fontSize: 24, // Larger for emphasis
-                          fontWeight: FontWeight.bold,
-                          color: Get.theme.colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            const SizedBox(height: 16),
+            TextField(
+              controller: phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: _buildInputDecoration(
+                AppLocalizations.of(context)!.phoneNumber,
+                AppLocalizations.of(context)!.enterPhoneNumber,
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: SizedBox(
-            width: double.infinity,
-            height: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                // Confirm booking logic
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentOptionsScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Get.theme.colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.confirmBooking,
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+    );
+
+    // Booking Details Card
+    final bookingDetailsCard = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.bookingDetails,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              value: selectedField,
+              decoration: _buildInputDecoration(
+                AppLocalizations.of(context)!.selectField,
+                '',
+                suffixIcon: Icon(Icons.arrow_drop_down),
+              ),
+              items:
+                  ['Field A', 'Field B', 'Field C']
+                      .map(
+                        (field) =>
+                            DropdownMenuItem(value: field, child: Text(field)),
+                      )
+                      .toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedField = value!;
+                });
+              },
+              style: const TextStyle(fontSize: 16),
+              icon: const SizedBox.shrink(),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.date,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  bookingDate,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.time,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  bookingTime,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            const Divider(height: 20, thickness: 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.totalPrice,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  totalPrice,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Get.theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+    final confirmButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PaymentOptionsScreen()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.confirmBooking,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
+    );
+
+    final bottomContainer = Container(
+      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [confirmButton],
+      ),
+    );
+
+    return Scaffold(
+      appBar: appBar,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            contactInfoCard,
+            const SizedBox(height: 16),
+            bookingDetailsCard,
+          ],
+        ),
+      ),
+      bottomNavigationBar: bottomContainer,
     );
   }
 }

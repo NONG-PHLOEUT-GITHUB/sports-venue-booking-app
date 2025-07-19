@@ -279,4 +279,22 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get expiryDate => 'ថ្ងៃផុតកំណត់';
+
+  @override
+  String get theme => 'ប្រធានបទ';
+
+  @override
+  String get dark => 'ខ្មៅ';
+
+  @override
+  String get light => 'ស';
+
+  @override
+  String get helpsSupports => 'ជំនួយ & គាំទ្រ';
+
+  @override
+  String get orderHistory => 'ប្រវត្តិការកម្មង់';
+
+  @override
+  String get changePassword => 'ផ្លាស់ប្តូរពាក្យសម្ងាត់';
 }

@@ -637,6 +637,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expiry Date'**
   String get expiryDate;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get dark;
+
+  /// No description provided for @light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get light;
+
+  /// No description provided for @helpsSupports.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps & Supports'**
+  String get helpsSupports;
+
+  /// No description provided for @orderHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Order History'**
+  String get orderHistory;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
 }
 
 class _AppLocalizationsDelegate

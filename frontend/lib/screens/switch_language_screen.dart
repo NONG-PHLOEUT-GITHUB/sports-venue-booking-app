@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/main.dart';
 import 'package:get/get.dart';
 
 class SwitchLanguagePage extends StatefulWidget {
@@ -27,9 +27,13 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
   }
 
   void _saveLanguageChange() {
+    final localeController = Get.find<LocaleController>();
+
     Locale newLocale =
         _selectedLanguage == 'Khmer' ? const Locale('km') : const Locale('en');
-    MyApp.setLocale(context, newLocale);
+
+    localeController.changeLocale(newLocale);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(AppLocalizations.of(context)!.languageChanged)),
     );
@@ -37,9 +41,7 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    final titleText = Text(
-      AppLocalizations.of(context)!.changeLanguage,
-    );
+    final titleText = Text(AppLocalizations.of(context)!.changeLanguage);
 
     final backButton = Padding(
       padding: const EdgeInsets.only(left: 16),
@@ -61,7 +63,7 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
       child: ElevatedButton(
         onPressed: _saveLanguageChange,
         style: ElevatedButton.styleFrom(
-          backgroundColor:Get.theme.colorScheme.primary,
+          backgroundColor: Get.theme.colorScheme.primary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -100,12 +102,7 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        leading: backButton,
-        title: titleText,
-      ),
+      appBar: AppBar(leading: backButton, title: titleText),
       body: Column(
         children: [
           Expanded(
@@ -137,15 +134,18 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Get.theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Get.theme.colorScheme.primary : Colors.grey.shade300,
+            color:
+                isSelected
+                    ? Get.theme.colorScheme.primary
+                    : Colors.grey.shade300,
             width: 1.0,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
+              color: Get.theme.colorScheme.surface,
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

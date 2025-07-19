@@ -40,12 +40,14 @@ class CardTest extends StatelessWidget {
   ];
 
   Widget buildVenueCard(
-      String imageAsset, String title, String location, String distance) {
+    String imageAsset,
+    String title,
+    String location,
+    String distance,
+  ) {
     return Card(
       margin: const EdgeInsets.all(12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 0,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -63,8 +65,10 @@ class CardTest extends StatelessWidget {
               top: 10,
               right: 10,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(12),
@@ -88,8 +92,9 @@ class CardTest extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(16)),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(16),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,8 +109,11 @@ class CardTest extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.location_on,
-                            size: 16, color: Colors.grey),
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           location,
@@ -128,20 +136,9 @@ class CardTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      backgroundColor: Get.theme.colorScheme.background,
-      title: Text(
-        AppLocalizations.of(context)!.venue,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Get.theme.colorScheme.onSecondary,
-        ),
-      ),
-    );
+    final appBar = AppBar(title: Text(AppLocalizations.of(context)!.venue));
     return Scaffold(
       appBar: appBar,
-      backgroundColor: Get.theme.colorScheme.background,
       body: ListView.builder(
         padding: const EdgeInsets.all(5),
         itemCount: events.length,

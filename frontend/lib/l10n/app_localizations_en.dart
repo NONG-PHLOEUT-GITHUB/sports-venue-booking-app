@@ -279,4 +279,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expiryDate => 'Expiry Date';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get helpsSupports => 'Helps & Supports';
+
+  @override
+  String get orderHistory => 'Order History';
+
+  @override
+  String get changePassword => 'Change Password';
 }

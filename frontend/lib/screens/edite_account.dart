@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -57,21 +58,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    final backButton = Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black26, width: 1.2),
-          shape: BoxShape.circle,
-          color: Colors.white,
-        ),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-    );
-
     final saveButton = SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -116,15 +102,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        leading: backButton,
-        title: Text(
-          localization.editAccount,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        leading: CustomBackButton(),
+        title: Text(localization.editAccount),
       ),
 
       body: Column(
@@ -135,9 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 const CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(
-                    'https://via.placeholder.com/150',
-                  ),
+                  backgroundImage: AssetImage('assets/images/profile.jpeg'),
                 ),
                 Container(
                   padding: const EdgeInsets.all(6),
@@ -145,7 +122,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: Icon(Icons.edit, size: 20, color: Get.theme.colorScheme.primary),
+                  child: Icon(
+                    Icons.edit,
+                    size: 20,
+                    color: Get.theme.colorScheme.primary,
+                  ),
                 ),
               ],
             ),
@@ -155,11 +136,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: Get.theme.colorScheme.background,
                     blurRadius: 6,
                     offset: Offset(0, 3),
                   ),
@@ -218,14 +198,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         labelText: label,
         hintText: hint,
         filled: true,
-        fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12), // More rounded corners
-          borderSide: BorderSide(color: Colors.grey.shade300), // Subtle border
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

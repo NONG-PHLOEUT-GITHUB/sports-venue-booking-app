@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/screens/confirm_booking_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class VenueDetailPage extends StatefulWidget {
@@ -19,9 +20,54 @@ class _VenueDetailState extends State<VenueDetailPage> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text(
-        AppLocalizations.of(context)!.venue,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      title: Text(AppLocalizations.of(context)!.venue),
+      leading: CustomBackButton(),
+    );
+
+    final paymentButton = SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ConfirmBookingScreen()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Get.theme.colorScheme.primary,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.btnBookNow,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+
+    final bottomContainer = Container(
+      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [paymentButton],
       ),
     );
 
@@ -31,6 +77,9 @@ class _VenueDetailState extends State<VenueDetailPage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(10.0),
           child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
             elevation: 0,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -215,32 +264,7 @@ class _VenueDetailState extends State<VenueDetailPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              // Confirm booking logic
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ConfirmBookingScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Get.theme.colorScheme.background,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(
-              AppLocalizations.of(context)!.btnBookNow,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ),
-        ),
-      ),
+      bottomNavigationBar: bottomContainer,
     );
   }
 }

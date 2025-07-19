@@ -85,5 +85,12 @@
   "creditPay": "បង់ដោយកាតឥណទាន",
   "cardName": "ឈ្មោះកាត",
   "cardHolderName": "ឈ្មោះអ្នកកាន់កាត",
-  "expiryDate": "ថ្ងៃផុតកំណត់"
+  "expiryDate": "ថ្ងៃផុតកំណត់",
+  "@@locale": "km",
+  "theme": "ប្រធានបទ",
+  "dark": "ខ្មៅ",
+  "light": "ស",
+  "helpsSupports": "ជំនួយ & គាំទ្រ",
+  "orderHistory": "ប្រវត្តិការកម្មង់",
+  "changePassword": "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
 }

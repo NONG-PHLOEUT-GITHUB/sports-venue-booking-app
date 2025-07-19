@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import '../providers/notification_provider.dart'; // where loadFacts is defined
 import 'package:frontend/utils/date_utils.dart';
 import 'package:get/get.dart';
@@ -23,19 +24,13 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar,
-      body: _body,
-    );
+    return Scaffold(appBar: _appBar, body: _body);
   }
 
   PreferredSizeWidget get _appBar {
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.white),
-      title: Text(
-        AppLocalizations.of(context)!.notification,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
+      title: Text(AppLocalizations.of(context)!.notification),
+      leading: CustomBackButton(),
     );
   }
 

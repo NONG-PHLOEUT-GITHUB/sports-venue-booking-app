@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/card_section.dart'; // Ensure this path is correct
 import 'package:frontend/screens/venue_detail_screen.dart'; // Ensure VenueDetailPage is imported
-import 'package:frontend/theme/app_colors.dart'; // Assuming you have this
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:get/get.dart';
 
@@ -94,6 +94,7 @@ class BookingPage extends StatelessWidget {
             ),
           ],
         ),
+        leading: CustomBackButton(),
       ),
       body:
           bookingData

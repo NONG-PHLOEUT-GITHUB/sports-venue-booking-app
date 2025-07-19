@@ -21,9 +21,10 @@ class AppThemes {
       primary: AppColors.lightPrimary,
       onPrimary: AppColors.lightOnPrimary,
       secondary: AppColors.lightAccent,
-      onSecondary: AppColors.lightTextPrimary,
+      onSecondary: AppColors.lightOnSecondary,
       background: AppColors.lightBackground,
       surface: AppColors.lightSurface,
+      error: AppColors.lightError,
     ),
   );
 
@@ -33,7 +34,7 @@ class AppThemes {
     scaffoldBackgroundColor: AppColors.darkBackground,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkBackground,
-      foregroundColor: AppColors.lightOnSecondary,
+      foregroundColor: AppColors.darkTextPrimary,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
@@ -47,9 +48,10 @@ class AppThemes {
       primary: AppColors.darkPrimary,
       onPrimary: AppColors.darkOnPrimary,
       secondary: AppColors.darkAccent,
-      onSecondary: AppColors.darkBackground,
+      onSecondary: AppColors.darkOnSecondary,
       background: AppColors.darkBackground,
       surface: AppColors.darkSurface,
+      error: AppColors.darkError,
     ),
   );
 }
