@@ -3,7 +3,6 @@ import 'package:frontend/screens/venu_screen.dart';
 import 'home_screen.dart';
 import 'account_screen.dart';
 import 'ticket_screen.dart';
-import '../theme/app_colors.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 

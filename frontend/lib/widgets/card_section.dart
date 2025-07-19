@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/theme/app_colors.dart'; // Assuming you have AppColors for consistent theming
 import 'package:get/get.dart';
 
 class CardSection extends StatelessWidget {
