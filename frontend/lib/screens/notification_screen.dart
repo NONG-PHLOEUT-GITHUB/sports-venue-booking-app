@@ -3,7 +3,6 @@ import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import '../providers/notification_provider.dart'; // where loadFacts is defined
 import 'package:frontend/utils/date_utils.dart';
-import 'package:get/get.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
