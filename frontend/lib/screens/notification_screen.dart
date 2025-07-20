@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
-import '../providers/notification_provider.dart'; // where loadFacts is defined
 import 'package:frontend/utils/date_utils.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -15,11 +14,11 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   late Future<List<Map<String, dynamic>>> _notificationsFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _notificationsFuture = loadNotifications();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _notificationsFuture = loadNotifications();
+  // }
 
   @override
   Widget build(BuildContext context) {

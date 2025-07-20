@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:frontend/models/venue_model.dart'; // Import your VenueModel
+import 'package:frontend/models/explore_venue_model.dart'; // Import your VenueModel
 
 class CardSection extends StatelessWidget {
-  final VenueModel venue; // Now accepts a VenueModel object
+  final ExploreVenueModel venue; // Now accepts a VenueModel object
 
   const CardSection({
     super.key,

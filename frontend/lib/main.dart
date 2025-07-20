@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/controllers/locale_controller.dart';
+import 'package:frontend/controllers/explore_venue_controller.dart';
 import 'package:frontend/controllers/venue_controller.dart';
 import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/l10n/app_localizations.dart';
@@ -16,7 +17,8 @@ void main() {
   Get.put(ThemeController());
   Get.put(LocaleController());
   Get.lazyPut(() => VenueService());
-  Get.lazyPut(() => VenueController());
+  Get.lazyPut(() => VenueListController());
+  Get.lazyPut(() => ExploreVenueController());
   runApp(const MyApp());
 }
 

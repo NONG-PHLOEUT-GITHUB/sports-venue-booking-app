@@ -1,30 +1,21 @@
 // lib/models/venue.dart
 class VenueModel {
   final String imageUrl;
-  final String title;
+  final String name;
   final String location;
-  final String time;
-  final double price;
-  final String slots;
 
   VenueModel({
     required this.imageUrl,
-    required this.title,
+    required this.name,
     required this.location,
-    required this.time,
-    required this.price,
-    required this.slots,
   });
 
   // Factory constructor to parse data from JSON (e.g., from an API response)
   factory VenueModel.fromJson(Map<String, dynamic> json) {
     return VenueModel(
       imageUrl: json['imageUrl'] as String,
-      title: json['title'] as String,
-      location: json['location'] as String,
-      time: json['time'] as String,
-      price: (json['price'] as num).toDouble(), // Handles both int and double from JSON
-      slots: json['slots'] as String,
+      name: json['name'] as String,
+      location: json['location'] as String
     );
   }
 
@@ -32,11 +23,8 @@ class VenueModel {
   Map<String, dynamic> toJson() {
     return {
       'imageUrl': imageUrl,
-      'title': title,
-      'location': location,
-      'time': time,
-      'price': price,
-      'slots': slots,
+      'name': name,
+      'location': location
     };
   }
 }

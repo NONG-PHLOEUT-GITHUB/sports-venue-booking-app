@@ -4,14 +4,14 @@ import 'package:frontend/screens/venue_detail_screen.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:frontend/controllers/venue_controller.dart';
+import 'package:frontend/controllers/explore_venue_controller.dart';
 
 class ExploreVenuesScreen extends StatelessWidget {
   const ExploreVenuesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final VenueController venueController = Get.put(VenueController());
+    final ExploreVenueController venueController = Get.put(ExploreVenueController());
     final theme = Theme.of(context);
 
     return Scaffold(
