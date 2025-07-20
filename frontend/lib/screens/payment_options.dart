@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'card_payment_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
@@ -23,49 +24,11 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
   Widget build(BuildContext context) {
     final double totalAmount = transferAmount + additionalCost;
 
-    final Widget checkoutButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CheckOutScreen()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.checkOut,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final Widget bottomCard = Card(
-      margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      elevation: 1,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-        child: checkoutButton,
-      ),
-    );
-
     final Widget summaryCard = Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -99,6 +62,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       child: Column(
         children: [
           _buildPaymentOption(
@@ -189,6 +153,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -235,7 +200,15 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: bottomCard,
+      bottomNavigationBar: AppPrimaryButton(
+        text: AppLocalizations.of(context)!.checkOut,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CheckOutScreen()),
+          );
+        },
+      ),
     );
   }
 

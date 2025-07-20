@@ -14,15 +14,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedSport = "Football";
-  DateTime selectedDate = DateTime.now(); // Store selected date
+  DateTime selectedDate = DateTime.now();
 
-  final List<Map<String, dynamic>> sports = [
+  final List<Map<String, dynamic>> sports = const [
     {"name": "Football", "icon": Icons.sports_soccer, "color": Colors.green},
-    {
-      "name": "Basketball",
-      "icon": Icons.sports_basketball,
-      "color": Colors.orange,
-    },
+    {"name": "Basketball", "icon": Icons.sports_basketball, "color": Colors.orange},
     {"name": "Tennis", "icon": Icons.sports_tennis, "color": Colors.yellow},
     {"name": "Cricket", "icon": Icons.sports_cricket, "color": Colors.blue},
     {"name": "Hockey", "icon": Icons.sports_hockey, "color": Colors.red},
@@ -38,22 +34,23 @@ class _HomeScreenState extends State<HomeScreen> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: Get.theme.colorScheme.primary, // Header background color
-              onPrimary: Get.theme.colorScheme.onSecondary, // Header text color
-              onSurface: Colors.black, // Body text color
+              primary: Get.theme.colorScheme.primary,
+              onPrimary: Get.theme.colorScheme.onPrimary,
+              surface: Get.theme.colorScheme.surface, // Use theme surface for consistency
+              onSurface: Get.theme.colorScheme.onSurface, // Use theme onSurface
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor:
-                    Get.theme.colorScheme.primary, // Button text color
+                foregroundColor: Get.theme.colorScheme.primary,
               ),
             ),
+            // Ensure the background color of the date picker itself follows the theme
+            dialogBackgroundColor: Get.theme.colorScheme.surface,
           ),
           child: child!,
         );
       },
     );
-
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -63,29 +60,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _appBar, body: _body);
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(context),
+    );
   }
 
-  PreferredSizeWidget get _appBar {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Icon(Icons.location_on_outlined, size: 20),
+              Icon(Icons.location_on_outlined, size: 20, color: theme.colorScheme.onSurface),
               const SizedBox(width: 4),
-              Text('Phnom Penh'),
+              Text(
+                'Phnom Penh',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
             ],
           ),
           IconButton(
             icon: Badge.count(
               count: 99,
-              backgroundColor: Colors.red,
-              alignment: Alignment.topRight, // Adjust badge position
+              backgroundColor: theme.colorScheme.error, // Use theme error color for badge
+              alignment: Alignment.topRight,
               child: Icon(
                 Icons.notifications_none,
-                size: 28, // Slightly larger icon
+                size: 28,
+                color: theme.colorScheme.onSurface, // Icon color from theme
               ),
             ),
             onPressed: () {
@@ -100,279 +105,270 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget get _body {
+  Widget _buildBody(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    Color shadowColor;
+    if (isDarkMode) {
+      shadowColor = Colors.white.withOpacity(0.03);
+    } else {
+      shadowColor = Colors.black.withOpacity(0.08);
+    }
+
     return SingleChildScrollView(
-      // Use SingleChildScrollView for scrollability
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align children to start
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 16), // Added spacing from app bar
-            // Title for offers
+            const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.greatOffers,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-              ), // Slightly larger font
+                color: theme.colorScheme.onBackground, // Use onBackground for main titles
+              ),
             ),
             const SizedBox(height: 16),
-            // Image Slider
             ImageSlider(),
-            const SizedBox(height: 32), // More space before next section
-            // Title for booking
+            const SizedBox(height: 32),
             Text(
               AppLocalizations.of(context)!.bookYourGround,
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-              ), // Consistent font size
+                color: theme.colorScheme.onBackground, // Use onBackground for main titles
+              ),
             ),
             const SizedBox(height: 16),
-
-            // Booking Card
-            Container(
-              padding: const EdgeInsets.all(20), // Increased padding
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20), // More rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // subtle shadow
-                  ),
-                ],
+            Card(
+              elevation: 0, // Controlled by BoxDecoration shadow
+              margin: EdgeInsets.zero, // Remove default card margin
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => _selectDate(context),
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Get.theme.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(
-                                    12,
-                                  ), // Rounded corners for button
-                                ),
-                                padding: const EdgeInsets.all(
-                                  10,
-                                ), // Padding inside button
-                                child: const Icon(
-                                  Icons.calendar_month_outlined,
-                                  color: Colors.white,
-                                  size: 28, // Larger icon
-                                ),
-                              ),
-                              const SizedBox(width: 16), // More space
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    // Formatted date string (e.g., "June 26")
-                                    "${_getMonthName(selectedDate.month)} ${selectedDate.day}",
-                                    style: TextStyle(
-                                      fontSize: 20, // Larger font for date
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          Colors
-                                              .black87, // Slightly softer black
-                                    ),
+              color: theme.colorScheme.surface, // Use theme surface color
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: shadowColor,
+                      spreadRadius: 2,
+                      blurRadius: 10, // Increased blur for softer shadow
+                      offset: const Offset(0, 5), // Adjusted offset
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => _selectDate(context),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  Text(
-                                    "${selectedDate.year}",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight:
-                                          FontWeight.w500, // Medium weight
-                                      color: Colors.black54, // Softer color
-                                    ),
+                                  padding: const EdgeInsets.all(10),
+                                  child: const Icon(
+                                    Icons.calendar_month_outlined,
+                                    color: Colors.white,
+                                    size: 28,
                                   ),
-                                  Text(
-                                    _getWeekdayName(selectedDate.weekday),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                          Colors.grey.shade600, // Clearer grey
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Sport Dropdown
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade50, // Lighter background
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                          ), // Subtle border
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: selectedSport,
-                            menuMaxHeight: 350,
-                            borderRadius: BorderRadius.circular(12),
-                            dropdownColor: Colors.white,
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Get.theme.colorScheme.primary,
-                            ), // Custom dropdown icon
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedSport = newValue!;
-                              });
-                            },
-                            items:
-                                sports.map((sport) {
-                                  return DropdownMenuItem<String>(
-                                    value: sport["name"],
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          sport["icon"],
-                                          color: sport["color"],
-                                          size: 20, // Consistent icon size
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          sport["name"],
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.black87,
-                                          ), // Clearer text
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ), // Space between content and dotted line
-                  // Dotted line separator
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return Flex(
-                          direction: Axis.horizontal,
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            (constraints.constrainWidth() / 10).floor(),
-                            (index) => SizedBox(
-                              height: 1,
-                              width: 5,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade400,
                                 ),
-                              ),
+                                const SizedBox(width: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${_getMonthName(selectedDate.month)} ${selectedDate.day}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: theme.colorScheme.onSurface,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${selectedDate.year}",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                      ),
+                                    ),
+                                    Text(
+                                      _getWeekdayName(selectedDate.weekday),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ), // Space between dotted line and button
-                  // Make Booking Button
-                  SizedBox(
-                    width: double.infinity, // Make button span full width
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookingPage(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Get.theme.colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            14,
-                          ), // More rounded
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.background, // Use theme background for dropdown container
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: theme.colorScheme.onSurface.withOpacity(0.2), // Subtle border
+                            ),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: selectedSport,
+                              menuMaxHeight: 350,
+                              borderRadius: BorderRadius.circular(12),
+                              dropdownColor: theme.colorScheme.surface, // Dropdown menu background
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: theme.colorScheme.primary,
+                              ),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    selectedSport = newValue;
+                                  });
+                                }
+                              },
+                              items: sports.map((Map<String, dynamic> sport) {
+                                return DropdownMenuItem<String>(
+                                  value: sport["name"] as String,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        sport["icon"] as IconData,
+                                        color: sport["color"] as Color,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        sport["name"] as String,
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 16,
-                        ), // Increased vertical padding
-                        elevation: 3, // Subtle elevation
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.makeBooking,
-                        style: TextStyle(
-                          fontSize: 18, // Larger font for button text
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 0.5, // Slightly spaced out letters
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: DashedLine(
+                          color: theme.colorScheme.onSurface.withOpacity(0.3)),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExploreVenuesScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          elevation: 3,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.makeBooking,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onPrimary, // Use onPrimary for button text
+                            letterSpacing: 0.5,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 24), // Space at the bottom
+            const SizedBox(height: 24),
           ],
         ),
       ),
     );
   }
 
-  // Convert month number to name
   String _getMonthName(int month) {
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
     ];
     return months[month - 1];
   }
 
-  // Convert weekday number to name
   String _getWeekdayName(int weekday) {
     const weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
+      "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
     ];
     return weekdays[weekday - 1];
+  }
+}
+
+// Re-using DashedLine from TicketPage for consistency
+class DashedLine extends StatelessWidget {
+  final Color color;
+  const DashedLine({super.key, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 2,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final boxWidth = constraints.constrainWidth();
+          const dashWidth = 6.0;
+          const dashSpace = 4.0;
+          final dashCount = (boxWidth / (dashWidth + dashSpace)).floor();
+          return Flex(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            direction: Axis.horizontal,
+            children: List.generate(dashCount, (_) {
+              return SizedBox(
+                width: dashWidth,
+                height: 1,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: color),
+                ),
+              );
+            }),
+          );
+        },
+      ),
+    );
   }
 }

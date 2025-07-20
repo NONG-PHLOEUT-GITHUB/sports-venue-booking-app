@@ -205,7 +205,7 @@
   "@home": {
     "description": "Bottom navigation tab for Home"
   },
-  "venue": "Venue Details",
+  "venue": "Venue",
   "@venue": {
     "description": "Bottom navigation tab for Venue selection"
   },

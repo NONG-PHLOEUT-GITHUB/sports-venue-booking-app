@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Theme',
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       Text(isDark ? 'Dark' : 'Light'),
                       Switch(
                         value: isDark,
@@ -126,6 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Row(
@@ -163,6 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       child: Column(
         children: List.generate(tiles.length * 2 - 1, (index) {
           if (index.isOdd) {

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/models/venue_model.dart';
 import 'package:frontend/screens/confirm_booking_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class VenueDetailPage extends StatefulWidget {
+  final VenueModel venue;
+
+  const VenueDetailPage({Key? key, required this.venue}) : super(key: key);
+
   @override
   _VenueDetailState createState() => _VenueDetailState();
 }
@@ -17,58 +23,12 @@ class _VenueDetailState extends State<VenueDetailPage> {
     'assets/images/Football.jpg',
   ];
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Text(AppLocalizations.of(context)!.venue),
       leading: CustomBackButton(),
-    );
-
-    final paymentButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ConfirmBookingScreen()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.btnBookNow,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final bottomContainer = Container(
-      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [paymentButton],
-      ),
     );
 
     return Scaffold(
@@ -80,6 +40,7 @@ class _VenueDetailState extends State<VenueDetailPage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
+            color: Get.theme.colorScheme.surface,
             elevation: 0,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -264,7 +225,15 @@ class _VenueDetailState extends State<VenueDetailPage> {
           ),
         ),
       ),
-      bottomNavigationBar: bottomContainer,
+      bottomNavigationBar: AppPrimaryButton(
+        text: AppLocalizations.of(context)!.btnBookNow,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ConfirmBookingScreen()),
+          );
+        },
+      ),
     );
   }
 }

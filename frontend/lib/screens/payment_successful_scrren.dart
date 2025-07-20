@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/layout.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:get/get.dart';
 
 class PaymentSuccessfulScrren extends StatelessWidget {
@@ -8,53 +9,6 @@ class PaymentSuccessfulScrren extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final saveButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const MainLayout()),
-            (Route<dynamic> route) => false,
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.returnHome,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final bottomContainer = Container(
-      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [saveButton],
-      ),
-    );
 
     return Scaffold(
       body: Center(
@@ -76,7 +30,16 @@ class PaymentSuccessfulScrren extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: bottomContainer,
+      bottomNavigationBar: AppPrimaryButton(
+        text: AppLocalizations.of(context)!.returnHome,
+           onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainLayout()),
+            (Route<dynamic> route) => false,
+          );
+        },
+      ),
     );
   }
 }

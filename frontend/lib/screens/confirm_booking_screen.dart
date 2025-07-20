@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/payment_options.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
@@ -71,6 +72,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     final contactInfoCard = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       margin: EdgeInsets.zero, // since you already control padding outside
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -107,6 +109,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     final bookingDetailsCard = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
+      color: Get.theme.colorScheme.surface,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -128,8 +131,16 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
               items:
                   ['Field A', 'Field B', 'Field C']
                       .map(
-                        (field) =>
-                            DropdownMenuItem(value: field, child: Text(field)),
+                        (field) => DropdownMenuItem(
+                          value: field,
+                          child: Text(
+                            field,
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Get.theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
                       )
                       .toList(),
               onChanged: (value) {
@@ -201,53 +212,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
       ),
     );
 
-    final confirmButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PaymentOptionsScreen()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.confirmBooking,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final bottomContainer = Container(
-      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [confirmButton],
-      ),
-    );
-
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -260,7 +224,15 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: bottomContainer,
+      bottomNavigationBar: AppPrimaryButton(
+        text: AppLocalizations.of(context)!.confirmBooking,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PaymentOptionsScreen()),
+          );
+        },
+      ),
     );
   }
 }

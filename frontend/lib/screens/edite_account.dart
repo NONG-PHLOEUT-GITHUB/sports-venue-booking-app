@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
@@ -57,48 +58,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-
-    final saveButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _saveProfile,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.btnSave,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final bottomContainer = Container(
-      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [saveButton],
-      ),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -177,7 +136,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
           ),
-          bottomContainer,
+          AppPrimaryButton(
+            text: AppLocalizations.of(context)!.btnSave,
+            onPressed: _saveProfile,
+          ),
         ],
       ),
     );

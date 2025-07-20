@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class SwitchLanguagePage extends StatefulWidget {
@@ -43,66 +45,9 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
   Widget build(BuildContext context) {
     final titleText = Text(AppLocalizations.of(context)!.changeLanguage);
 
-    final backButton = Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black26, width: 1.2),
-          shape: BoxShape.circle,
-          color: Colors.white,
-        ),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-    );
-
-    final saveButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _saveLanguageChange,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.btnSave,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    final bottomContainer = Container(
-      padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [saveButton],
-      ),
-    );
-
     return Scaffold(
       extendBodyBehindAppBar: false,
-      appBar: AppBar(leading: backButton, title: titleText),
+      appBar: AppBar(leading: CustomBackButton(), title: titleText),
       body: Column(
         children: [
           Expanded(
@@ -118,7 +63,10 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
               },
             ),
           ),
-          bottomContainer,
+          AppPrimaryButton(
+            text: AppLocalizations.of(context)!.btnSave,
+            onPressed: _saveLanguageChange,
+          ),
         ],
       ),
     );

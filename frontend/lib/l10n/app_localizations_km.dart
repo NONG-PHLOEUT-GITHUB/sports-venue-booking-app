@@ -180,7 +180,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get home => 'ទំព័រដើម';
 
   @override
-  String get venue => 'ព័ត៌មានលម្អិតអំពីទីតាំង';
+  String get venue => 'ទីកន្លែង';
 
   @override
   String get ticket => 'សំបុត្រ';

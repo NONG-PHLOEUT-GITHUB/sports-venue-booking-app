@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'payment_successful_scrren.dart';
 import 'package:frontend/l10n/app_localizations.dart';
@@ -49,6 +50,7 @@ class CheckOutScreen extends StatelessWidget {
     final Widget creditCardFormCard = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
+      color: Get.theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -107,6 +109,7 @@ class CheckOutScreen extends StatelessWidget {
     final Widget paymentSummaryCard = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
+      color: Get.theme.colorScheme.surface,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -158,7 +161,15 @@ class CheckOutScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: bottomCard,
+      bottomNavigationBar: AppPrimaryButton(
+        text: AppLocalizations.of(context)!.payNow,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PaymentSuccessfulScrren()),
+          );
+        },
+      ),
     );
   }
 
@@ -201,7 +212,6 @@ class CheckOutScreen extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-       
         ),
         filled: true,
         contentPadding: const EdgeInsets.symmetric(

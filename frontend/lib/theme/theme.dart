@@ -12,7 +12,7 @@ class AppThemes {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       titleTextStyle: TextStyle(
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
         color: AppColors.lightTextPrimary,
       ),
@@ -39,7 +39,7 @@ class AppThemes {
       elevation: 0,
       centerTitle: true,
       titleTextStyle: TextStyle(
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
         color: AppColors.darkTextPrimary,
       ),

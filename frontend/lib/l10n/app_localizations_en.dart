@@ -180,7 +180,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get venue => 'Venue Details';
+  String get venue => 'Venue';
 
   @override
   String get ticket => 'Ticket';

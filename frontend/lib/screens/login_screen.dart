@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/locale_controller.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/otp_comfirm_screen.dart';
@@ -290,9 +291,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _saveLanguageChange() {
+    final localeController = Get.find<LocaleController>();
+
     Locale newLocale =
         _selectedLanguage == 'Khmer' ? const Locale('km') : const Locale('en');
 
-    MyApp.setLocale(context, newLocale);
+    localeController.changeLocale(newLocale);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.languageChanged)),
+    );
   }
 }

@@ -443,7 +443,7 @@ abstract class AppLocalizations {
   /// Bottom navigation tab for Venue selection
   ///
   /// In en, this message translates to:
-  /// **'Venue Details'**
+  /// **'Venue'**
   String get venue;
 
   /// Bottom navigation tab for viewing or managing tickets
