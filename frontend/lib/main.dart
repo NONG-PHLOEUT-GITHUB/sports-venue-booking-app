@@ -10,8 +10,9 @@ import 'package:frontend/theme/theme.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'screens/layout.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Get.put(ThemeController());
@@ -19,6 +20,8 @@ void main() {
   Get.lazyPut(() => VenueService());
   Get.lazyPut(() => VenueListController());
   Get.lazyPut(() => ExploreVenueController());
+  await GetStorage.init();  // Await initialization here
+
   runApp(const MyApp());
 }
 
@@ -37,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
     return Obx(
       () => GetMaterialApp(
-        locale: localeController.currentLocale.value,
+        locale: localeController.locale,
         supportedLocales: L10n.all,
         localizationsDelegates: const [
           AppLocalizations.delegate,

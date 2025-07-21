@@ -5,67 +5,40 @@ import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
-class SwitchLanguagePage extends StatefulWidget {
-  const SwitchLanguagePage({super.key});
+class SwitchLanguageScreen extends StatelessWidget {
+  SwitchLanguageScreen({Key? key}) : super(key: key);
 
-  @override
-  _SwitchLanguagePageState createState() => _SwitchLanguagePageState();
-}
-
-class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
-  String _selectedLanguage = 'English';
+  final localeController = Get.find<LocaleController>();
 
   final List<Map<String, String>> languages = [
-    {'label': 'English', 'flag': '🇬🇧'},
-    {'label': 'Khmer', 'flag': '🇰🇭'},
+    {'label': 'English', 'flag': '🇬🇧', 'code': 'en'},
+    {'label': 'Khmer', 'flag': '🇰🇭', 'code': 'km'},
   ];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final locale = Localizations.localeOf(context);
-    _selectedLanguage = locale.languageCode == 'km' ? 'Khmer' : 'English';
-  }
-
-  void _saveLanguageChange() {
-    final localeController = Get.find<LocaleController>();
-
-    Locale newLocale =
-        _selectedLanguage == 'Khmer' ? const Locale('km') : const Locale('en');
-
-    localeController.changeLocale(newLocale);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context)!.languageChanged)),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final titleText = Text(AppLocalizations.of(context)!.changeLanguage);
-
     return Scaffold(
-      extendBodyBehindAppBar: false,
-      appBar: AppBar(leading: CustomBackButton(), title: titleText),
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        title: Text(AppLocalizations.of(context)!.changeLanguage),
+      ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: languages.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16.0),
-              itemBuilder: (context, index) {
-                final language = languages[index];
-                final isSelected = _selectedLanguage == language['label'];
+            child: Obx(() {
+              final currentLangCode = localeController.locale.languageCode;
+              return ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: languages.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 0),
+                itemBuilder: (context, index) {
+                  final language = languages[index];
+                  final isSelected = currentLangCode == language['code'];
 
-                return _buildLanguageItem(language, isSelected);
-              },
-            ),
-          ),
-          AppPrimaryButton(
-            text: AppLocalizations.of(context)!.btnSave,
-            onPressed: _saveLanguageChange,
+                  return _buildLanguageItem(language, isSelected);
+                },
+              );
+            }),
           ),
         ],
       ),
@@ -73,47 +46,24 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
   }
 
   Widget _buildLanguageItem(Map<String, String> language, bool isSelected) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedLanguage = language['label']!;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: Get.theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color:
-                isSelected
-                    ? Get.theme.colorScheme.primary
-                    : Colors.grey.shade300,
-            width: 1.0,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Get.theme.colorScheme.surface,
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
+    return Card(
+      elevation: 1,
+      shadowColor: Colors.black26,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        leading: Text(
+          language['flag']!,
+          style: const TextStyle(fontSize: 28),
         ),
-        child: Row(
-          children: [
-            Text(language['flag']!, style: const TextStyle(fontSize: 24)),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                language['label']!,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
+        title: Text(language['label']!),
+        trailing: isSelected
+            ? Icon(Icons.check_circle, color: Get.theme.colorScheme.primary)
+            : const Icon(Icons.radio_button_unchecked),
+        onTap: () {
+          final localeController = Get.find<LocaleController>();
+          localeController.changeLocale(Locale(language['code']!));
+        },
       ),
     );
   }

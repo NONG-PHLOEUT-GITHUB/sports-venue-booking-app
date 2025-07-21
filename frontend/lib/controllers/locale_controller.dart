@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LocaleController extends GetxController {
-  var currentLocale = const Locale('en').obs;
+  final _locale = const Locale('en').obs;
+  final _storage = GetStorage();
 
-  void changeLocale(Locale locale) {
-    currentLocale.value = locale;
-    Get.updateLocale(locale); // Apply locale to GetMaterialApp
+  Locale get locale => _locale.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+    String? langCode = _storage.read('lang');
+    if (langCode != null) {
+      _locale.value = Locale(langCode);
+      Get.updateLocale(_locale.value);
+    }
+  }
+
+  void changeLocale(Locale newLocale) {
+    _locale.value = newLocale;
+    _storage.write('lang', newLocale.languageCode);
+    Get.updateLocale(newLocale);
   }
 }

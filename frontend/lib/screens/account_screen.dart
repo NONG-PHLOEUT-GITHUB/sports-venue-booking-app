@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/locale_controller.dart';
+import 'package:frontend/screens/theme_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/screens/edite_account.dart';
@@ -41,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
+    final localeController = Get.find<LocaleController>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -50,28 +53,41 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildProfileHeader(),
             const SizedBox(height: 16),
             _buildSettingsCard([
-              _buildSettingsTile(
-                icon: Icons.language_outlined,
-                title: 'Change Language',
-                onTap: () => Get.to(() => const SwitchLanguagePage()),
-              ),
-              Obx(() {
-                final isDark = themeController.isDark;
-                return _buildSettingsTile(
-                  icon: Icons.dark_mode,
-                  title: 'Theme',
+              Obx(
+                () => _buildSettingsTile(
+                  icon: Icons.language_outlined,
+                  title: 'Language',
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(isDark ? 'Dark' : 'Light'),
-                      Switch(
-                        value: isDark,
-                        onChanged: themeController.toggleTheme,
+                    children: [
+                      Text(
+                        localeController.locale.languageCode == 'km'
+                            ? 'Khmer'
+                            : 'English',
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 18),
                     ],
                   ),
-                );
-              }),
+                  onTap: () => Get.to(() => SwitchLanguageScreen()),
+                ),
+              ),
+              Obx(
+                () => _buildSettingsTile(
+                  icon: Icons.dark_mode,
+                  title: 'Dark mode',
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(themeController.themeModeLabel),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward_ios, size: 18),
+                    ],
+                  ),
+                  onTap: () => Get.to(() => const ThemeScreen()),
+                ),
+              ),
             ]),
             const SizedBox(height: 16),
             _buildSettingsCard([

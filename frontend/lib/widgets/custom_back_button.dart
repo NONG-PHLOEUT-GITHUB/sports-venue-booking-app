@@ -17,16 +17,23 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black26, width: borderWidth),
+          border: Border.all(
+            color: theme.dividerColor.withOpacity(0.4),
+            width: borderWidth,
+          ),
           shape: BoxShape.circle,
-          color: Get.theme.colorScheme.surface,
+          color: backgroundColor ?? theme.colorScheme.surface,
         ),
         child: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: iconColor ?? theme.iconTheme.color,
+          ),
           onPressed: onPressed ?? () => Navigator.pop(context),
         ),
       ),
