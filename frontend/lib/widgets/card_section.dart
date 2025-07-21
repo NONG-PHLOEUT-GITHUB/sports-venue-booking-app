@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:frontend/models/explore_venue_model.dart'; // Import your VenueModel
 
 class CardSection extends StatelessWidget {

@@ -20,33 +20,6 @@ class CheckOutScreen extends StatelessWidget {
       leading: const CustomBackButton(),
     );
 
-    final Widget paymentButton = SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const PaymentSuccessfulScrren()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Get.theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(
-          AppLocalizations.of(context)!.payNow,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-
     final Widget creditCardFormCard = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
@@ -137,17 +110,6 @@ class CheckOutScreen extends StatelessWidget {
       ),
     );
 
-    final Widget bottomCard = Card(
-      margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 24, 16, 32),
-        child: paymentButton,
-      ),
-    );
 
     return Scaffold(
       appBar: appBar,
