@@ -7,7 +7,7 @@ import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/services/venue_service.dart';
 import 'package:frontend/theme/theme.dart';
-import 'package:frontend/utils/theme_notifier.dart';
+import 'package:frontend/controllers/theme_controller.dart';
 import 'screens/layout.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
         theme: AppThemes.lightTheme,
         darkTheme: AppThemes.darkTheme,
         themeMode: themeController.themeMode.value,
-        home: const MainLayout(),
+        home: MainLayout(),
       ),
     );
   }

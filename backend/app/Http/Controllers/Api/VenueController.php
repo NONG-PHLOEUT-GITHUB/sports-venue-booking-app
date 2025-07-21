@@ -14,7 +14,7 @@ class VenueController extends Controller
     public function index()
     {
         $venues = Venue::all();
-        return response()->json($venues, 200);
+        return response()->json(['data' => $venues], 200);
     }
 
     /**

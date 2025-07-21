@@ -19,7 +19,7 @@ class _MainLayoutState extends State<MainLayout> {
   // Pages for each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    CardTest(),
+    VenueListSreen(),
     TicketPage(),
     ProfilePage(),
   ];
@@ -61,6 +61,7 @@ class _MainLayoutState extends State<MainLayout> {
         onTap: _onItemTapped,
         selectedLabelStyle: const TextStyle(fontSize: 12),
         unselectedLabelStyle: const TextStyle(fontSize: 12),
+        // backgroundColor: Get.theme.colorScheme.surface,
       ),
     );
   }

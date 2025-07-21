@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/screens/edite_account.dart';
 import 'package:frontend/screens/switch_language_screen.dart';
-import 'package:frontend/utils/theme_notifier.dart';
+import 'package:frontend/controllers/theme_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
