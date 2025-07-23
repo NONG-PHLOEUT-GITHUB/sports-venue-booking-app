@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'dart:async';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class ThemeController extends GetxController {
   final _storage = GetStorage();
   final _key = 'themeMode';
-
   Rx<ThemeMode> themeMode = ThemeMode.system.obs;
+  Timer? _timer;
+
 
   @override
   void onInit() {
@@ -14,10 +17,22 @@ class ThemeController extends GetxController {
     _loadThemeMode();
   }
 
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
+  }
+
   void changeThemeMode(ThemeMode mode) {
     themeMode.value = mode;
     Get.changeThemeMode(mode);
     _saveThemeMode(mode);
+    if (mode == ThemeMode.system) {
+      _startAutoThemeTimer(); // check periodically
+      _applyTimeBasedTheme(); // apply immediately
+    } else {
+      _timer?.cancel(); // stop timer if not using system mode
+    }
   }
 
   // Placeholder for loading theme from storage
@@ -25,14 +40,12 @@ class ThemeController extends GetxController {
     final savedMode = _storage.read<String>(_key);
 
     if (savedMode == 'light') {
-      themeMode.value = ThemeMode.light;
+      changeThemeMode(ThemeMode.light);
     } else if (savedMode == 'dark') {
-      themeMode.value = ThemeMode.dark;
+      changeThemeMode(ThemeMode.dark);
     } else {
-      themeMode.value = ThemeMode.system;
+      changeThemeMode(ThemeMode.system);
     }
-
-    Get.changeThemeMode(themeMode.value);
   }
 
   // Placeholder for saving theme to storage
@@ -47,16 +60,33 @@ class ThemeController extends GetxController {
     _storage.write(_key, modeStr);
   }
 
+  void _startAutoThemeTimer() {
+    _timer?.cancel(); // clear previous timer
+    _timer = Timer.periodic(const Duration(minutes: 30), (_) {
+      _applyTimeBasedTheme();
+    });
+  }
+
+  void _applyTimeBasedTheme() {
+    final hour = DateTime.now().hour;
+    if (hour >= 18 || hour < 6) {
+      Get.changeThemeMode(ThemeMode.dark);
+    } else {
+      Get.changeThemeMode(ThemeMode.light);
+    }
+  }
+
+
   // Label for display (On, Off, System)
-  String get themeModeLabel {
-    switch (themeMode.value) {
+  String getModeLabel(ThemeMode mode, BuildContext context) {
+    switch (mode) {
       case ThemeMode.dark:
-        return 'On';
+        return AppLocalizations.of(context)!.on;
       case ThemeMode.light:
-        return 'Off';
+        return AppLocalizations.of(context)!.off;
       case ThemeMode.system:
       default:
-        return 'System';
+        return AppLocalizations.of(context)!.system;
     }
   }
 }

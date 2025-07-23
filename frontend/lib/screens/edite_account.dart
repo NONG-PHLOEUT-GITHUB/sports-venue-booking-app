@@ -24,7 +24,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
     _nameController.text = 'Charlotte King';
     _emailController.text = 'johnkinggraphics@gmail.com';
-    _passwordController.text = '**********';
     _phoneController.text = '+91 6895312';
   }
 
@@ -32,7 +31,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -62,7 +60,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         leading: CustomBackButton(),
-        title: Text(localization.editAccount),
+        title: Text(localization.editProfile),
       ),
 
       body: Column(
@@ -118,13 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const SizedBox(height: 16),
-                  _buildTextField(
-                    label: localization.password,
-                    hint: '**********',
-                    controller: _passwordController,
-                    isPassword: true,
-                  ),
+
                   const SizedBox(height: 16),
                   _buildTextField(
                     label: localization.phoneNumber,

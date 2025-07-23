@@ -198,9 +198,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get editAccount => 'Edit Profile';
-
-  @override
   String get paymentOptions => 'Payment Options';
 
   @override
@@ -231,9 +228,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToPayWithACLEDA => 'Tap to pay with ACLEDA mobile';
 
   @override
-  String get khqr => 'KHQR';
-
-  @override
   String get tapToPayWithKHQR => 'Tap to pay with KHQR mobile';
 
   @override
@@ -241,6 +235,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkOut => 'Check Out';
+
+  @override
+  String get transferAmount => 'Transfer Amount';
+
+  @override
+  String get addCost => 'Additional Cost';
 
   @override
   String get paymentSuccessful => 'Payment Successful!';
@@ -297,4 +297,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changePassword => 'Change Password';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get system => 'System';
+
+  @override
+  String get on => 'On';
+
+  @override
+  String get off => 'Off';
 }

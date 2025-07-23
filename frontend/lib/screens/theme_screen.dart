@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class ThemeScreen extends StatelessWidget {
   const ThemeScreen({super.key});
@@ -12,7 +13,7 @@ class ThemeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dark Mode'),
+        title: Text(AppLocalizations.of(context)!.darkMode),
         leading: const CustomBackButton(),
       ),
       body: Obx(
@@ -21,7 +22,7 @@ class ThemeScreen extends StatelessWidget {
           child: Column(
             children:
                 ThemeMode.values.map((mode) {
-                  return _buildThemeCard(mode, themeController);
+                  return _buildThemeCard(context,mode, themeController);
                 }).toList(),
           ),
         ),
@@ -29,11 +30,11 @@ class ThemeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeCard(ThemeMode mode, ThemeController controller) {
+  Widget _buildThemeCard(BuildContext context,ThemeMode mode, ThemeController controller) {
     final modeText = {
-      ThemeMode.dark: 'On',
-      ThemeMode.light: 'Off',
-      ThemeMode.system: 'System',
+      ThemeMode.dark: AppLocalizations.of(context)!.on,
+      ThemeMode.light:AppLocalizations.of(context)!.off,
+      ThemeMode.system: AppLocalizations.of(context)!.system,
     };
 
     return Card(

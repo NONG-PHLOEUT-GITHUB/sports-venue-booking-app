@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/screens/edite_account.dart';
 import 'package:frontend/screens/switch_language_screen.dart';
 import 'package:frontend/controllers/theme_controller.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -28,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final prefs = await SharedPreferences.getInstance();
     if (mounted) {
       setState(() {
-        _fullName = prefs.getString('user_full_name') ?? 'Nong';
+        _fullName = prefs.getString('user_full_name') ?? 'Nong Phloeut';
         _email = prefs.getString('user_email') ?? 'nong168@gmail.com';
       });
     }
@@ -40,13 +41,27 @@ class _ProfilePageState extends State<ProfilePage> {
     Get.offAllNamed('/login');
   }
 
+  String _getThemeModeLabel(BuildContext context, ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.dark:
+        return AppLocalizations.of(context)!.on;
+      case ThemeMode.light:
+        return AppLocalizations.of(context)!.off;
+      case ThemeMode.system:
+      default:
+        return AppLocalizations.of(context)!.system;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
     final localeController = Get.find<LocaleController>();
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.account)),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,14 +71,14 @@ class _ProfilePageState extends State<ProfilePage> {
               Obx(
                 () => _buildSettingsTile(
                   icon: Icons.language_outlined,
-                  title: 'Language',
+                  title: localization.language,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         localeController.locale.languageCode == 'km'
-                            ? 'Khmer'
-                            : 'English',
+                            ? AppLocalizations.of(context)!.khmer
+                            : AppLocalizations.of(context)!.english,
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(width: 8),
@@ -76,11 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
               Obx(
                 () => _buildSettingsTile(
                   icon: Icons.dark_mode,
-                  title: 'Dark mode',
+                  title: AppLocalizations.of(context)!.darkMode,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(themeController.themeModeLabel),
+                      Text(_getThemeModeLabel(context, themeController.themeMode.value)),
                       const SizedBox(width: 8),
                       const Icon(Icons.arrow_forward_ios, size: 18),
                     ],
@@ -93,17 +108,17 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildSettingsCard([
               _buildSettingsTile(
                 icon: Icons.info_outline,
-                title: 'Helps & Supports',
+                title:  AppLocalizations.of(context)!.tutorial,
                 onTap: () => debugPrint('Support'),
               ),
-              _buildSettingsTile(
-                icon: Icons.history,
-                title: 'Order History',
-                onTap: () => debugPrint('History'),
-              ),
+              // _buildSettingsTile(
+              //   icon: Icons.history,
+              //   title: 'Order History',
+              //   onTap: () => debugPrint('History'),
+              // ),
               _buildSettingsTile(
                 icon: Icons.lock,
-                title: 'Change Password',
+                title: localization.changePassword,
                 onTap: () => debugPrint('Password'),
               ),
             ]),
@@ -111,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildSettingsCard([
               _buildSettingsTile(
                 icon: Icons.logout,
-                title: 'Logout',
+                title: AppLocalizations.of(context)!.logout,
                 onTap: _logout,
                 isLogout: true,
               ),
@@ -156,10 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _fullName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  Text(_fullName, style: TextStyle(fontSize: 18)),
                   const SizedBox(height: 4),
                   Text(
                     _email,

@@ -476,12 +476,6 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// Bottom navigation tab for user account
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Profile'**
-  String get editAccount;
-
   /// Title for payment options screen
   ///
   /// In en, this message translates to:
@@ -542,12 +536,6 @@ abstract class AppLocalizations {
   /// **'Tap to pay with ACLEDA mobile'**
   String get tapToPayWithACLEDA;
 
-  /// KHQR method label
-  ///
-  /// In en, this message translates to:
-  /// **'KHQR'**
-  String get khqr;
-
   /// Subtitle for KHQR method
   ///
   /// In en, this message translates to:
@@ -565,6 +553,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check Out'**
   String get checkOut;
+
+  /// KHQR method label
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer Amount'**
+  String get transferAmount;
+
+  /// KHQR method label
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Cost'**
+  String get addCost;
 
   /// Title shown after successful payment
   ///
@@ -673,6 +673,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Password'**
   String get changePassword;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get system;
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get on;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get off;
 }
 
 class _AppLocalizationsDelegate

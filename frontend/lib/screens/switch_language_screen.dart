@@ -9,13 +9,20 @@ class SwitchLanguageScreen extends StatelessWidget {
 
   final localeController = Get.find<LocaleController>();
 
-  final List<Map<String, String>> languages = [
-    {'label': 'English', 'flag': '🇬🇧', 'code': 'en'},
-    {'label': 'Khmer', 'flag': '🇰🇭', 'code': 'km'},
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> languages = [
+      {
+        'label': "English",
+        'flag': '🇬🇧',
+        'code': 'en',
+      },
+      {
+        'label': 'ភាសាខ្មែរ',
+        'flag': '🇰🇭',
+        'code': 'km',
+      },
+    ];
     return Scaffold(
       appBar: AppBar(
         leading: const CustomBackButton(),
@@ -51,14 +58,12 @@ class SwitchLanguageScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        leading: Text(
-          language['flag']!,
-          style: const TextStyle(fontSize: 28),
-        ),
+        leading: Text(language['flag']!, style: const TextStyle(fontSize: 28)),
         title: Text(language['label']!),
-        trailing: isSelected
-            ? Icon(Icons.check_circle, color: Get.theme.colorScheme.primary)
-            : const Icon(Icons.radio_button_unchecked),
+        trailing:
+            isSelected
+                ? Icon(Icons.check_circle, color: Get.theme.colorScheme.primary)
+                : const Icon(Icons.radio_button_unchecked),
         onTap: () {
           final localeController = Get.find<LocaleController>();
           localeController.changeLocale(Locale(language['code']!));

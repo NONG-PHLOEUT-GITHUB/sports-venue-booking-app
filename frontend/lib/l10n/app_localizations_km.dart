@@ -54,7 +54,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get greatOffers => 'ការផ្តល់ជូនដ៏អស្ចារ្យ';
 
   @override
-  String get editProfile => 'កែសម្រួលពត៌មាន';
+  String get editProfile => 'កែប្រែព័ត៌មានផ្ទាល់ខ្លួន';
 
   @override
   String get favorites => 'ចូលចិត្ត';
@@ -198,9 +198,6 @@ class AppLocalizationsKm extends AppLocalizations {
   String get language => 'ភាសា';
 
   @override
-  String get editAccount => 'កែប្រែគណនី';
-
-  @override
   String get paymentOptions => 'ជម្រើសទូទាត់';
 
   @override
@@ -228,10 +225,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get tapToPayWithABA => 'ចុចដើម្បីទូទាត់ជាមួយ ABA';
 
   @override
-  String get tapToPayWithACLEDA => 'Tap to pay with ACLEDA mobile';
-
-  @override
-  String get khqr => 'KHQR';
+  String get tapToPayWithACLEDA => 'ចុចដើម្បីទូទាត់ជាមួយ ACLEDA';
 
   @override
   String get tapToPayWithKHQR => 'ចុចដើម្បីទូទាត់ជាមួយ KHQR';
@@ -241,6 +235,12 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get checkOut => 'បញ្ចប់ការទូទាត់';
+
+  @override
+  String get transferAmount => 'ចំនួនទឹកប្រាក់ដែលត្រូវផ្ទេ';
+
+  @override
+  String get addCost => 'ការចំណាយបន្ថែម';
 
   @override
   String get paymentSuccessful => 'ការទូទាត់ជោគជ័យ!';
@@ -281,13 +281,13 @@ class AppLocalizationsKm extends AppLocalizations {
   String get expiryDate => 'ថ្ងៃផុតកំណត់';
 
   @override
-  String get theme => 'ប្រធានបទ';
+  String get theme => 'Theme';
 
   @override
-  String get dark => 'ខ្មៅ';
+  String get dark => 'Dark';
 
   @override
-  String get light => 'ស';
+  String get light => 'Light';
 
   @override
   String get helpsSupports => 'ជំនួយ & គាំទ្រ';
@@ -297,4 +297,16 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get changePassword => 'ផ្លាស់ប្តូរពាក្យសម្ងាត់';
+
+  @override
+  String get darkMode => 'ផ្ទៃងងឹត';
+
+  @override
+  String get system => 'ប្រព័ន្ធ';
+
+  @override
+  String get on => 'បើក';
+
+  @override
+  String get off => 'បិទ';
 }

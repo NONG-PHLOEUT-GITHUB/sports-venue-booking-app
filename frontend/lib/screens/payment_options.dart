@@ -159,19 +159,19 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
         child: Column(
           children: [
             _buildSummaryRow(
-              "Transfer Amount",
+              AppLocalizations.of(context)!.transferAmount,
               "\$${transferAmount.toStringAsFixed(2)}",
             ),
             const SizedBox(height: 10),
             _buildSummaryRow(
-              "Additional Cost",
+              AppLocalizations.of(context)!.addCost,
               "\$${additionalCost.toStringAsFixed(2)}",
             ),
             const SizedBox(height: 10),
             const Divider(height: 1, thickness: 1, color: Colors.grey),
             const SizedBox(height: 10),
             _buildSummaryRow(
-              "Total",
+              AppLocalizations.of(context)!.totalPrice,
               "\$${totalAmount.toStringAsFixed(2)}",
               isTotal: true,
             ),

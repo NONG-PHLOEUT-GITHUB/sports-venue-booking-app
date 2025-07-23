@@ -229,10 +229,6 @@
   "@language": {
     "description": "Label for language settings"
   },
-  "editAccount": "Edit Profile",
-  "@editAccount": {
-    "description": "Bottom navigation tab for user account"
-  },
   "paymentOptions": "Payment Options",
   "@paymentOptions": {
     "description": "Title for payment options screen"
@@ -273,10 +269,6 @@
   "@tapToPayWithACLEDA": {
     "description": "Subtitle for ABA Pay method"
   },
-  "khqr": "KHQR",
-  "@khqr": {
-    "description": "KHQR method label"
-  },
   "tapToPayWithKHQR": "Tap to pay with KHQR mobile",
   "@tapToPayWithKHQR": {
     "description": "Subtitle for KHQR method"
@@ -288,6 +280,14 @@
   "checkOut": "Check Out",
   "@checkOut": {
     "description": "Checkout button text"
+  },
+  "transferAmount": "Transfer Amount",
+  "@transferAmount": {
+    "description": "KHQR method label"
+  },
+  "addCost": "Additional Cost",
+  "@addCost": {
+    "description": "KHQR method label"
   },
   "paymentSuccessful": "Payment Successful!",
   "@paymentSuccessful": {
@@ -340,5 +340,13 @@
   "orderHistory": "Order History",
   "@orderHistory": {},
   "changePassword": "Change Password",
-  "@changePassword": {}
+  "@changePassword": {},
+  "darkMode": "Dark Mode",
+  "@darkMode": {},
+  "system": "System",
+  "@system": {},
+  "on": "On",
+  "@on": {},
+  "off": "Off",
+  "@off": {}
 }
