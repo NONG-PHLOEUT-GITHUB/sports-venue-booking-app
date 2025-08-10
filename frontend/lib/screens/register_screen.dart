@@ -6,9 +6,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = const Color(0xFFF9F9F9); // light background
-    final inputColor = const Color(0xFFF1F2F6);
-    final borderColor = Colors.grey.shade300;
+    final backgroundColor = const Color(0xFFE6F4EA); // Light green background
+    final inputColor = const Color(0xFFF9F9F9); // Light input field color
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -20,38 +19,55 @@ class RegisterScreen extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
 
-              // Welcome Text
+              // Register Text
               const Text(
-                'Hello! Register to get started',
+                'Register',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  height: 1.4,
+                  color: AppColors.primary,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              // Subtitle
+              const Text(
+                'Create your new account',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
                 ),
               ),
 
               const SizedBox(height: 36),
 
-              // Email Field
-              TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: inputColor,
-                  hintText: 'Enter your email or Phone number',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: borderColor),
-                  ),
-                ),
+              // Full Name Field
+              buildTextField(
+                hintText: 'User Name',
+                icon: Icons.person,
               ),
 
               const SizedBox(height: 16),
 
-              // Login Button
+              // Email Field
+              buildTextField(
+                hintText: 'Email',
+                icon: Icons.email,
+              ),
+
+              const SizedBox(height: 16),
+
+              // Password Field
+              buildPasswordField(),
+
+              const SizedBox(height: 16),
+
+              // Register Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -79,7 +95,7 @@ class RegisterScreen extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      'Or Sign up with',
+                      'Or continue with',
                       style: TextStyle(color: Colors.black54),
                     ),
                   ),
@@ -93,26 +109,24 @@ class RegisterScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  socialButton('assets/images/google.webp',
-                      onPressed: () => print("Feedback")),
-                  socialButton('assets/images/fb1.png',
-                      onPressed: () => print("Google")),
+                  socialButton('assets/images/fb1.png', onPressed: () => print("Facebook Sign Up")),
+                  socialButton('assets/images/google.webp', onPressed: () => print("Google Sign Up")),
                 ],
               ),
 
               const SizedBox(height: 28),
 
-              // Register Now
+              // Already have an account?
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Already have an accoun ? "),
+                  const Text("Already have an account? "),
                   GestureDetector(
                     onTap: () {},
                     child: const Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.teal,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -126,17 +140,69 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget socialButton(String imagePath, {VoidCallback? onPressed}) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
+  Widget buildTextField({required String hintText, required IconData icon}) {
+    return TextField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color(0xFFF9F9F9),
+        hintText: hintText,
+        prefixIcon: Icon(icon, color: AppColors.primary), // Use AppColors.primary for the icon color
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
       ),
-      child: Image.asset(
-        imagePath,
-        width: 24,
-        height: 24,
+    );
+  }
+
+  Widget buildPasswordField() {
+    bool obscureText = true; // Initial state for password visibility
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return TextField(
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFF9F9F9),
+            hintText: 'Password',
+            prefixIcon: Icon(Icons.lock, color: AppColors.primary),
+            suffixIcon: IconButton(
+              icon: Icon(
+                obscureText ? Icons.visibility : Icons.visibility_off,
+                color: AppColors.primary,
+              ),
+              onPressed: () {
+                setState(() {
+                  obscureText = !obscureText; // Toggle password visibility
+                });
+              },
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget socialButton(String imagePath, {VoidCallback? onPressed}) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+        ),
+        child: Image.asset(
+          imagePath,
+          width: 24,
+          height: 24,
+        ),
       ),
     );
   }
