@@ -431,7 +431,7 @@ abstract class AppLocalizations {
   /// Title or label for the notification section or page
   ///
   /// In en, this message translates to:
-  /// **'Notification'**
+  /// **'Notifications'**
   String get notification;
 
   /// Bottom navigation tab for Home

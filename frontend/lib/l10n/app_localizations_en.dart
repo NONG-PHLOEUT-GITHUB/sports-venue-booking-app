@@ -174,7 +174,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalPrice => 'Total Price';
 
   @override
-  String get notification => 'Notification';
+  String get notification => 'Notifications';
 
   @override
   String get home => 'Home';

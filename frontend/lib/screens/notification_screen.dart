@@ -1,159 +1,199 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/notification_controller.dart';
+import '../utils/date_utils.dart';
+import '../widgets/custom_back_button.dart';
+import '../models/notification_model.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/widgets/custom_back_button.dart';
-import 'package:frontend/utils/date_utils.dart';
 
-class NotificationPage extends StatefulWidget {
+class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _NotificationPageState createState() => _NotificationPageState();
+  Widget build(BuildContext context) {
+    final NotificationController controller = Get.put(NotificationController());
+
+    final appBar = AppBar(
+      title: Text(AppLocalizations.of(context)!.notification),
+      leading: const CustomBackButton(),
+    );
+
+    final loadingWidget = const Center(child: CircularProgressIndicator());
+
+    final emptyWidget =
+        const Center(child: Text("No notifications available."));
+
+    final notificationList = Obx(() {
+      if (controller.isLoading.value) return loadingWidget;
+      if (controller.notifications.isEmpty) return emptyWidget;
+
+      return ListView.builder(
+        padding: const EdgeInsets.all(12),
+        itemCount: controller.notifications.length,
+        itemBuilder: (context, index) {
+          final notification = controller.notifications[index];
+          return NotificationItem(
+            notification: notification,
+            onTap: () => _showNotificationDetail(notification),
+          );
+        },
+      );
+    });
+
+    return Scaffold(
+      appBar: appBar,
+      body: notificationList,
+    );
+  }
+
+  void _showNotificationDetail(NotificationModel notification) {
+    Get.bottomSheet(
+      NotificationDetailSheet(notification: notification),
+      isScrollControlled: true,
+    );
+  }
 }
 
-class _NotificationPageState extends State<NotificationPage> {
-  late Future<List<Map<String, dynamic>>> _notificationsFuture;
+class NotificationItem extends StatelessWidget {
+  const NotificationItem({
+    super.key,
+    required this.notification,
+    required this.onTap,
+  });
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _notificationsFuture = loadNotifications();
-  // }
+  final NotificationModel notification;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _appBar, body: _body);
-  }
+    final leadingIcon = const Icon(
+      Icons.notifications,
+      color: Colors.green,
+      size: 32,
+    );
 
-  PreferredSizeWidget get _appBar {
-    return AppBar(
-      title: Text(AppLocalizations.of(context)!.notification),
-      leading: CustomBackButton(),
+    final titleText = Text(
+      notification.title,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+      overflow: TextOverflow.ellipsis,
+    );
+
+    final subtitleText = Text(notification.description);
+
+    final trailingDate = Text(
+      DateUtilsHelper.formatDate(notification.date),
+      style: const TextStyle(color: Colors.grey),
+    );
+
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 0,
+      child: ListTile(
+        leading: leadingIcon,
+        title: titleText,
+        subtitle: subtitleText,
+        trailing: trailingDate,
+        onTap: onTap,
+      ),
     );
   }
+}
+class NotificationDetailSheet extends StatelessWidget {
+  const NotificationDetailSheet({super.key, required this.notification});
 
-  Widget get _body {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _notificationsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Error: ${snapshot.error}"));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text("No notifications available."));
-        }
+  final NotificationModel notification;
 
-        final notifications = snapshot.data!;
-        return ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: notifications.length,
-          itemBuilder: (context, index) {
-            final notification = notifications[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+  @override
+  Widget build(BuildContext context) {
+    final details = notification.details;
+
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle Bar
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
               ),
-              elevation: 0,
-              child: ListTile(
-                leading: const Icon(
-                  Icons.notifications,
-                  color: Colors.green,
-                  size: 32,
-                ),
-                title: Text(
-                  notification["title"] ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(notification["description"] ?? ''),
-                trailing: Text(
-                  DateUtilsHelper.formatDate(notification["date"] ?? ''),
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                onTap: () {
-                  _showNotificationDetail(notification);
-                },
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+            const SizedBox(height: 16),
 
-  void _showNotificationDetail(Map<String, dynamic> notification) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            // Header row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  notification["title"]!,
-                  style: TextStyle(
+                  notification.title,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.green,
                   ),
                 ),
-                SizedBox(height: 10),
-                _detailRow("Soccer Field", notification["details"]["field"]),
-                _detailRow(
-                  "Date",
-                  DateUtilsHelper.formatDate(notification["date"]!),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.grey),
+                  onPressed: () => Get.back(),
                 ),
-                _detailRow("Time", notification["details"]["time"]),
-                _detailRow("Duration", notification["details"]["duration"]),
-                _detailRow("Price", notification["details"]["price"]),
-                _detailRow("Booking ID", notification["details"]["booking_id"]),
-                _detailRow("Location", notification["details"]["location"]),
-                _detailRow("Contact", notification["details"]["contact"]),
-                _detailRow("Note", notification["details"]["note"]),
-                SizedBox(height: 10),
-                Image.asset(
-                  notification["details"]["image"],
-                  width: 24,
-                  height: 24,
-                ),
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(8),
-                //   child: Image.network(notification["details"]["image"]),
-                // ),
               ],
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Close"),
-            ),
+            const SizedBox(height: 8),
+            const Divider(),
+
+            // Details list
+            _buildDetailRow(Icons.sports_soccer, "Soccer Field", details.field),
+            _buildDetailRow(Icons.calendar_today, "Date", DateUtilsHelper.formatDate(notification.date)),
+            _buildDetailRow(Icons.access_time, "Time", details.time),
+            _buildDetailRow(Icons.timer, "Duration", details.duration),
+            _buildDetailRow(Icons.attach_money, "Price", details.price),
+            _buildDetailRow(Icons.confirmation_number, "Booking ID", details.bookingId),
+            _buildDetailRow(Icons.location_on, "Location", details.location),
+            _buildDetailRow(Icons.phone, "Contact", details.contact),
+            _buildDetailRow(Icons.note, "Note", details.note),
+            const SizedBox(height: 8),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _detailRow(String label, String value) {
+  Widget _buildDetailRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: RichText(
-        text: TextSpan(
-          text: "$label : ",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          children: [
-            TextSpan(
-              text: value,
-              style: TextStyle(fontWeight: FontWeight.normal),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: Colors.green, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 2),
+                Text(value.isEmpty ? "-" : value, style: const TextStyle(color: Colors.black87)),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -197,7 +197,7 @@
   "@totalPrice": {
     "description": "Label for total price"
   },
-  "notification": "Notification",
+  "notification": "Notifications",
   "@notification": {
     "description": "Title or label for the notification section or page"
   },
