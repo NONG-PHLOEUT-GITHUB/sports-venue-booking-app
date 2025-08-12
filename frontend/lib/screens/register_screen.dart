@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = const Color(0xFFE6F4EA); // Light green background
+    final backgroundColor = const Color(0xFFEFF1F7); // Light green background
 
     return Scaffold(
       backgroundColor: backgroundColor,
