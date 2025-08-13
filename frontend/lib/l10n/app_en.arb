@@ -348,5 +348,9 @@
   "on": "On",
   "@on": {},
   "off": "Off",
-  "@off": {}
+  "@off": {},
+  "welcome": "Welcome",
+  "@welcome": {},
+  "getStarted": "Get Started",
+  "@getStarted": {}
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/screens/login_screen.dart';
+import 'package:frontend/screens/splash_screen.dart';
 import 'screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/controllers/locale_controller.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         darkTheme: AppThemes.darkTheme,
         themeMode: themeController.themeMode.value,
         // home: MainLayout(),
-        home: const LoginPage(),
+        home: const SplashScreen(),
       ),
       // home: const OtpVerificationPage(),
       // home: const MainLayout(),

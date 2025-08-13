@@ -309,4 +309,10 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get off => 'បិទ';
+
+  @override
+  String get welcome => 'សូមស្វាគមន៍';
+
+  @override
+  String get getStarted => 'ចាប់ផ្ដើម';
 }

@@ -44,7 +44,7 @@ class ThemeController extends GetxController {
     } else if (savedMode == 'dark') {
       changeThemeMode(ThemeMode.dark);
     } else {
-      changeThemeMode(ThemeMode.system);
+      changeThemeMode(ThemeMode.light);
     }
   }
 
