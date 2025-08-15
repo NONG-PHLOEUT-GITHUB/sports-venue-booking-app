@@ -25,8 +25,8 @@ class SplashScreen extends StatelessWidget {
       Get.bottomSheet(
         Container(
           padding: const EdgeInsets.all(16.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 213, 208, 208),
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
           ),
           child: Column(

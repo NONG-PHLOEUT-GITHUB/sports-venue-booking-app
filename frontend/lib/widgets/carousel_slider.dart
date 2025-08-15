@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart'; // Only needed if you want to use Get.theme
 
 class ImageSlider extends StatefulWidget {
   @override
@@ -20,7 +21,6 @@ class _ImageSliderState extends State<ImageSlider> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Image Slider
         Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -32,57 +32,60 @@ class _ImageSliderState extends State<ImageSlider> {
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: CarouselSlider(
-              items: imageUrls.map((url) => _buildImage(url)).toList(),
-              options: CarouselOptions(
-                height: 180.0,
-                autoPlay: true,
-                aspectRatio: 16 / 9,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                viewportFraction: 1.0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              CarouselSlider(
+                items: imageUrls.map((url) => _buildImage(url)).toList(),
+                options: CarouselOptions(
+                  height: 180.0,
+                  autoPlay: true,
+                  aspectRatio: 16 / 9,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  viewportFraction: 1.0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: imageUrls.asMap().entries.map((entry) {
+                    final bool isActive = _currentIndex == entry.key;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                      height: 8.0,
+                      width: isActive ? 22.0 : 8.0,
+                      decoration: BoxDecoration(
+                        color: isActive
+                            ? Get.theme.colorScheme.primary
+                            : Colors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
         ),
-
-        const SizedBox(height: 8),
-
-        // Dot Indicator with active width effect
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imageUrls.asMap().entries.map((entry) {
-            bool isActive = _currentIndex == entry.key;
-            return AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              height: 8.0,
-              width: isActive ? 20.0 : 8.0,
-              decoration: BoxDecoration(
-                color: isActive ? Colors.green : Colors.grey.shade400,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            );
-          }).toList(),
-        )
       ],
     );
   }
 
   Widget _buildImage(String url) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(url),
-          fit: BoxFit.cover,
-        ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+        width: double.infinity,
       ),
     );
   }

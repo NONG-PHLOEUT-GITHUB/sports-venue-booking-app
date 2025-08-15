@@ -1,99 +1,144 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/layout.dart';
+import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:frontend/main.dart';
+import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 class OtpVerificationPage extends StatelessWidget {
-  const OtpVerificationPage({super.key});
+final String token;
+  const OtpVerificationPage({super.key, required this.token});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final isLocalizationsAvailable = localizations != null;
+
+    final Color primaryColor = Get.theme.colorScheme.primary;
+    final Color secondaryColor = const Color(
+      0xFF03DAC6,
+    ); // Use a consistent secondary color
+    final Color textColor = Colors.black87;
+    final Color hintColor = Colors.black45;
+    final double borderRadius = 16;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(elevation: 0, backgroundColor: Colors.white),
+      backgroundColor: Colors.grey.shade50,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent, // Make AppBar transparent
+        leading: CustomBackButton(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.stretch, // Use stretch for full width elements
           children: [
             Text(
-              AppLocalizations.of(context)!.otpVerification,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              isLocalizationsAvailable
+                  ? localizations.otpVerification
+                  : 'OTP Verification',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
-              AppLocalizations.of(context)!.enterVerificationCode,
-              style: TextStyle(color: Colors.black54),
+              isLocalizationsAvailable
+                  ? localizations.enterVerificationCode
+                  : 'Enter the verification code sent to your phone number.',
+              style: TextStyle(color: hintColor, fontSize: 16),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
 
             // OTP Field
             PinCodeTextField(
               appContext: context,
-              length: 4,
+              length: 6,
               keyboardType: TextInputType.number,
               animationType: AnimationType.fade,
               pinTheme: PinTheme(
                 shape: PinCodeFieldShape.box,
-                borderRadius: BorderRadius.circular(12),
-                fieldHeight: 60,
-                fieldWidth: 60,
-                activeColor: Colors.teal,
-                selectedColor: Colors.teal,
+                borderRadius: BorderRadius.circular(borderRadius),
+                fieldHeight: 56,
+                fieldWidth: 48,
+                inactiveFillColor: Colors.white,
+                selectedFillColor: Colors.white,
+                activeFillColor: Colors.white,
+                selectedColor: primaryColor,
                 inactiveColor: Colors.grey.shade300,
+                activeColor: primaryColor,
+                borderWidth: 2,
               ),
+              animationDuration: const Duration(milliseconds: 300),
+              controller: TextEditingController(),
               onChanged: (value) {},
               onCompleted: (code) {
-                // Verify the code
+                // TODO: Verify the code
               },
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
 
             // Verify Button
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 56,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Get.theme.colorScheme.background,
+                  backgroundColor: primaryColor,
+                  elevation: 5,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(borderRadius),
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const MyApp()),
+                    MaterialPageRoute(builder: (context) => const MainLayout()),
+                    (Route<dynamic> route) => false,
                   );
                 },
                 child: Text(
-                  AppLocalizations.of(context)!.verify,
+                  isLocalizationsAvailable ? localizations.verify : 'Verify',
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Get.theme.colorScheme.onSecondary,
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(height: 20),
 
             // Resend Text
             Center(
-              child: RichText(
-                text: TextSpan(
-                  text: AppLocalizations.of(context)!.didNotReceiveCode,
-                  style: const TextStyle(color: Colors.black54),
+              child: Text.rich(
+                TextSpan(
+                  text:
+                      isLocalizationsAvailable
+                          ? localizations.didNotReceiveCode
+                          : 'Didn\'t receive the code? ',
+                  style: TextStyle(color: hintColor, fontSize: 14),
                   children: [
                     TextSpan(
-                      text: AppLocalizations.of(context)!.resend,
-                      style: const TextStyle(
-                        color: Colors.teal,
+                      text:
+                          isLocalizationsAvailable
+                              ? localizations.resend
+                              : 'Resend',
+                      style: TextStyle(
+                        color: secondaryColor,
                         fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
                       ),
-                      // You can attach a gesture recognizer here if needed
+                      // You can attach a gesture recognizer here
                     ),
                   ],
                 ),

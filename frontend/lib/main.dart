@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/register_controller.dart';
 import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/splash_screen.dart';
@@ -18,6 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Get.put(ThemeController());
+  Get.put(RegisterController());
   Get.put(LocaleController());
   Get.lazyPut(() => VenueService());
   Get.lazyPut(() => VenueListController());

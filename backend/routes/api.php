@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VenueController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,14 @@ Route::get('/venues', [VenueController::class, 'index']);
 // Route::post('/bookings', [BookingController::class, 'store']);
 // Route::put('/bookings/{id}', [BookingController::class, 'update']);
 // Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
+
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('me', [AuthController::class, 'me']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+    });
+});

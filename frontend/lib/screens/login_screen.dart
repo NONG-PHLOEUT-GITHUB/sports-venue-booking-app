@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:frontend/screens/otp_comfirm_screen.dart';
+import 'package:frontend/screens/otp_comfirm_screen.dart'; // This screen might not be needed for password login, but I'll keep the import for now
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
@@ -15,245 +14,139 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isPhoneSelected = true;
-  // Define the languages and selected value
-  // Language + Flag map
-  final Map<String, String> _languageFlags = {
-    'English': '🇺🇸',
-    'Khmer': '🇰🇭',
-  };
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
-  String _selectedLanguage = 'English';
+  // UI constants
+  final Color _primaryColor = const Color(0xFF6200EE);
+  final Color _textColor = Colors.black87;
+  final Color _hintColor = Colors.black45;
+  final Color _borderColor = Colors.grey.shade300;
+  final Color _fillColor = Colors.white;
+  final double _borderRadius = 16;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Check if AppLocalizations is available
+    final localizations = AppLocalizations.of(context);
+    final isLocalizationsAvailable = localizations != null;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFEFF1F7),
+      backgroundColor: Colors.grey.shade50,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // 🔽 Language dropdown with flags
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _selectedLanguage,
-                        icon: const Icon(Icons.language, color: Colors.black54),
-                        style:
-                            const TextStyle(fontSize: 16, color: Colors.black),
-                        items: _languageFlags.entries.map((entry) {
-                          return DropdownMenuItem<String>(
-                            value: entry.key,
-                            child: Row(
-                              children: [
-                                Text(entry.value,
-                                    style: const TextStyle(fontSize: 20)),
-                                const SizedBox(width: 8),
-                                Text(entry.key),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedLanguage = newValue!;
-                          });
-                          _saveLanguageChange();
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-                   Text(
-                    AppLocalizations.of(context)!.loginTitle,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
                   Text(
-                    AppLocalizations.of(context)!.welcomeMessage,
+                    isLocalizationsAvailable
+                        ? localizations.loginTitle
+                        : 'Login to Your Account',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: _textColor,
+                    ),
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey),
                   ),
-                  const SizedBox(height: 32),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () =>
-                                setState(() => isPhoneSelected = false),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: !isPhoneSelected
-                                    ? Colors.white
-                                    : Colors.transparent,
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)!.email,
-                                style: TextStyle(
-                                  color: !isPhoneSelected
-                                      ? Colors.black
-                                      : Colors.grey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => setState(() => isPhoneSelected = true),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: isPhoneSelected
-                                    ? Colors.white
-                                    : Colors.transparent,
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)!.phoneNumber,
-                                style: TextStyle(
-                                  color: isPhoneSelected
-                                      ? Colors.black
-                                      : Colors.grey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  const SizedBox(height: 10),
+                  Text(
+                    isLocalizationsAvailable
+                        ? localizations.welcomeMessage
+                        : 'Welcome back! Please enter your details.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: _hintColor, fontSize: 16),
+                  ),
+                  const SizedBox(height: 40),
+                  _buildTextField(
+                    controller: _emailController,
+                    hintText:
+                        isLocalizationsAvailable
+                            ? localizations.enterEmail
+                            : 'Enter email address',
+                    icon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 24),
-                  if (isPhoneSelected) ...[
-                    Text(
-                      AppLocalizations.of(context)!.phoneNumber,
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(height: 8),
-                    // IntlPhoneField(
-                    //   decoration: const InputDecoration(
-                    //     border: OutlineInputBorder(),
-                    //     hintText: 'Enter phone number',
-                    //   ),
-                    //   initialCountryCode: 'US',
-                    //   onChanged: (phone) {},
-                    // ),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context)!.enterPhoneNumber,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                  _buildPasswordField(),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => OtpVerificationPage(),
+                      //   ),
+                      // );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _primaryColor,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(_borderRadius),
                       ),
-                      // keyboardType: TextInputType.emailAddress,
+                      elevation: 5,
                     ),
-                  ] else ...[
-                    Text(
-                      AppLocalizations.of(context)!.email,
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.enterEmail,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                  ],
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OtpVerificationPage(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Get.theme.colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.sendCode,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  Row(
-                    children: [
-                      Expanded(child: Divider()),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(AppLocalizations.of(context)!.signInWith),
-                      ),
-                      Expanded(child: Divider()),
-                    ],
+
+                  const SizedBox(height: 30),
+                  _buildDividerWithText(
+                    isLocalizationsAvailable
+                        ? localizations.signInWith
+                        : 'Or sign in with',
                   ),
-                  const SizedBox(height: 24),
-
-                  _socialButton('Google', 'assets/images/google.webp'),
-
-                  const SizedBox(height: 16),
-
-                  _socialButton('Facebook', 'assets/images/fb.webp'),
-
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
+                  _buildSocialButtons(),
+                  const SizedBox(height: 40),
                   Center(
                     child: Text.rich(
                       TextSpan(
-                        text: AppLocalizations.of(context)!.dontHaveAccount,
+                        text:
+                            isLocalizationsAvailable
+                                ? localizations.dontHaveAccount
+                                : 'Don\'t have an account? ',
+                        style: TextStyle(color: _textColor),
                         children: [
                           TextSpan(
-                            text: AppLocalizations.of(context)!.signUp,
-                            style: const TextStyle(
-                              color: Colors.deepOrange,
-                              fontWeight: FontWeight.bold,
+                            text:
+                                isLocalizationsAvailable
+                                    ? localizations.signUp
+                                    : 'Sign Up',
+                            style: TextStyle(
+                              color: _primaryColor,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                // 👇 Push to register screen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen(),
-                                  ),
-                                );
-                              },
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => RegisterScreen(),
+                                      ),
+                                    );
+                                  },
                           ),
                         ],
                       ),
@@ -268,37 +161,124 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _socialButton(String name, String imagePath) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton.icon(
-        icon: Image.asset(
-          imagePath,
-          width: 24,
-          height: 24,
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: _fillColor,
+        hintText: hintText,
+        hintStyle: TextStyle(color: _hintColor),
+        prefixIcon: Icon(icon, color: _primaryColor),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _borderColor),
         ),
-        label: Text(name),
-        onPressed: () {},
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _primaryColor, width: 2),
         ),
       ),
     );
   }
 
-  void _saveLanguageChange() {
-    final localeController = Get.find<LocaleController>();
+  Widget _buildPasswordField() {
+    return TextField(
+      controller: _passwordController,
+      obscureText: _obscurePassword,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: _fillColor,
+        hintText: 'Enter password',
+        hintStyle: TextStyle(color: _hintColor),
+        prefixIcon: Icon(Icons.lock_outline, color: _primaryColor),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility,
+            color: _primaryColor,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _borderColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          borderSide: BorderSide(color: _primaryColor, width: 2),
+        ),
+      ),
+    );
+  }
 
-    Locale newLocale =
-        _selectedLanguage == 'Khmer' ? const Locale('km') : const Locale('en');
+  Widget _buildSocialButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _socialButton(
+          'assets/images/google.webp',
+          onPressed: () => print("Google Login"),
+        ),
+        const SizedBox(width: 20),
+        _socialButton(
+          'assets/images/fb1.png',
+          onPressed: () => print("Facebook Login"),
+        ),
+      ],
+    );
+  }
 
-    localeController.changeLocale(newLocale);
+  Widget _socialButton(String imagePath, {VoidCallback? onPressed}) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: _fillColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Center(child: Image.asset(imagePath, width: 32, height: 32)),
+      ),
+    );
+  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context)!.languageChanged)),
+  Widget _buildDividerWithText(String text) {
+    return Row(
+      children: [
+        const Expanded(child: Divider(color: Colors.black12, thickness: 1)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(text, style: TextStyle(color: _hintColor, fontSize: 14)),
+        ),
+        const Expanded(child: Divider(color: Colors.black12, thickness: 1)),
+      ],
     );
   }
 }
