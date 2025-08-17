@@ -6,11 +6,14 @@ import 'package:frontend/screens/otp_comfirm_screen.dart'; // This screen might 
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
+import 'package:frontend/services/google_service.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());
-  final SocialLoginController socialLoginController = Get.put(SocialLoginController());
+  final SocialLoginController socialLoginController = Get.put(
+    SocialLoginController(),
+  );
   // UI constants
   final Color primaryColor = Get.theme.colorScheme.primary;
   final Color _textColor = Colors.black87;
@@ -58,6 +61,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   _buildTextField(
+                    label:
+                        isLocalizationsAvailable
+                            ? localizations.email
+                            : 'Email',
                     controller: controller.emailController,
                     hintText:
                         isLocalizationsAvailable
@@ -67,7 +74,12 @@ class LoginScreen extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 24),
-                  _buildPasswordField(),
+                  _buildPasswordField(
+                    label:
+                        isLocalizationsAvailable
+                            ? localizations.password
+                            : 'Password',
+                  ),
                   const SizedBox(height: 30),
                   Obx(
                     () => ElevatedButton(
@@ -153,6 +165,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildTextField({
+    String? label,
     required TextEditingController controller,
     required String hintText,
     required IconData icon,
@@ -162,6 +175,7 @@ class LoginScreen extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        labelText: label ?? '',
         filled: true,
         fillColor: _fillColor,
         hintText: hintText,
@@ -183,7 +197,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField({String? label}) {
     var obscureText = true.obs;
     return Obx(
       () => TextField(
@@ -191,6 +205,7 @@ class LoginScreen extends StatelessWidget {
         obscureText: obscureText.value,
         decoration: InputDecoration(
           filled: true,
+          labelText: label ?? "",
           fillColor: _fillColor,
           hintText: 'Enter password',
           hintStyle: TextStyle(color: _hintColor),
@@ -225,7 +240,7 @@ class LoginScreen extends StatelessWidget {
       children: [
         _socialButton(
           'assets/images/google.webp',
-           onPressed: () => socialLoginController.googleSignIn(),
+          onPressed: () => GoogleService.instance.signInWithGoogle(),
         ),
 
         const SizedBox(width: 20),

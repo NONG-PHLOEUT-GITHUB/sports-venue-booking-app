@@ -165,7 +165,7 @@
   "@enterANewPassword": {
     "description": "Label for phone number field"
   },
-  "email": "Email Address",
+  "email": "Email",
   "@email": {
     "description": "Label for phone number field"
   },

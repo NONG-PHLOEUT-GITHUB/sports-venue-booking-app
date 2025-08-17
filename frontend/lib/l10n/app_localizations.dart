@@ -383,7 +383,7 @@ abstract class AppLocalizations {
   /// Label for phone number field
   ///
   /// In en, this message translates to:
-  /// **'Email Address'**
+  /// **'Email'**
   String get email;
 
   /// Label for phone number field

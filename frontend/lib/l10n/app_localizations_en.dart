@@ -150,7 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterANewPassword => 'Enter Password';
 
   @override
-  String get email => 'Email Address';
+  String get email => 'Email';
 
   @override
   String get enterEmail => 'Enter your email';

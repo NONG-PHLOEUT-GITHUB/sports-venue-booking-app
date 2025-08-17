@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/controllers/profile_controller.dart';
+import 'package:frontend/screens/change_password_screen.dart';
 import 'package:frontend/screens/theme_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,12 +14,6 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
   final ProfileController controller = Get.put(ProfileController());
-
-  Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    Get.offAllNamed('/login');
-  }
 
   String _getThemeModeLabel(BuildContext context, ThemeMode mode) {
     switch (mode) {
@@ -102,7 +97,7 @@ class ProfilePage extends StatelessWidget {
               _buildSettingsTile(
                 icon: Icons.lock,
                 title: localization.changePassword,
-                onTap: () => debugPrint('Password'),
+                onTap: () => Get.to(() => ChangePasswordScreen()),
               ),
             ]),
             const SizedBox(height: 16),
@@ -130,7 +125,7 @@ class ProfilePage extends StatelessWidget {
       ),
       child: IconButton(
         icon: Icon(Icons.edit, color: Get.theme.colorScheme.primary),
-        onPressed: () => Get.to(() => const EditProfilePage()),
+        onPressed: () => Get.to(() => EditProfilePage()),
       ),
     ),
   );

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:frontend/screens/layout.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+
 class SocialLoginController extends GetxController {
   var isLoading = false.obs;
-  final String apiUrl = "http://127.0.0.1:8000/api/auth/social-login";
+  final String apiUrl = "http://localhost:8000/api/auth/social-login";
   final storage = GetStorage();
 
   Future<void> googleSignIn() async {

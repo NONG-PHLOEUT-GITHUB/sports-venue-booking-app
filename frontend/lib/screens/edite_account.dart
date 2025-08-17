@@ -1,57 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/profile_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
-class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key});
-
-  @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _phoneController = TextEditingController();
-
-  bool _isPasswordVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController.text = 'Charlotte King';
-    _emailController.text = 'johnkinggraphics@gmail.com';
-    _phoneController.text = '+91 6895312';
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _saveProfile() async {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Saving profile...')));
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Normally send data to backend here
-    print('Name: ${_nameController.text}');
-    print('Email: ${_emailController.text}');
-    print('Password: ${_passwordController.text}');
-    print('Phone: ${_phoneController.text}');
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile saved successfully!')),
-    );
-  }
+class EditProfilePage extends StatelessWidget {
+  EditProfilePage({super.key});
+  final controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +63,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   _buildTextField(
                     label: localization.name,
                     hint: localization.name,
-                    controller: _nameController,
+                    controller: controller.nameController,
                   ),
                   const SizedBox(height: 16),
                   _buildTextField(
                     label: localization.email,
                     hint: localization.enterEmail,
-                    controller: _emailController,
+                    controller: controller.emailController,
                     keyboardType: TextInputType.emailAddress,
                   ),
 
@@ -121,7 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   _buildTextField(
                     label: localization.phoneNumber,
                     hint: localization.enterPhoneNumber,
-                    controller: _phoneController,
+                    controller: controller.passwordController,
                     keyboardType: TextInputType.phone,
                   ),
                 ],
@@ -130,7 +86,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           AppPrimaryButton(
             text: AppLocalizations.of(context)!.btnSave,
-            onPressed: _saveProfile,
+            onPressed: controller.saveProfile,
           ),
         ],
       ),
@@ -147,45 +103,64 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
-      obscureText: isPassword && !_isPasswordVisible,
+      obscureText: isPassword,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12), // More rounded corners
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Get.theme.colorScheme.primary,
-            width: 2,
-          ), // Primary color on focus
-        ), // White fill for text fields
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 16,
-        ),
-        suffixIcon:
-            isPassword
-                ? IconButton(
-                  icon: Icon(
-                    _isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Get.theme.colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                )
-                : null,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
+
+  // Widget _buildTextField({
+  //   required String label,
+  //   required String hint,
+  //   required TextEditingController controller,
+  //   TextInputType keyboardType = TextInputType.text,
+  //   bool isPassword = false,
+  // }) {
+  //   return TextField(
+  //     controller: controller,
+  //     keyboardType: keyboardType,
+  //     obscureText: isPassword && !_isPasswordVisible,
+  //     decoration: InputDecoration(
+  //       labelText: label,
+  //       hintText: hint,
+  //       filled: true,
+  //       border: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(12), // More rounded corners
+  //       ),
+  //       enabledBorder: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(12),
+  //       ),
+  //       focusedBorder: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(12),
+  //         borderSide: BorderSide(
+  //           color: Get.theme.colorScheme.primary,
+  //           width: 2,
+  //         ), // Primary color on focus
+  //       ), // White fill for text fields
+  //       contentPadding: const EdgeInsets.symmetric(
+  //         vertical: 16,
+  //         horizontal: 16,
+  //       ),
+  //       suffixIcon:
+  //           isPassword
+  //               ? IconButton(
+  //                 icon: Icon(
+  //                   _isPasswordVisible
+  //                       ? Icons.visibility_off
+  //                       : Icons.visibility,
+  //                   color: Get.theme.colorScheme.primary,
+  //                 ),
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     _isPasswordVisible = !_isPasswordVisible;
+  //                   });
+  //                 },
+  //               )
+  //               : null,
+  //     ),
+  //   );
+  // }
 }

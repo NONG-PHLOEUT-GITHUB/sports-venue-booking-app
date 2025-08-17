@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1093119944968",
+    "project_id": "sport-venue-booking-app-2d06f",
+    "storage_bucket": "sport-venue-booking-app-2d06f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093119944968:android:0663f819fc1b91d27b64bd",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxBTErWmr9sw5FMNkkqmq4F2Z9RMKnoSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

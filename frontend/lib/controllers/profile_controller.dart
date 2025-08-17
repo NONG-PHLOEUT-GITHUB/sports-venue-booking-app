@@ -1,16 +1,21 @@
-import 'package:frontend/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:get_storage/get_storage.dart';
+import 'package:frontend/services/profile_service.dart';
+import 'package:frontend/screens/login_screen.dart';
 
 class ProfileController extends GetxController {
+  final ProfileService _service = Get.put(ProfileService());
+
+  // State
   var isLoading = false.obs;
   var userData = {}.obs;
 
-  final String apiUrl = "http://127.0.0.1:8000/api/auth/me";
-
-  final storage = GetStorage(); // for storing JWT token
+  // Form controllers (for Edit Profile page)
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void onInit() {
@@ -18,37 +23,85 @@ class ProfileController extends GetxController {
     fetchProfile();
   }
 
-  void logout() {
-    storage.remove('access_token'); // remove JWT token
-    Get.to(() => LoginScreen()); // Navigate to login or home page
-  }
-
   Future<void> fetchProfile() async {
-    final token = storage.read('access_token'); // Retrieve JWT token
-    if (token == null) {
-      Get.snackbar("Error", "Token not found");
-      return;
-    }
-
     isLoading.value = true;
     try {
-      var response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final data = await _service.fetchProfile();
+      userData.value = data;
 
-      if (response.statusCode == 200) {
-        userData.value = json.decode(response.body);
-        Get.snackbar("Error", "successfully fetched profile");
+      // Pre-fill form fields
+      if (data.isNotEmpty) {
+        print("database user data: $data");
+        userData.value = data;
+        nameController.text = data['name'] ?? '';
+        emailController.text = data['email'] ?? '';
+        phoneController.text = data['phone'] ?? '';
       } else {
-        Get.snackbar("Error", "Failed to fetch profile");
+        // 2️⃣ Fallback: get Firebase user info
+        final user = FirebaseAuth.instance.currentUser;
+        print("Firebase user data: $user");
+
+        if (user != null) {
+          userData.value = {
+            "name": user.displayName,
+            "email": user.email,
+            "photoUrl": user.photoURL,
+            "uid": user.uid,
+          };
+
+          nameController.text = user.displayName ?? '';
+          emailController.text = user.email ?? '';
+        }
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> saveProfile() async {
+    isLoading.value = true;
+    try {
+      final result = await _service.updateProfile(
+        name: nameController.text,
+        email: emailController.text,
+        // phone: phoneController.text,
+        password:
+            passwordController.text.isNotEmpty ? passwordController.text : null,
+      );
+
+      userData.value = result['user']; // Update local state
+
+      Get.snackbar(
+        "Success",
+        result['message'] ?? "Profile updated",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> logout() async {
+    await _service.logout();
+    await FirebaseAuth.instance.signOut();
+    Get.offAll(() => LoginScreen());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/register_controller.dart';
 import 'package:frontend/l10n/l10n.dart';
@@ -14,18 +15,21 @@ import 'package:frontend/theme/theme.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // await Firebase.initializeApp();
   Get.put(ThemeController());
   Get.put(RegisterController());
   Get.put(LocaleController());
   Get.lazyPut(() => VenueService());
   Get.lazyPut(() => VenueListController());
   Get.lazyPut(() => ExploreVenueController());
-  await GetStorage.init();  // Await initialization here
 
+  await GetStorage.init();  // Await initialization here
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
