@@ -171,7 +171,7 @@ class SplashScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () => Get.to(() => const LoginPage()),
+                    onPressed: () => Get.to(() => LoginScreen()),
                   ),
                 ),
               ),

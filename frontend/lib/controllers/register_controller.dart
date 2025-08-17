@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/otp_comfirm_screen.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,7 +28,7 @@ class RegisterController extends GetxController {
         Get.snackbar("Success", "Account created successfully",
             backgroundColor: Colors.green, colorText: Colors.white);
         print("Token: ${data['access_token']}");
-            Get.to(() => OtpScreen(token: data['access_token']));
+        Get.to(() => OtpVerificationPage(token: data['access_token']));
       } else {
         var error = json.decode(response.body);
         Get.snackbar("Error", error.toString(),

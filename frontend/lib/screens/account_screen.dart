@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
+import 'package:frontend/controllers/profile_controller.dart';
 import 'package:frontend/screens/theme_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,32 +9,10 @@ import 'package:frontend/screens/switch_language_screen.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  ProfilePage({super.key});
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  String _fullName = '';
-  String _email = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        _fullName = prefs.getString('user_full_name') ?? 'Nong Phloeut';
-        _email = prefs.getString('user_email') ?? 'nong168@gmail.com';
-      });
-    }
-  }
+  final ProfileController controller = Get.put(ProfileController());
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -52,7 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
         return AppLocalizations.of(context)!.system;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +73,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(_getThemeModeLabel(context, themeController.themeMode.value)),
+                      Text(
+                        _getThemeModeLabel(
+                          context,
+                          themeController.themeMode.value,
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       const Icon(Icons.arrow_forward_ios, size: 18),
                     ],
@@ -108,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildSettingsCard([
               _buildSettingsTile(
                 icon: Icons.info_outline,
-                title:  AppLocalizations.of(context)!.tutorial,
+                title: AppLocalizations.of(context)!.tutorial,
                 onTap: () => debugPrint('Support'),
               ),
               // _buildSettingsTile(
@@ -127,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
               _buildSettingsTile(
                 icon: Icons.logout,
                 title: AppLocalizations.of(context)!.logout,
-                onTap: _logout,
+                onTap: () => controller.logout(),
                 isLogout: true,
               ),
             ]),
@@ -153,38 +136,48 @@ class _ProfilePageState extends State<ProfilePage> {
   );
 
   Widget _buildProfileHeader() {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 1,
-      color: Get.theme.colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: Row(
-          children: [
-            const CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage('assets/images/profile.jpeg'),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(_fullName, style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 4),
-                  Text(
-                    _email,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(),
-                  ),
-                ],
+    return Obx(() {
+      final user = controller.userData;
+
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        elevation: 1,
+        color: Get.theme.colorScheme.surface,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Row(
+            children: [
+              const CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/images/profile.jpeg'),
               ),
-            ),
-            editButton,
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${user['name'] ?? ''}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "${user['email'] ?? ''}",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              editButton,
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildSettingsCard(List<Widget> tiles) {
