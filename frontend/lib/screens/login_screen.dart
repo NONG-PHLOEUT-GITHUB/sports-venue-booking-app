@@ -253,7 +253,7 @@ class LoginScreen extends StatelessWidget {
         const SizedBox(width: 20),
         _socialButton(
           'assets/images/fb1.png',
-           onPressed: () {
+          onPressed: () {
             FacebookService.instance.signInWithFacebook();
           },
         ),

@@ -22,12 +22,7 @@ class VenueListController extends GetxController {
 
       final fetchedVenues = await api.getRequest('/venues');
       venues.assignAll(fetchedVenues); // Already parsed
-      print("Fetched venues:");
-      for (var venue in fetchedVenues) {
-        print(
-          "Name: ${venue.name}, Location: ${venue.location}, Image: ${venue.imageUrl}",
-        );
-      }
+    
     } catch (e) {
       errorMessage.value = 'Failed to load venues: $e';
       print(e); // For debugging

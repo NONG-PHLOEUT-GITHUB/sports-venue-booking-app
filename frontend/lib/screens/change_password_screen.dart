@@ -10,7 +10,6 @@ class ChangePasswordScreen extends StatelessWidget {
   final controller = Get.put(ChangePasswordController());
 
   final double borderRadius = 12.0;
-  final Color _inputFillColor = Colors.grey.shade100;
   final Color _borderColor = Colors.grey.shade400;
   final Color primaryColor = Get.theme.colorScheme.primary;
   final Color _hintColor = Colors.grey;
@@ -21,12 +20,10 @@ class ChangePasswordScreen extends StatelessWidget {
     required String hintText,
   }) {
     return Obx(
-      () => TextFormField(
+      () => TextField(
         controller: controllerField,
         obscureText: obscureText.value,
         decoration: InputDecoration(
-          filled: true,
-          fillColor: _inputFillColor,
           hintText: hintText,
           hintStyle: TextStyle(color: _hintColor),
           prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
@@ -87,9 +84,10 @@ class ChangePasswordScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: controller.isLoading.value
-                      ? null
-                      : controller.changePassword,
+                  onPressed:
+                      controller.isLoading.value
+                          ? null
+                          : controller.changePassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -97,14 +95,20 @@ class ChangePasswordScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(borderRadius),
                     ),
                   ),
-                  child: controller.isLoading.value
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text(
-                         AppLocalizations.of(context)!.btnSave,
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
+                  child:
+                      controller.isLoading.value
+                          ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                          : Text(
+                            AppLocalizations.of(context)!.btnSave,
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
                 ),
               ),
             ],

@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
       case ThemeMode.light:
         return AppLocalizations.of(context)!.off;
       case ThemeMode.system:
-      return AppLocalizations.of(context)!.system;
+        return AppLocalizations.of(context)!.system;
     }
   }
 
@@ -141,9 +141,16 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage('assets/images/profile.jpeg'),
+                backgroundImage:
+                    user['photoUrl'] != null
+                        ? NetworkImage(user['photoUrl'])
+                        : null,
+                child:
+                    user['photoUrl'] == null
+                        ? Icon(Icons.person, size: 50)
+                        : null,
               ),
               const SizedBox(width: 16),
               Expanded(

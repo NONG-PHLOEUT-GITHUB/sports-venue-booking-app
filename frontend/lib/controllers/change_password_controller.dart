@@ -1,10 +1,68 @@
+// import 'package:flutter/material.dart';
+// import 'package:frontend/services/change_password_service.dart';
+// import 'package:get/get.dart';
+
+// class ChangePasswordController extends GetxController {
+//   final service = Get.put(ChangePasswordService());
+
+//   final currentPasswordController = TextEditingController();
+//   final newPasswordController = TextEditingController();
+//   final confirmPasswordController = TextEditingController();
+
+//   var isCurrentObscure = true.obs;
+//   var isNewObscure = true.obs;
+//   var isConfirmObscure = true.obs;
+
+//   var isLoading = false.obs;
+
+//   void changePassword() async {
+//     final current = currentPasswordController.text;
+//     final newPass = newPasswordController.text;
+//     final confirm = confirmPasswordController.text;
+//   print("Current: '$current', New: '$newPass', Confirm: '$confirm'");
+//     if (current.isEmpty || newPass.isEmpty || confirm.isEmpty) {
+//       Get.snackbar("Error", "Please fill all fields");
+//       return;
+//     }
+
+//     if (newPass != confirm) {
+//       print("New password and confirm password do not match");
+//       Get.snackbar("Error", "New password and confirm password do not match");
+//       return;
+//     }
+
+//     try {
+//       isLoading.value = true;
+//       await service.changePassword(
+//         currentPassword: current,
+//         newPassword: newPass,
+//         confirmPassword: confirm,
+//       );
+//       Get.snackbar("Success", "Password changed successfully");
+//       currentPasswordController.clear();
+//       newPasswordController.clear();
+//       confirmPasswordController.clear();
+//     } catch (e) {
+//       Get.snackbar("Error", e.toString());
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+
+//   @override
+//   void onClose() {
+//     currentPasswordController.dispose();
+//     newPasswordController.dispose();
+//     confirmPasswordController.dispose();
+//     super.onClose();
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'package:frontend/services/change_password_service.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChangePasswordController extends GetxController {
-  final service = Get.put(ChangePasswordService());
-
   final currentPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -12,36 +70,63 @@ class ChangePasswordController extends GetxController {
   var isCurrentObscure = true.obs;
   var isNewObscure = true.obs;
   var isConfirmObscure = true.obs;
-
   var isLoading = false.obs;
 
-  void changePassword() async {
-    final current = currentPasswordController.text;
-    final newPass = newPasswordController.text;
-    final confirm = confirmPasswordController.text;
-  print("Current: '$current', New: '$newPass', Confirm: '$confirm'");
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> changePassword() async {
+    final current = currentPasswordController.text.trim();
+    final newPass = newPasswordController.text.trim();
+    final confirm = confirmPasswordController.text.trim();
+
+    print("Current: '$current', New: '$newPass', Confirm: '$confirm'");
+
     if (current.isEmpty || newPass.isEmpty || confirm.isEmpty) {
       Get.snackbar("Error", "Please fill all fields");
       return;
     }
 
     if (newPass != confirm) {
-      print("New password and confirm password do not match");
       Get.snackbar("Error", "New password and confirm password do not match");
       return;
     }
 
     try {
       isLoading.value = true;
-      await service.changePassword(
-        currentPassword: current,
-        newPassword: newPass,
-        confirmPassword: confirm,
+      User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("No user logged in");
+      }
+
+      // 🔹 Reauthenticate the user with current password
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: current,
       );
-      Get.snackbar("Success", "Password changed successfully");
+      await user.reauthenticateWithCredential(credential);
+
+      // 🔹 Update the password
+      await user.updatePassword(newPass);
+
+      Get.snackbar(
+        "Success",
+        "Password changed successfully",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+
       currentPasswordController.clear();
       newPasswordController.clear();
       confirmPasswordController.clear();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        Get.snackbar("Error", "Current password is incorrect");
+      } else if (e.code == 'weak-password') {
+        Get.snackbar("Error", "Password is too weak");
+      } else {
+        Get.snackbar("Error", e.message ?? "Something went wrong");
+      }
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {
