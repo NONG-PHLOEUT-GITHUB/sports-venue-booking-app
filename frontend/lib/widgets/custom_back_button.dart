@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CustomBackButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -8,12 +7,12 @@ class CustomBackButton extends StatelessWidget {
   final double borderWidth;
 
   const CustomBackButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.backgroundColor,
     this.iconColor,
     this.borderWidth = 1.2,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

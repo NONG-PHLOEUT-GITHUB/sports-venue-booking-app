@@ -85,8 +85,7 @@ class ThemeController extends GetxController {
       case ThemeMode.light:
         return AppLocalizations.of(context)!.off;
       case ThemeMode.system:
-      default:
-        return AppLocalizations.of(context)!.system;
+      return AppLocalizations.of(context)!.system;
     }
   }
 }

@@ -123,7 +123,7 @@
   "@notifications": {
     "description": "Section or link to refund policy details"
   },
-  "noNotifications": "គ្មានការជូនដំណឹងថ្មី",
+  "noNotifications": "No Notifications",
   "@noNotifications": {
     "description": "Section or link to refund policy details"
   },

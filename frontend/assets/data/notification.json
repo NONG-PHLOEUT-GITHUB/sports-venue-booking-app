@@ -1,34 +1,29 @@
 [
   {
-    "title": "Booking Successfully",
-    "description": "Your booking has been confirmed.",
-    "date": "2025-01-10",
+    "title": "Summer Sports Sale!",
+    "description": "Get 20% off all soccer field bookings this summer. Limited time offer!",
+    "date": "2025-06-01",
     "details": {
-      "field": "Soccer Field A",
-      "time": "3:00 PM - 6:00 PM",
-      "duration": "3 Hour",
-      "price": "30$",
-      "booking_id": "#123456789",
-      "location": "123 Sport St, City, State",
-      "contact": "(885) 66 555 555",
-      "note": "Arrive 15 minutes early for check-in.",
-      "image": "assets/images/fb.webp"
+      "image": "assets/images/promo1.webp",
+      "note": "Offer valid until June 30th."
     }
   },
   {
-    "title": "Booking Successfully",
-    "description": "Your booking has been confirmed.",
-    "date": "2025-01-10",
+    "title": "New Tennis Court Open!",
+    "description": "Check out our brand new tennis courts and enjoy your first session free!",
+    "date": "2025-06-05",
     "details": {
-      "field": "Soccer Field A",
-      "time": "3:00 PM - 6:00 PM",
-      "duration": "3 Hour",
-      "price": "30$",
-      "booking_id": "#123456789",
-      "location": "123 Sport St, City, State",
-      "contact": "(885) 66 555 555",
-      "note": "Arrive 15 minutes early for check-in.",
-      "image": "assets/images/fb.webp"
+      "image": "assets/images/promo2.webp",
+      "note": "First session free for new users only."
+    }
+  },
+  {
+    "title": "Weekend Basketball Tournament",
+    "description": "Join our weekend basketball tournament and win exciting prizes.",
+    "date": "2025-06-10",
+    "details": {
+      "image": "assets/images/promo3.webp",
+      "note": "Register before June 8th to participate."
     }
   }
 ]

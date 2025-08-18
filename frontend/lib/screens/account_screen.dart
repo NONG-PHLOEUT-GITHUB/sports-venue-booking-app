@@ -4,7 +4,6 @@ import 'package:frontend/controllers/profile_controller.dart';
 import 'package:frontend/screens/change_password_screen.dart';
 import 'package:frontend/screens/theme_screen.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/screens/edite_account.dart';
 import 'package:frontend/screens/switch_language_screen.dart';
 import 'package:frontend/controllers/theme_controller.dart';
@@ -22,8 +21,7 @@ class ProfilePage extends StatelessWidget {
       case ThemeMode.light:
         return AppLocalizations.of(context)!.off;
       case ThemeMode.system:
-      default:
-        return AppLocalizations.of(context)!.system;
+      return AppLocalizations.of(context)!.system;
     }
   }
 

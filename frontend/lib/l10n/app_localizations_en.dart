@@ -123,7 +123,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifications => 'ការជូនដំណឹង';
 
   @override
-  String get noNotifications => 'គ្មានការជូនដំណឹងថ្មី';
+  String get noNotifications => 'No Notifications';
 
   @override
   String get english => 'English';

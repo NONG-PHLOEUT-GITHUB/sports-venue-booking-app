@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// Section or link to refund policy details
   ///
   /// In en, this message translates to:
-  /// **'គ្មានការជូនដំណឹងថ្មី'**
+  /// **'No Notifications'**
   String get noNotifications;
 
   /// Label for English language
