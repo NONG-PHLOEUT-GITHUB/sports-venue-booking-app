@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/controllers/login_controller.dart';
 import 'package:frontend/controllers/social_login_controller.dart';
+import 'package:frontend/screens/layout.dart';
 import 'package:frontend/screens/otp_comfirm_screen.dart'; // This screen might not be needed for password login, but I'll keep the import for now
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
@@ -34,138 +35,163 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    isLocalizationsAvailable
-                        ? localizations.loginTitle
-                        : 'Login to Your Account',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: _textColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    isLocalizationsAvailable
-                        ? localizations.welcomeMessage
-                        : 'Welcome back! Please enter your details.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: _hintColor, fontSize: 16),
-                  ),
-                  const SizedBox(height: 40),
-                  _buildTextField(
-                    label:
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
                         isLocalizationsAvailable
-                            ? localizations.email
-                            : 'Email',
-                    controller: controller.emailController,
-                    hintText:
+                            ? localizations.loginTitle
+                            : 'Login to Your Account',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: _textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
                         isLocalizationsAvailable
-                            ? localizations.enterEmail
-                            : 'Enter email address',
-                    icon: Icons.email_outlined,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 24),
-                  _buildPasswordField(
-                    label:
-                        isLocalizationsAvailable
-                            ? localizations.password
-                            : 'Password',
-                    hintText:
-                        isLocalizationsAvailable
-                            ? localizations.passwordhint
-                            : 'Enter password',
-                  ),
-                  const SizedBox(height: 30),
-                  Obx(
-                    () => ElevatedButton(
-                      onPressed:
-                          controller.isLoading.value ? null : controller.login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
+                            ? localizations.welcomeMessage
+                            : 'Welcome back! Please enter your details.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: _hintColor, fontSize: 16),
+                      ),
+                      const SizedBox(height: 40),
+                      _buildTextField(
+                        label:
+                            isLocalizationsAvailable
+                                ? localizations.email
+                                : 'Email',
+                        controller: controller.emailController,
+                        hintText:
+                            isLocalizationsAvailable
+                                ? localizations.enterEmail
+                                : 'Enter email address',
+                        icon: Icons.email_outlined,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 24),
+                      _buildPasswordField(
+                        label:
+                            isLocalizationsAvailable
+                                ? localizations.password
+                                : 'Password',
+                        hintText:
+                            isLocalizationsAvailable
+                                ? localizations.passwordhint
+                                : 'Enter password',
+                      ),
+                      const SizedBox(height: 30),
+                      Obx(
+                        () => ElevatedButton(
+                          onPressed:
+                              controller.isLoading.value
+                                  ? null
+                                  : controller.login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(borderRadius),
+                            ),
+                          ),
+                          child:
+                              controller.isLoading.value
+                                  ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  : Text(
+                                    isLocalizationsAvailable
+                                        ? localizations.btnLogin
+                                        : 'Login',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                         ),
                       ),
-                      child:
-                          controller.isLoading.value
-                              ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Text(
-                                isLocalizationsAvailable
-                                    ? localizations.btnLogin
-                                    : 'Login',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-                  _buildDividerWithText(
-                    isLocalizationsAvailable
-                        ? localizations.signInWith
-                        : 'Or sign in with',
-                  ),
-                  const SizedBox(height: 20),
-                  _buildSocialButtons(),
-                  const SizedBox(height: 40),
-                  Center(
-                    child: Text.rich(
-                      TextSpan(
-                        text:
-                            isLocalizationsAvailable
-                                ? localizations.dontHaveAccount
-                                : 'Don\'t have an account? ',
-                        style: TextStyle(color: _textColor),
-                        children: [
+                      const SizedBox(height: 30),
+                      _buildDividerWithText(
+                        isLocalizationsAvailable
+                            ? localizations.signInWith
+                            : 'Or sign in with',
+                      ),
+                      const SizedBox(height: 20),
+                      _buildSocialButtons(),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: Text.rich(
                           TextSpan(
                             text:
                                 isLocalizationsAvailable
-                                    ? localizations.signUp
-                                    : 'Sign Up',
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.w700,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => RegisterScreen(),
-                                      ),
-                                    );
-                                  },
+                                    ? localizations.dontHaveAccount
+                                    : 'Don\'t have an account? ',
+                            style: TextStyle(color: _textColor),
+                            children: [
+                              TextSpan(
+                                text:
+                                    isLocalizationsAvailable
+                                        ? localizations.signUp
+                                        : 'Sign Up',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.w700,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer:
+                                    TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => RegisterScreen(),
+                                          ),
+                                        );
+                                      },
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+
+            // Skip button on top-left
+            Positioned(
+              top: 16,
+              right: 16,
+              child: TextButton(
+                onPressed: () {
+                  Get.offAll(() => MainLayout());
+                },
+                child: Text(
+                  "Skip",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color:Get.theme.colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
