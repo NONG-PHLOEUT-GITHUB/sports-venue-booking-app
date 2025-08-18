@@ -134,6 +134,18 @@ abstract class AppLocalizations {
   /// **'Register'**
   String get register;
 
+  /// No description provided for @registerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Join our community and get started!'**
+  String get registerHint;
+
+  /// No description provided for @btnLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get btnLogin;
+
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
@@ -151,6 +163,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Don’t have an account? '**
   String get dontHaveAccount;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get haveAccount;
 
   /// No description provided for @signUp.
   ///
@@ -377,8 +395,26 @@ abstract class AppLocalizations {
   /// Label for phone number field
   ///
   /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// Label for phone number field
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// Label for phone number field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// Label for phone number field
+  ///
+  /// In en, this message translates to:
   /// **'Enter Password'**
-  String get enterANewPassword;
+  String get passwordhint;
 
   /// Label for phone number field
   ///

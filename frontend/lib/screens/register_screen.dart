@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/register_controller.dart';
+import 'package:frontend/controllers/social_login_controller.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/screens/login_screen.dart';
+import 'package:frontend/services/facebook_service.dart';
+import 'package:frontend/services/google_service.dart';
 import 'package:get/get.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final RegisterController controller = Get.put(RegisterController());
 
+  final SocialLoginController socialLoginController = Get.put(
+    SocialLoginController(),
+  );
   // Error strings
   String? _usernameError;
   String? _emailError;
-
 
   // UI constants
   final double borderRadius = 16;
@@ -43,8 +49,13 @@ class RegisterScreen extends StatelessWidget {
     decoration: TextDecoration.underline,
   );
 
+  RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final isLocalizationsAvailable = localizations != null;
+
     return Scaffold(
       backgroundColor: Get.theme.colorScheme.background,
       body: SafeArea(
@@ -58,13 +69,17 @@ class RegisterScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Create an Account',
+                      isLocalizationsAvailable
+                          ? localizations.signUp
+                          : 'Sign Up',
                       style: _titleStyle,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Join our community and get started!',
+                      isLocalizationsAvailable
+                          ? localizations.registerHint
+                          : 'Join our community and get started!',
                       style: _subtitleStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -72,7 +87,14 @@ class RegisterScreen extends StatelessWidget {
 
                     _buildTextField(
                       controller: controller.usernameController,
-                      hintText: 'User Name',
+                      label:
+                          isLocalizationsAvailable
+                              ? localizations.fullName
+                              : 'Full Name',
+                      hintText:
+                          isLocalizationsAvailable
+                              ? localizations.fullName
+                              : 'Full Name',
                       icon: Icons.person_outline,
                       errorText: _usernameError,
                     ),
@@ -80,13 +102,29 @@ class RegisterScreen extends StatelessWidget {
 
                     _buildTextField(
                       controller: controller.emailController,
-                      hintText: 'Email',
+                      label:
+                          isLocalizationsAvailable
+                              ? localizations.email
+                              : 'Email',
+                      hintText:
+                          isLocalizationsAvailable
+                              ? localizations.enterEmail
+                              : 'Enter your email',
                       icon: Icons.email_outlined,
                       errorText: _emailError,
                     ),
                     SizedBox(height: _fieldSpacing),
 
-                    _buildPasswordField(),
+                    _buildPasswordField(
+                      label:
+                          isLocalizationsAvailable
+                              ? localizations.password
+                              : 'Password',
+                      hintText:
+                          isLocalizationsAvailable
+                              ? localizations.passwordhint
+                              : 'Enter password',
+                    ),
                     SizedBox(height: _fieldSpacing + 10),
 
                     Obx(
@@ -113,8 +151,10 @@ class RegisterScreen extends StatelessWidget {
                                     strokeWidth: 2,
                                   ),
                                 )
-                                : const Text(
-                                  'Register',
+                                : Text(
+                                  isLocalizationsAvailable
+                                      ? localizations.register
+                                      : 'Register',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.white,
@@ -132,7 +172,9 @@ class RegisterScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'Or register with',
+                            isLocalizationsAvailable
+                                ? localizations.signInWith
+                                : 'Sign in with',
                             style: TextStyle(color: _hintColor, fontSize: 14),
                           ),
                         ),
@@ -146,14 +188,18 @@ class RegisterScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildSocialButton(
+                        _socialButton(
                           'assets/images/google.webp',
-                          onPressed: () => print("Google Sign Up"),
+                          onPressed:
+                              () => GoogleService.instance.signInWithGoogle(),
                         ),
+
                         const SizedBox(width: 20),
-                        _buildSocialButton(
+                        _socialButton(
                           'assets/images/fb1.png',
-                          onPressed: () => print("Facebook Sign Up"),
+                          onPressed: () {
+                            FacebookService.instance.signInWithFacebook();
+                          },
                         ),
                       ],
                     ),
@@ -163,7 +209,9 @@ class RegisterScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an account?",
+                          isLocalizationsAvailable
+                              ? localizations.haveAccount
+                              : "Already have an account?",
                           style: TextStyle(color: _textColor),
                         ),
                         const SizedBox(width: 5),
@@ -176,7 +224,12 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Login', style: _linkStyle),
+                          child: Text(
+                            isLocalizationsAvailable
+                                ? localizations.loginTitle
+                                : "Login",
+                            style: _linkStyle,
+                          ),
                         ),
                       ],
                     ),
@@ -193,6 +246,7 @@ class RegisterScreen extends StatelessWidget {
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,
+    required String label,
     required IconData icon,
     String? errorText,
   }) {
@@ -200,6 +254,7 @@ class RegisterScreen extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         filled: true,
+        labelText: label,
         fillColor: _inputFillColor,
         hintText: hintText,
         hintStyle: TextStyle(color: _hintColor),
@@ -220,7 +275,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField({String? label, required String hintText}) {
     var obscureText = true.obs;
     return Obx(
       () => TextField(
@@ -228,8 +283,9 @@ class RegisterScreen extends StatelessWidget {
         obscureText: obscureText.value,
         decoration: InputDecoration(
           filled: true,
+          labelText: label ?? 'Password',
           fillColor: _inputFillColor,
-          hintText: "Password",
+          hintText: hintText,
           hintStyle: TextStyle(color: _hintColor),
           prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
           suffixIcon: IconButton(
@@ -258,8 +314,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-
-  Widget _buildSocialButton(String imagePath, {VoidCallback? onPressed}) {
+  Widget _socialButton(String imagePath, {VoidCallback? onPressed}) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(

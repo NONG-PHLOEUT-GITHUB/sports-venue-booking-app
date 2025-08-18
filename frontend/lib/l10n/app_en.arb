@@ -11,12 +11,18 @@
   "@btnBookNow": {},
   "register": "Register",
   "@register": {},
+  "registerHint": "Join our community and get started!",
+  "@registerHint": {},
+  "btnLogin": "Login",
+  "@btnLogin": {},
   "loginTitle": "Login Account",
   "@loginTitle": {},
   "welcomeMessage": "Hello, welcome back to account!",
   "@welcomeMessage": {},
   "dontHaveAccount": "Don’t have an account? ",
   "@dontHaveAccount": {},
+  "haveAccount": "Already have an account?",
+  "@haveAccount": {},
   "signUp": "Sign Up",
   "@signUp": {},
   "signInWith": "Sign in with Google or Facebook",
@@ -161,8 +167,20 @@
   "@password": {
     "description": "Label for phone number field"
   },
-  "enterANewPassword": "Enter Password",
-  "@enterANewPassword": {
+  "currentPassword": "Current Password",
+  "@currentPassword": {
+    "description": "Label for phone number field"
+  },
+  "newPassword": "New Password",
+  "@newPassword": {
+    "description": "Label for phone number field"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Label for phone number field"
+  },
+  "passwordhint": "Enter Password",
+  "@passwordhint": {
     "description": "Label for phone number field"
   },
   "email": "Email",

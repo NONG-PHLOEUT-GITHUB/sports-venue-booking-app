@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/change_password_controller.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
@@ -57,7 +58,7 @@ class ChangePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Change Password"),
+        title: Text(AppLocalizations.of(context)!.changePassword),
         leading: CustomBackButton(),
       ),
       body: Padding(
@@ -68,19 +69,19 @@ class ChangePasswordScreen extends StatelessWidget {
               _buildPasswordField(
                 controllerField: controller.currentPasswordController,
                 obscureText: controller.isCurrentObscure,
-                hintText: "Current Password",
+                hintText: AppLocalizations.of(context)!.currentPassword,
               ),
               const SizedBox(height: 16),
               _buildPasswordField(
                 controllerField: controller.newPasswordController,
                 obscureText: controller.isNewObscure,
-                hintText: "New Password",
+                hintText: AppLocalizations.of(context)!.newPassword,
               ),
               const SizedBox(height: 16),
               _buildPasswordField(
                 controllerField: controller.confirmPasswordController,
                 obscureText: controller.isConfirmObscure,
-                hintText: "Confirm Password",
+                hintText: AppLocalizations.of(context)!.confirmPassword,
               ),
               const SizedBox(height: 32),
               SizedBox(
@@ -100,8 +101,8 @@ class ChangePasswordScreen extends StatelessWidget {
                       ? const CircularProgressIndicator(
                           color: Colors.white,
                         )
-                      : const Text(
-                          "Save",
+                      : Text(
+                         AppLocalizations.of(context)!.btnSave,
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                 ),

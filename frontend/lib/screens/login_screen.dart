@@ -80,6 +80,10 @@ class LoginScreen extends StatelessWidget {
                         isLocalizationsAvailable
                             ? localizations.password
                             : 'Password',
+                    hintText:
+                        isLocalizationsAvailable
+                            ? localizations.passwordhint
+                            : 'Enter password',
                   ),
                   const SizedBox(height: 30),
                   Obx(
@@ -103,8 +107,10 @@ class LoginScreen extends StatelessWidget {
                                   strokeWidth: 2,
                                 ),
                               )
-                              : const Text(
-                                "Login",
+                              : Text(
+                                isLocalizationsAvailable
+                                    ? localizations.btnLogin
+                                    : 'Login',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -198,7 +204,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordField({String? label}) {
+  Widget _buildPasswordField({String? label, required String hintText}) {
     var obscureText = true.obs;
     return Obx(
       () => TextField(
@@ -208,7 +214,7 @@ class LoginScreen extends StatelessWidget {
           filled: true,
           labelText: label ?? "",
           fillColor: _fillColor,
-          hintText: 'Enter password',
+          hintText: hintText,
           hintStyle: TextStyle(color: _hintColor),
           prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
           suffixIcon: IconButton(

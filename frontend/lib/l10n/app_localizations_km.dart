@@ -27,6 +27,12 @@ class AppLocalizationsKm extends AppLocalizations {
   String get register => 'ចុះឈ្មោះ';
 
   @override
+  String get registerHint => 'ចូលរួមជាមួយសហគមន៍របស់យើង ហើយចាប់ផ្ដើមឥឡូវនេះ!';
+
+  @override
+  String get btnLogin => 'ចូលគណនី';
+
+  @override
   String get loginTitle => 'ចូលគណនី';
 
   @override
@@ -34,6 +40,9 @@ class AppLocalizationsKm extends AppLocalizations {
 
   @override
   String get dontHaveAccount => 'មិនទាន់មានគណនីទេ? ';
+
+  @override
+  String get haveAccount => 'មានគណនីរួចហើយ?';
 
   @override
   String get signUp => 'ចុះឈ្មោះ';
@@ -144,10 +153,19 @@ class AppLocalizationsKm extends AppLocalizations {
   String get phoneNumber => 'លេខទូរស័ព្ទ';
 
   @override
-  String get password => 'Password';
+  String get password => 'ពាក្យសម្ងាត់';
 
   @override
-  String get enterANewPassword => 'Enter Password';
+  String get currentPassword => 'ពាក្យសម្ងាត់បច្ចុប្បន្ន';
+
+  @override
+  String get newPassword => 'ពាក្យសម្ងាត់ថ្មី';
+
+  @override
+  String get confirmPassword => 'បញ្ជាក់ពាក្យសម្ងាត់';
+
+  @override
+  String get passwordhint => 'បញ្ចូលពាក្យសម្ងាត់';
 
   @override
   String get email => 'អាសយដ្ឋានអ៊ីមែល';

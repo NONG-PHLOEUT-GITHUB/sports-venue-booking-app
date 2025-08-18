@@ -4,8 +4,10 @@
   "btnSave": "រក្សាទុក",
   "sendCode": "ផ្ញើកូដ",
   "btnBookNow": "កក់ឥឡូវនេះ",
+  "btnLogin": "ចូលគណនី",
   "register": "ចុះឈ្មោះ",
   "loginTitle": "ចូលគណនី",
+  "registerHint": "ចូលរួមជាមួយសហគមន៍របស់យើង ហើយចាប់ផ្ដើមឥឡូវនេះ!",
   "welcomeMessage": "សួស្តី! សូមស្វាគមន៍ការទៅកាន់គណនីរបស់អ្នកវិញ!",
   "dontHaveAccount": "មិនទាន់មានគណនីទេ? ",
   "signUp": "ចុះឈ្មោះ",
@@ -94,6 +96,12 @@
   "helpsSupports": "ជំនួយ & គាំទ្រ",
   "orderHistory": "ប្រវត្តិការកម្មង់",
   "changePassword": "ផ្លាស់ប្តូរពាក្យសម្ងាត់",
+  "password": "ពាក្យសម្ងាត់",
+  "newPassword": "ពាក្យសម្ងាត់ថ្មី",
+  "currentPassword": "ពាក្យសម្ងាត់បច្ចុប្បន្ន",
+  "confirmPassword": "បញ្ជាក់ពាក្យសម្ងាត់",
+  "passwordhint": "បញ្ចូលពាក្យសម្ងាត់",
   "welcome": "សូមស្វាគមន៍",
-  "getStarted": "ចាប់ផ្ដើម"
+  "getStarted": "ចាប់ផ្ដើម",
+  "haveAccount": "មានគណនីរួចហើយ?"
 }
