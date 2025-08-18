@@ -4,6 +4,8 @@ import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:frontend/controllers/confirm_booking_controller.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
   const ConfirmBookingScreen({super.key});
@@ -13,6 +15,7 @@ class ConfirmBookingScreen extends StatefulWidget {
 }
 
 class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
+   final BookingController bookingController = Get.put(BookingController());
   String selectedField =
       'Field C'; // Set a default value that exists in the list
   final TextEditingController nameController = TextEditingController();
@@ -58,9 +61,17 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String bookingDate = '14-2-2025';
-    final String bookingTime = '14:00 PM - 16:00 PM';
-    final String totalPrice = '\$50.00';
+    // final String bookingDate = '14-2-2025';
+    // final String bookingTime = '14:00 PM - 16:00 PM';
+    final now = DateTime.now();
+
+// Format the date to 'dd-MM-yyyy'
+    final bookDate = DateFormat('dd-MM-yyyy').format(now);
+
+    // final String totalPrice = '\$50.00';
+    // final String bookingDate = bookingController.bookingDate.value;
+    final String bookingTime = bookingController.bookingTime.value;
+    final String totalPrice = bookingController.totalPrice.value;
 
     // AppBar
     final appBar = AppBar(
@@ -160,7 +171,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  bookingDate,
+                  bookDate,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -227,10 +238,21 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
       bottomNavigationBar: AppPrimaryButton(
         text: AppLocalizations.of(context)!.confirmBooking,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PaymentOptionsScreen()),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => PaymentOptionsScreen()),
+          // );
+            
+          bookingController.fullName.value = nameController.text;
+          bookingController.phoneNumber.value = phoneController.text;
+          bookingController.selectedField.value = selectedField;
+          bookingController.bookingDate.value = bookDate;
+          bookingController.bookingTime.value = bookingTime;
+          bookingController.totalPrice.value = totalPrice;
+
+          // Now navigate to the next screen
+          // The next screen can simply find the same controller to get all the data
+          Get.to(() => PaymentOptionsScreen());
         },
       ),
     );

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/locale_controller.dart';
 import 'package:frontend/controllers/profile_controller.dart';
 import 'package:frontend/screens/change_password_screen.dart';
+import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/theme_screen.dart';
 import 'package:get/get.dart';
 import 'package:frontend/screens/edite_account.dart';
@@ -100,12 +102,21 @@ class ProfilePage extends StatelessWidget {
             ]),
             const SizedBox(height: 16),
             _buildSettingsCard([
-              _buildSettingsTile(
-                icon: Icons.logout,
-                title: AppLocalizations.of(context)!.logout,
-                onTap: () => controller.logout(),
-                isLogout: true,
-              ),
+              if (FirebaseAuth.instance.currentUser != null)
+                _buildSettingsTile(
+                  icon: Icons.logout,
+                  title: AppLocalizations.of(context)!.logout,
+                  onTap: () => controller.logout(),
+                  isLogout: true,
+                )
+              else
+                _buildSettingsTile(
+                  icon: Icons.login,
+                  title: AppLocalizations.of(context)!.loginTitle,
+                  onTap: () {
+                    Get.to(() => LoginScreen());
+                  },
+                ),
             ]),
           ],
         ),

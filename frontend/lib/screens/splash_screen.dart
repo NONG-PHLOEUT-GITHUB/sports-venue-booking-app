@@ -140,7 +140,7 @@ class SplashScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Text(
                     // localization.welcome, // Use localization key here
-                    "Every great match starts with the right venue.",
+                    "Sports Venue Booking App",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: primaryColor,
