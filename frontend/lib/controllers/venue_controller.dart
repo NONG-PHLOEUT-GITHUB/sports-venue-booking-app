@@ -36,35 +36,3 @@ class VenueListController extends GetxController {
     }
   }
 }
-
-// import 'package:frontend/api/api_config.dart';
-// import 'package:get/get.dart';
-// import 'package:dio/dio.dart' as dio;
-
-// class VenueListController extends GetxController {
-//   var venues = [].obs;
-//   var isLoading = false.obs;
-
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     ApiService.initInterceptors();
-//     fetchVenues();
-//   }
-
-//   void fetchVenues() async {
-//     try {
-//       isLoading.value = true;
-//       final dio.Response response = await ApiService.get('/venues');
-//       venues.value = response.data['data'];
-//        print("Fetched venues count: ${venues.length}");
-//       for (var v in venues) {
-//         print("${v.name} - ${v.location} - ${v.imageUrl}");
-//       }
-//     } catch (e) {
-//       print('Error fetching venues: $e');
-//     } finally {
-//       isLoading.value = false;
-//     }
-//   }
-// }

@@ -18,7 +18,6 @@ import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   Get.put(ThemeController());
   Get.put(RegisterController());
   Get.put(LocaleController());
@@ -26,7 +25,7 @@ void main() async {
   Get.lazyPut(() => VenueListController());
   Get.lazyPut(() => ExploreVenueController());
 
-  await GetStorage.init();  // Await initialization here
+  await GetStorage.init(); 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -64,8 +63,6 @@ class _MyAppState extends State<MyApp> {
         home: const SplashScreen(),
       ),
       // home: const OtpVerificationPage(),
-      // home: const MainLayout(),
-      //test change
     );
   }
 }
