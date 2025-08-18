@@ -6,6 +6,7 @@ import 'package:frontend/screens/otp_comfirm_screen.dart'; // This screen might 
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
+import 'package:frontend/services/facebook_service.dart';
 import 'package:frontend/services/google_service.dart';
 import 'package:get/get.dart';
 
@@ -246,7 +247,9 @@ class LoginScreen extends StatelessWidget {
         const SizedBox(width: 20),
         _socialButton(
           'assets/images/fb1.png',
-          onPressed: () => print("Facebook Login"),
+           onPressed: () {
+            FacebookService.instance.signInWithFacebook();
+          },
         ),
       ],
     );

@@ -77,29 +77,29 @@ class AuthController extends Controller
         ]);
     }
 
-    public function socialLogin(Request $request)
-    {
-        $idToken = $request->input('id_token');
+    // public function socialLogin(Request $request)
+    // {
+    //     $idToken = $request->input('id_token');
 
-        // Verify token with Google
-        $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
-        $payload = $client->verifyIdToken($idToken);
+    //     // Verify token with Google
+    //     $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+    //     $payload = $client->verifyIdToken($idToken);
 
-        if (!$payload) {
-            return response()->json(['error' => 'Invalid Google token'], 401);
-        }
+    //     if (!$payload) {
+    //         return response()->json(['error' => 'Invalid Google token'], 401);
+    //     }
 
-        $user = User::firstOrCreate(
-            ['email' => $payload['email']],
-            ['name' => $payload['name']]
-        );
+    //     $user = User::firstOrCreate(
+    //         ['email' => $payload['email']],
+    //         ['name' => $payload['name']]
+    //     );
 
-        $token = JWTAuth::fromUser($user);
+    //     $token = JWTAuth::fromUser($user);
 
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'user' => $user,
-        ]);
-    }
+    //     return response()->json([
+    //         'access_token' => $token,
+    //         'token_type' => 'bearer',
+    //         'user' => $user,
+    //     ]);
+    // }
 }

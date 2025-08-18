@@ -32,7 +32,7 @@ Route::get('/venues', [VenueController::class, 'index']);
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('social-login', [AuthController::class, 'socialLogin']);
+    // Route::post('social-login', [AuthController::class, 'socialLogin']);
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('me', [AuthController::class, 'me']);
