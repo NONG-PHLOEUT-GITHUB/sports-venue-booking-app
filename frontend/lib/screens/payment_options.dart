@@ -4,25 +4,43 @@ import 'package:frontend/widgets/custom_back_button.dart';
 import 'card_payment_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:frontend/controllers/confirm_booking_controller.dart';
 
 enum PaymentMethod { abaPay, acledaPay, creditCard }
 
 class PaymentOptionsScreen extends StatefulWidget {
   const PaymentOptionsScreen({Key? key}) : super(key: key);
 
+
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
 
+
+
 class _PaymentPageState extends State<PaymentOptionsScreen> {
   PaymentMethod? _selectedPaymentMethod = PaymentMethod.abaPay;
+   final BookingController bookingController = Get.put(BookingController());
+  
 
-  final double transferAmount = 7.20;
-  final double additionalCost = 0.50;
+
+  // final double transferAmount = 7.20;
+  final String additionalCost = "0.50";
 
   @override
   Widget build(BuildContext context) {
-    final double totalAmount = transferAmount + additionalCost;
+
+    final String fullName = bookingController.fullName.value;
+    final String phoneNumber = bookingController.phoneNumber.value;
+    final String totalPrice = bookingController.totalPrice.value;
+    final String fieldName = bookingController.selectedField.value;
+    final String bookingDate = bookingController.bookingDate.value;
+    final String bookingTime = bookingController.bookingTime.value;
+    final double totalPriceDouble = double.tryParse(totalPrice) ?? 0.0;
+    final double additionalCostDouble = double.tryParse(additionalCost) ?? 0.0;
+    final double totalAmountDouble = totalPriceDouble + additionalCostDouble;
+    final String totalAmount = totalAmountDouble.toStringAsFixed(2);
+
 
     final Widget summaryCard = Card(
       margin: EdgeInsets.zero,
@@ -41,17 +59,17 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
             const SizedBox(height: 12),
             _buildSummaryInfo(
               AppLocalizations.of(context)!.name,
-              'Basketball Court',
+              fullName,
             ),
-            _buildSummaryInfo(AppLocalizations.of(context)!.date, '02/28/2025'),
-            _buildSummaryInfo(AppLocalizations.of(context)!.time, '7AM - 9AM'),
             _buildSummaryInfo(
-              AppLocalizations.of(context)!.duration,
-              '2 Hours',
+              AppLocalizations.of(context)!.phoneNumber,
+              phoneNumber,
             ),
+            _buildSummaryInfo(AppLocalizations.of(context)!.date, bookingDate),
+            _buildSummaryInfo(AppLocalizations.of(context)!.time, bookingTime),
             _buildSummaryInfo(
               AppLocalizations.of(context)!.field,
-              'Field A, Field B',
+              fieldName,
             ),
           ],
         ),
@@ -160,19 +178,19 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
           children: [
             _buildSummaryRow(
               AppLocalizations.of(context)!.transferAmount,
-              "\$${transferAmount.toStringAsFixed(2)}",
+              "\$$totalPrice",
             ),
             const SizedBox(height: 10),
             _buildSummaryRow(
               AppLocalizations.of(context)!.addCost,
-              "\$${additionalCost.toStringAsFixed(2)}",
+              "\$$additionalCost",
             ),
             const SizedBox(height: 10),
             const Divider(height: 1, thickness: 1, color: Colors.grey),
             const SizedBox(height: 10),
             _buildSummaryRow(
               AppLocalizations.of(context)!.totalPrice,
-              "\$${totalAmount.toStringAsFixed(2)}",
+              "\$$totalAmount",
               isTotal: true,
             ),
           ],

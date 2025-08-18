@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/widgets/app_primary_button.dart';
 import 'package:frontend/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
+import 'package:frontend/controllers/confirm_booking_controller.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class VenueDetailPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _VenueDetailState extends State<VenueDetailPage> {
     'assets/images/Football.jpg',
   ];
   int _currentIndex = 0;
+  final BookingController bookingController = Get.put(BookingController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +52,21 @@ class _VenueDetailState extends State<VenueDetailPage> {
       bottomNavigationBar: AppPrimaryButton(
         text: AppLocalizations.of(context)!.btnBookNow,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ConfirmBookingScreen(),
-            ),
+          
+
+          bookingController.updateBookingDetails(
+            name: bookingController.fullName.value,
+            phone: bookingController.phoneNumber.value,
+            venue: widget.venue,
+            
           );
+          Get.to(() => const ConfirmBookingScreen());
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const ConfirmBookingScreen(),
+          //   ),
+          // );
         },
       ),
     );
@@ -131,13 +142,14 @@ class _VenueDetailState extends State<VenueDetailPage> {
             _buildDetailRow(Icons.sports_soccer, "Type", "5-a-side"),
             _buildDetailRow(Icons.straighten, "Size", "30m x 20m"),
             _buildDetailRow(Icons.grass, "Surface", "Artificial Turf"),
-            _buildDetailRow(Icons.attach_money, "Price per Hour", "\$20"),
+            _buildDetailRow(Icons.attach_money, "Price per Hour", 
+                "\$${widget.venue.price.toStringAsFixed(2)}"),
             _buildDetailRow(
               Icons.calendar_today,
               "Available Date",
-              "16/07/2024",
+              DateTime.now().toLocal().toString().split(' ')[0],
             ),
-            _buildDetailRow(Icons.access_time, "Time", "08:00 PM to 09:00 PM"),
+            _buildDetailRow(Icons.access_time, "Time", widget.venue.time),
             const Divider(height: 24),
             _buildFielAvailable(),
             const Divider(height: 24),
