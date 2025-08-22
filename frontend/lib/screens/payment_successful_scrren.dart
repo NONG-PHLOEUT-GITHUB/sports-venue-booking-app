@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/layout.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/widgets/app_primary_button.dart';
+import 'package:frontend/core/widgets/app_primary_button.dart';
 
 class PaymentSuccessfulScrren extends StatelessWidget {
   const PaymentSuccessfulScrren({super.key});

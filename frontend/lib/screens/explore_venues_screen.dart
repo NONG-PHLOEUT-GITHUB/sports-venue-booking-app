@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/card_section.dart';
+import 'package:frontend/core/widgets/card_section.dart';
 import 'package:frontend/screens/venue_detail_screen.dart';
-import 'package:frontend/widgets/custom_back_button.dart';
+import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:frontend/controllers/explore_venue_controller.dart';

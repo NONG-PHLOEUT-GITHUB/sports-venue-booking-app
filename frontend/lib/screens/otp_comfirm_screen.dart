@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/layout.dart';
-import 'package:frontend/widgets/custom_back_button.dart';
+import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';

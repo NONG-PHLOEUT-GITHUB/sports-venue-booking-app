@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/profile_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/widgets/app_primary_button.dart';
-import 'package:frontend/widgets/custom_back_button.dart';
+import 'package:frontend/core/widgets/app_primary_button.dart';
+import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
 
 class EditProfilePage extends StatelessWidget {

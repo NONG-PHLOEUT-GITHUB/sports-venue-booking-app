@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/payment_successful_scrren.dart';
-import 'package:frontend/widgets/app_primary_button.dart';
-import 'package:frontend/widgets/custom_back_button.dart';
+import 'package:frontend/core/widgets/app_primary_button.dart';
+import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'card_payment_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';

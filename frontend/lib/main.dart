@@ -11,7 +11,7 @@ import 'package:frontend/controllers/explore_venue_controller.dart';
 import 'package:frontend/controllers/venue_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/services/venue_service.dart';
-import 'package:frontend/theme/theme.dart';
+import 'package:frontend/core/theme/theme.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
