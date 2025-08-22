@@ -1,18 +1,19 @@
+import 'dart:ui'; 
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/ticket_controller.dart';
-import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/models/ticket_model.dart';
+import 'package:frontend/presentation/controllers/booking_controller.dart';
+import 'package:frontend/domain/entities/ticket.dart';
 import 'package:get/get.dart';
+import 'package:frontend/l10n/app_localizations.dart';
+
 class TicketPage extends StatelessWidget {
-  TicketPage({super.key});
-  final TicketController controller = Get.put(TicketController());
+  const TicketPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final BookingController controller = Get.find<BookingController>();
     final theme = Theme.of(context);
-    const double padding = 16.0;
-    const double radius = 15.0;
 
+    // Helper to determine status color
     Color getStatusColor(String status) {
       switch (status.toLowerCase()) {
         case 'paid':
@@ -26,127 +27,220 @@ class TicketPage extends StatelessWidget {
       }
     }
 
-    Widget buildTimeDot(Color color) => Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
-          child: SizedBox(
-            height: 8,
-            width: 8,
-            child: DecoratedBox(decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(5))),
-          ),
-        );
-
-    Widget dashedLine(Color color) {
-      return SizedBox(
-        height: 2,
-        child: LayoutBuilder(builder: (context, constraints) {
-          final dashWidth = 6.0;
-          final dashSpace = 4.0;
-          final dashCount = (constraints.maxWidth / (dashWidth + dashSpace)).floor();
-          return Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(dashCount, (_) => SizedBox(width: dashWidth, height: 1, child: DecoratedBox(decoration: BoxDecoration(color: color)))),
-          );
-        }),
-      );
-    }
-
     Widget ticketCard(TicketData ticket) {
-      final isDark = theme.brightness == Brightness.dark;
-      final shadowColor = isDark ? Colors.white.withOpacity(0.03) : Colors.black.withOpacity(0.08);
+      final Color statusColor = getStatusColor(ticket.status);
+      const double radius = 20.0;
+      const double padding = 20.0;
 
-      return Card(
-        elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-        child: Container(
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(radius),
-            boxShadow: [BoxShadow(color: shadowColor, blurRadius: 10, offset: const Offset(0, 5))],
-          ),
-          child: Column(
-            children: [
-              // Event Name & Status
-              Padding(
-                padding: const EdgeInsets.fromLTRB(padding, padding, padding, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(ticket.eventName, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface), maxLines: 2, overflow: TextOverflow.ellipsis),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: getStatusColor(ticket.status).withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                      child: Text(ticket.status, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: getStatusColor(ticket.status))),
-                    ),
-                  ],
-                ),
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(radius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(radius),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: theme.colorScheme.onSurface.withOpacity(0.1)),
+                borderRadius: BorderRadius.circular(radius),
               ),
-              const SizedBox(height: 4),
-
-              // Location & Date
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: padding),
-                child: Column(
-                  children: [
-                    Row(children: [Icon(Icons.location_on_outlined, color: theme.colorScheme.onSurface.withOpacity(0.7), size: 18), const SizedBox(width: 8), Expanded(child: Text(ticket.location, style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7), fontSize: 16)))]),
-                    const SizedBox(height: 4),
-                    Row(children: [Icon(Icons.date_range_outlined, color: theme.colorScheme.onSurface.withOpacity(0.7), size: 18), const SizedBox(width: 8), Text(ticket.date, style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7), fontSize: 16))]),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  // Header section
+                  _buildHeader(ticket, statusColor, theme, padding),
+                  // Time & dash line section
+                  _buildTimeRow(ticket, theme, padding),
+                  const SizedBox(height: 10),
+                  // Price and field section
+                  _buildDetails(ticket, theme, padding),
+                ],
               ),
-              const SizedBox(height: 10),
-
-              // Time row
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: padding),
-                child: Row(
-                  children: [
-                    Text(ticket.startTime, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.colorScheme.primary)),
-                    const SizedBox(width: 12),
-                    buildTimeDot(theme.colorScheme.primary),
-                    Expanded(child: Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: dashedLine(theme.colorScheme.onSurface.withOpacity(0.3)))),
-                    buildTimeDot(theme.colorScheme.onSurface),
-                    const SizedBox(width: 12),
-                    Text(ticket.endTime, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Divider(height: 1, color: theme.colorScheme.onSurface.withOpacity(0.1), indent: padding, endIndent: padding),
-
-              // Field & Price
-              Padding(
-                padding: const EdgeInsets.fromLTRB(padding, 12, padding, 16),
-                child: Row(
-                  children: [
-                    Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: theme.colorScheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(20)), child: Icon(Icons.stadium_outlined, color: theme.colorScheme.primary)),
-                    const SizedBox(width: 16),
-                    Text(ticket.fieldName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface.withOpacity(0.7))),
-                    Expanded(child: Text("\$ ${ticket.price.toStringAsFixed(2)}", textAlign: TextAlign.end, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface))),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.ticket)),
-      body: Obx(() {
-        if (controller.isLoading.value) return const Center(child: CircularProgressIndicator());
-        if (controller.tickets.isEmpty) return const Center(child: Text('No tickets found.'));
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          itemCount: controller.tickets.length,
-          itemBuilder: (_, index) => ticketCard(controller.tickets[index]),
-        );
-      }),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.ticket,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+      ),
+      body: Obx(
+        () {
+          if (controller.tickets.isEmpty) {
+            return Center(
+              child: Text(
+                'No tickets booked yet.',
+                style: TextStyle(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6)),
+              ),
+            );
+          }
+          return ListView.builder(
+            padding:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+            itemCount: controller.tickets.length,
+            itemBuilder: (_, index) => ticketCard(controller.tickets[index]),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+      TicketData ticket, Color statusColor, ThemeData theme, double padding) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(padding, padding, padding, padding / 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  ticket.venueName,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  ticket.status,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: statusColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(Icons.location_on_outlined,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6), size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  ticket.location,
+                  style: TextStyle(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 15),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(Icons.date_range_outlined,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6), size: 18),
+              const SizedBox(width: 8),
+              Text(
+                ticket.date,
+                style: TextStyle(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    fontSize: 15),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeRow(
+      TicketData ticket, ThemeData theme, double padding) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: Row(
+        children: [
+          Text(
+            ticket.startTime,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetails(
+      TicketData ticket, ThemeData theme, double padding) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(padding, padding / 2, padding, padding),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Icon(Icons.stadium_outlined,
+                color: theme.colorScheme.primary, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Field',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
+                ),
+                Text(
+                  ticket.fieldName,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            "\$${ticket.price.toStringAsFixed(2)}",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

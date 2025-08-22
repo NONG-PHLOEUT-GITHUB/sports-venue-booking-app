@@ -10,7 +10,6 @@ class ThemeController extends GetxController {
   Rx<ThemeMode> themeMode = ThemeMode.system.obs;
   Timer? _timer;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -43,8 +42,10 @@ class ThemeController extends GetxController {
       changeThemeMode(ThemeMode.light);
     } else if (savedMode == 'dark') {
       changeThemeMode(ThemeMode.dark);
+    } else if (savedMode == 'system') {
+      changeThemeMode(ThemeMode.system);
     } else {
-      changeThemeMode(ThemeMode.light);
+      changeThemeMode(ThemeMode.light); // default
     }
   }
 
@@ -70,12 +71,13 @@ class ThemeController extends GetxController {
   void _applyTimeBasedTheme() {
     final hour = DateTime.now().hour;
     if (hour >= 18 || hour < 6) {
+      themeMode.value = ThemeMode.dark;
       Get.changeThemeMode(ThemeMode.dark);
     } else {
+      themeMode.value = ThemeMode.light;
       Get.changeThemeMode(ThemeMode.light);
     }
   }
-
 
   // Label for display (On, Off, System)
   String getModeLabel(ThemeMode mode, BuildContext context) {
@@ -85,7 +87,7 @@ class ThemeController extends GetxController {
       case ThemeMode.light:
         return AppLocalizations.of(context)!.off;
       case ThemeMode.system:
-      return AppLocalizations.of(context)!.system;
+        return AppLocalizations.of(context)!.system;
     }
   }
 }

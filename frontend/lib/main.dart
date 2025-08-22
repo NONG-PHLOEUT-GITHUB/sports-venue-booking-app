@@ -3,20 +3,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/register_controller.dart';
 import 'package:frontend/core/services/firebase_service.dart';
+import 'package:frontend/data/datasources/firebase_booking_datasource.dart';
 import 'package:frontend/data/datasources/firebase_venue_datasource.dart';
+import 'package:frontend/data/repositories/booking_repository_impl.dart';
 import 'package:frontend/data/repositories/venue_repository_impl.dart';
+import 'package:frontend/domain/repositories/booking_repository.dart';
 import 'package:frontend/domain/repositories/venue_repository.dart';
 import 'package:frontend/l10n/l10n.dart';
+import 'package:frontend/presentation/controllers/booking_controller.dart';
 import 'package:frontend/presentation/controllers/venue_controller.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/splash_screen.dart';
 import 'screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/controllers/locale_controller.dart';
-import 'package:frontend/controllers/explore_venue_controller.dart';
-import 'package:frontend/controllers/venue_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/services/venue_service.dart';
 import 'package:frontend/core/theme/theme.dart';
 import 'package:frontend/controllers/theme_controller.dart';
 import 'package:get/get.dart';
@@ -24,12 +25,9 @@ import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put(ThemeController());
+  Get.put(ThemeController(), permanent: true);
   Get.put(RegisterController());
   Get.put(LocaleController());
-  Get.lazyPut(() => VenueService());
-  Get.lazyPut(() => VenueListController());
-  Get.lazyPut(() => ExploreVenueController());
 
   await GetStorage.init(); 
   await Firebase.initializeApp(
@@ -41,16 +39,19 @@ void main() async {
   // 1️⃣ Bind services
   Get.put(FirebaseService());
 
-  // 2️⃣ Bind datasource
+   // Bind datasources
   Get.put(FirebaseVenueDataSource(Get.find<FirebaseService>()));
+  Get.put(FirebaseBookingDataSource(Get.find<FirebaseService>()));
 
-  // 3️⃣ Bind repository
+  // Bind repositories
   Get.put<VenueRepository>(
-    VenueRepositoryImpl(Get.find<FirebaseVenueDataSource>()),
-  );
+      VenueRepositoryImpl(Get.find<FirebaseVenueDataSource>()));
+  Get.put<BookingRepository>(
+      BookingRepositoryImpl(Get.find<FirebaseBookingDataSource>()));
 
-  // 4️⃣ Optionally bind controller (or lazyPut later in screen)
+  // Bind controllers
   Get.put(VenueController(Get.find<VenueRepository>()));
+  Get.put(BookingController(Get.find<BookingRepository>()));
   runApp(const MyApp());
 }
 

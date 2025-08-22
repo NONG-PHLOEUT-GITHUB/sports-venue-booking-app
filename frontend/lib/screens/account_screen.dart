@@ -17,13 +17,14 @@ class ProfilePage extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
 
   String _getThemeModeLabel(BuildContext context, ThemeMode mode) {
+    final localization = AppLocalizations.of(context)!;
     switch (mode) {
       case ThemeMode.dark:
-        return AppLocalizations.of(context)!.on;
+        return localization.on;
       case ThemeMode.light:
-        return AppLocalizations.of(context)!.off;
+        return localization.off;
       case ThemeMode.system:
-        return AppLocalizations.of(context)!.system;
+        return localization.system;
     }
   }
 
@@ -61,8 +62,8 @@ class ProfilePage extends StatelessWidget {
                   onTap: () => Get.to(() => SwitchLanguageScreen()),
                 ),
               ),
-              Obx(
-                () => _buildSettingsTile(
+              Obx(() {
+                return _buildSettingsTile(
                   icon: Icons.dark_mode,
                   title: AppLocalizations.of(context)!.darkMode,
                   trailing: Row(
@@ -79,8 +80,8 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                   onTap: () => Get.to(() => const ThemeScreen()),
-                ),
-              ),
+                );
+              }),
             ]),
             const SizedBox(height: 16),
             _buildSettingsCard([

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/presentation/controllers/booking_controller.dart';
 import 'package:frontend/screens/payment_successful_scrren.dart';
 import 'package:frontend/core/widgets/app_primary_button.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'card_payment_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:frontend/controllers/confirm_booking_controller.dart';
 
 enum PaymentMethod { abaPay, acledaPay, creditCard }
 
 class PaymentOptionsScreen extends StatefulWidget {
-  const PaymentOptionsScreen({Key? key}) : super(key: key);
+final String venueId; // Pass venueId to create booking
+  const PaymentOptionsScreen({Key? key, required this.venueId})
+      : super(key: key);
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -18,23 +20,19 @@ class PaymentOptionsScreen extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentOptionsScreen> {
   PaymentMethod? _selectedPaymentMethod = PaymentMethod.abaPay;
-  final BookingController bookingController = Get.put(BookingController());
+  final BookingController bookingController = Get.find<BookingController>();
 
-  // final double transferAmount = 7.20;
-  final String additionalCost = "0.50";
+  final double additionalCost = 0.50; // additional cost as double
 
   @override
   Widget build(BuildContext context) {
     final String fullName = bookingController.fullName.value;
     final String phoneNumber = bookingController.phoneNumber.value;
-    final String totalPrice = bookingController.totalPrice.value;
     final String fieldName = bookingController.selectedField.value;
     final String bookingDate = bookingController.bookingDate.value;
     final String bookingTime = bookingController.bookingTime.value;
-    final double totalPriceDouble = double.tryParse(totalPrice) ?? 0.0;
-    final double additionalCostDouble = double.tryParse(additionalCost) ?? 0.0;
-    final double totalAmountDouble = totalPriceDouble + additionalCostDouble;
-    final String totalAmount = totalAmountDouble.toStringAsFixed(2);
+    final double totalPrice = bookingController.totalPrice.value; // as double
+    final double totalAmount = totalPrice + additionalCost;
 
     final Widget summaryCard = Card(
       margin: EdgeInsets.zero,
@@ -101,25 +99,25 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
     final Widget promoCodeCard = Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: const Color(0xFFFDD446),
+      color: Get.theme.colorScheme.primary,
       elevation: 1,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Row(
           children: [
             const SizedBox(width: 4),
-            const Icon(Icons.confirmation_num_outlined, color: Colors.black87),
+            const Icon(Icons.confirmation_num_outlined, color: Colors.white),
             const SizedBox(width: 12),
             Expanded(
               child: TextField(
                 decoration: const InputDecoration(
                   hintText: "Promo Code",
-                  hintStyle: TextStyle(color: Colors.black54),
+                  hintStyle: TextStyle(color: Colors.white),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(vertical: 14),
                 ),
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -137,13 +135,13 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   "Apply",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -166,19 +164,19 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
           children: [
             _buildSummaryRow(
               AppLocalizations.of(context)!.transferAmount,
-              "\$$totalPrice",
+              "\$${totalPrice.toStringAsFixed(2)}",
             ),
             const SizedBox(height: 10),
             _buildSummaryRow(
               AppLocalizations.of(context)!.addCost,
-              "\$$additionalCost",
+              "\$${additionalCost.toStringAsFixed(2)}",
             ),
             const SizedBox(height: 10),
             const Divider(height: 1, thickness: 1, color: Colors.grey),
             const SizedBox(height: 10),
             _buildSummaryRow(
               AppLocalizations.of(context)!.totalPrice,
-              "\$$totalAmount",
+              "\$${totalAmount.toStringAsFixed(2)}",
               isTotal: true,
             ),
           ],
@@ -200,35 +198,49 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
             const SizedBox(height: 12),
             paymentMethodsCard,
             const SizedBox(height: 24),
-            // promoCodeCard,
-            // const SizedBox(height: 24),
+            promoCodeCard,
+            const SizedBox(height: 24),
             paymentSummaryCard,
           ],
         ),
       ),
-      // Your button
       bottomNavigationBar: AppPrimaryButton(
         text: AppLocalizations.of(context)!.checkOut,
-        onPressed: () {
+        onPressed: () async {
+          if (_selectedPaymentMethod == null) {
+            Get.snackbar(
+              "Error",
+              "Please select a payment method",
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+            );
+            return;
+          }
+
+          // Handle credit card separately
           if (_selectedPaymentMethod == PaymentMethod.creditCard) {
-            // Go to CheckoutScreen
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CheckOutScreen()),
             );
-          } else if (_selectedPaymentMethod != null) {
-            // Go to PaymentSuccessfulScreen for other methods
-            Navigator.push(
+            return;
+          }
+
+          // For other payment methods, create booking
+          try {
+            await bookingController.createBooking(widget.venueId);
+
+            // Navigate to success screen
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => PaymentSuccessfulScrren(),
               ),
             );
-          } else {
-            // No method selected
+          } catch (e) {
             Get.snackbar(
               "Error",
-              "Please select a payment method",
+              "Failed to create booking: $e",
               backgroundColor: Colors.red,
               colorText: Colors.white,
             );
@@ -246,7 +258,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
           ),
           Text(
             value,
@@ -264,8 +276,6 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
     required String imagePath,
     required PaymentMethod value,
   }) {
-    final bool isSelected = _selectedPaymentMethod == value;
-
     return InkWell(
       onTap: () => setState(() => _selectedPaymentMethod = value),
       child: Padding(
@@ -286,7 +296,7 @@ class _PaymentPageState extends State<PaymentOptionsScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: TextStyle(fontSize: 14)),
+                  Text(subtitle, style: const TextStyle(fontSize: 14)),
                 ],
               ),
             ),

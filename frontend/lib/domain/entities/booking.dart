@@ -1,38 +1,52 @@
 class Booking {
-  final String id;
+  String id;
+  String venueId;
+  String field;
   final String userId;
-  final String venueId;
-  final String date;
-  final String slot;
-  final String status;
+  String userFullName;
+  String phoneNumber;
+  String date;
+  String time;
+  String price;
+  String status; // pending, paid, completed
 
   Booking({
     required this.id,
-    required this.userId,
     required this.venueId,
+    required this.field,
+    required this.userId,
+    required this.userFullName,
+    required this.phoneNumber,
     required this.date,
-    required this.slot,
-    required this.status,
+    required this.time,
+    required this.price,
+    this.status = 'pending',
   });
 
-  factory Booking.fromMap(String id, Map<String, dynamic> data) {
+  Map<String, dynamic> toMap() => {
+    'venueId': venueId,
+    'field': field,
+    'userId': userId,
+    'userFullName': userFullName,
+    'phoneNumber': phoneNumber,
+    'date': date,
+    'time': time,
+    'price': price,
+    'status': status,
+  };
+
+  factory Booking.fromMap(String id, Map<String, dynamic> map) {
     return Booking(
       id: id,
-      userId: data['userId'],
-      venueId: data['venueId'],
-      date: data['date'],
-      slot: data['slot'],
-      status: data['status'],
+      venueId: map['venueId'],
+      field: map['field'],
+      userId: map['userId'],
+      userFullName: map['userFullName'],
+      phoneNumber: map['phoneNumber'],
+      date: map['date'],
+      time: map['time'],
+      price: map['price'],
+      status: map['status'] ?? 'pending',
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      "userId": userId,
-      "venueId": venueId,
-      "date": date,
-      "slot": slot,
-      "status": status,
-    };
   }
 }

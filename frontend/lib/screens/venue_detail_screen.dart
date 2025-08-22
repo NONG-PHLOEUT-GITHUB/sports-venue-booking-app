@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/domain/entities/venue.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/models/explore_venue_model.dart';
-import 'package:frontend/screens/confirm_booking_screen.dart';
+import 'package:frontend/presentation/pages/booking/confirm_booking_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/core/widgets/app_primary_button.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
-import 'package:frontend/controllers/confirm_booking_controller.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:frontend/presentation/controllers/booking_controller.dart';
 
 class VenueDetailPage extends StatefulWidget {
-  final ExploreVenueModel venue;
+  final Venue venue;
 
   const VenueDetailPage({Key? key, required this.venue}) : super(key: key);
 
@@ -25,13 +24,12 @@ class _VenueDetailState extends State<VenueDetailPage> {
     'assets/images/Football.jpg',
   ];
   int _currentIndex = 0;
-  final BookingController bookingController = Get.put(BookingController());
 
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Text(
-        widget.venue.title,
+        widget.venue.name,
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
       leading: const CustomBackButton(),
@@ -43,30 +41,22 @@ class _VenueDetailState extends State<VenueDetailPage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(10.0),
           child: Column(
-            children: [_buildImageCarousel(), 
-            SizedBox(height: 8),
-            _buildVenueInfoCard()],
+            children: [
+              _buildImageCarousel(),
+              const SizedBox(height: 8),
+              _buildVenueInfoCard(),
+            ],
           ),
         ),
       ),
       bottomNavigationBar: AppPrimaryButton(
         text: AppLocalizations.of(context)!.btnBookNow,
         onPressed: () {
-          
-
-          bookingController.updateBookingDetails(
-            name: bookingController.fullName.value,
-            phone: bookingController.phoneNumber.value,
-            venue: widget.venue,
-            
-          );
-          Get.to(() => const ConfirmBookingScreen());
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const ConfirmBookingScreen(),
-          //   ),
-          // );
+          final bookingController = Get.put(BookingController(Get.find()));
+          bookingController.totalPrice.value = widget.venue.price;
+          bookingController.bookingDate.value = DateTime.now().toString();
+          bookingController.bookingTime.value = '08:00 AM - 10:00 AM';
+          Get.to(() => ConfirmBookingScreen(venue: widget.venue));
         },
       ),
     );
@@ -142,8 +132,11 @@ class _VenueDetailState extends State<VenueDetailPage> {
             _buildDetailRow(Icons.sports_soccer, "Type", "5-a-side"),
             _buildDetailRow(Icons.straighten, "Size", "30m x 20m"),
             _buildDetailRow(Icons.grass, "Surface", "Artificial Turf"),
-            _buildDetailRow(Icons.attach_money, "Price per Hour", 
-                "\$${widget.venue.price.toStringAsFixed(2)}"),
+            _buildDetailRow(
+              Icons.attach_money,
+              "Price per Hour",
+              "\$${widget.venue.price.toStringAsFixed(2)}",
+            ),
             _buildDetailRow(
               Icons.calendar_today,
               "Available Date",
@@ -177,38 +170,27 @@ class _VenueDetailState extends State<VenueDetailPage> {
   Widget _buildAddressSection() {
     final String address =
         'Delight Party Laws, New 150ft, Ring Road, B/H Rajkot';
-    final Uri googleMapsUri = Uri.parse(
-      'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}',
-    );
-
-    return GestureDetector(
-      onTap: () async {
-        // if (await canLaunchUrl(googleMapsUri)) {
-        //   await launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);
-        // }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.location_on_outlined,
-              size: 18,
-              color: Colors.grey,
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.location_on_outlined,
+            size: 18,
+            color: Colors.grey,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              address,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                address,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -270,7 +252,7 @@ class _VenueDetailState extends State<VenueDetailPage> {
       ],
     );
   }
-  
+
   Widget _buildAmenitiesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
