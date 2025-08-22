@@ -34,7 +34,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
    // Insert venues on app start
-  await insertVenues();
+  // await insertVenues();
   
   // 1️⃣ Bind services
   Get.put(FirebaseService());
