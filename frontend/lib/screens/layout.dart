@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/venu_screen.dart';
+import 'package:frontend/presentation/pages/venue/venu_screen.dart';
 import 'home_screen.dart';
 import 'account_screen.dart';
 import 'ticket_screen.dart';
@@ -19,7 +19,7 @@ class _MainLayoutState extends State<MainLayout> {
   // Pages for each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    VenueListSreen(),
+    VenueListScreen(),
     TicketPage(),
     ProfilePage(),
   ];

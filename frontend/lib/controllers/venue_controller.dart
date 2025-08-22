@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '../models/venue_model.dart';
-import '../api/api_config.dart';
+import '../core//services/api_service.dart';
 
 class VenueListController extends GetxController {
   final ApiService api = ApiService();
@@ -20,12 +20,11 @@ class VenueListController extends GetxController {
       isLoading.value = true;
       errorMessage.value = '';
 
-      final fetchedVenues = await api.getRequest('/venues');
-      venues.assignAll(fetchedVenues); // Already parsed
+      final fetchedVenues = await api.get('/venues');
+      venues.assignAll(fetchedVenues);
     
     } catch (e) {
       errorMessage.value = 'Failed to load venues: $e';
-      print(e); // For debugging
     } finally {
       isLoading.value = false;
     }

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/venue_controller.dart';
+import 'package:frontend/domain/repositories/venue_repository.dart';
 import 'package:get/get.dart';
-import 'package:frontend/models/venue_model.dart';
+import 'package:frontend/presentation/controllers/venue_controller.dart';
+import 'package:frontend/domain/entities/venue.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
-class VenueListSreen extends StatelessWidget {
-  VenueListSreen({super.key});
+class VenueListScreen extends StatelessWidget {
+  VenueListScreen({super.key}) {
+    controller.fetchVenues(); // fetch on screen open
+  }
 
-  final VenueListController venueController = Get.put(VenueListController());
+  final VenueController controller = Get.put(
+    VenueController(
+      Get.find<VenueRepository>(), // Repository must be bound in main.dart
+    ),
+  );
 
-  Widget buildVenueCard(BuildContext context, VenueModel venue) {
+  Widget buildVenueCard(BuildContext context, Venue venue) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
@@ -17,11 +24,9 @@ class VenueListSreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       elevation: 0,
       shadowColor:
-          isDarkMode
-              ? Colors.black.withOpacity(0.3)
-              : Colors.black.withOpacity(0.08),
+          isDarkMode ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.08),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias, // Ensures rounded image clipping
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
           Image.network(
@@ -29,35 +34,15 @@ class VenueListSreen extends StatelessWidget {
             fit: BoxFit.cover,
             width: double.infinity,
             height: 200,
-            errorBuilder:
-                (context, error, stackTrace) => Container(
-                  width: double.infinity,
-                  height: 200,
-                  color: theme.colorScheme.surfaceContainerHighest,
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 50,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
-                  ),
-                ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(12),
+            errorBuilder: (context, error, stackTrace) => Container(
+              width: double.infinity,
+              height: 200,
+              color: theme.colorScheme.surfaceContainerHighest,
+              child: Icon(
+                Icons.broken_image,
+                size: 50,
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
               ),
-              // Uncomment and customize if needed
-              // child: Text(
-              //   "${venue.slots} slots",
-              //   style: theme.textTheme.labelMedium!.copyWith(
-              //     fontWeight: FontWeight.bold,
-              //     color: theme.colorScheme.onSurface,
-              //   ),
-              // ),
             ),
           ),
           Positioned(
@@ -112,18 +97,18 @@ class VenueListSreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.venue)),
       body: Obx(() {
-        if (venueController.isLoading.value) {
+        if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (venueController.venues.isEmpty) {
+        if (controller.venues.isEmpty) {
           return const Center(child: Text("No venues found"));
         }
 
         return ListView.builder(
-          itemCount: venueController.venues.length,
+          itemCount: controller.venues.length,
           itemBuilder: (context, index) {
-            final venue = venueController.venues[index];
+            final venue = controller.venues[index];
             return buildVenueCard(context, venue);
           },
         );
