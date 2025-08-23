@@ -26,11 +26,9 @@ class ThemeController extends GetxController {
     themeMode.value = mode;
     Get.changeThemeMode(mode);
     _saveThemeMode(mode);
+
     if (mode == ThemeMode.system) {
-      _startAutoThemeTimer(); // check periodically
-      _applyTimeBasedTheme(); // apply immediately
-    } else {
-      _timer?.cancel(); // stop timer if not using system mode
+      _timer?.cancel(); // nothing to override
     }
   }
 
