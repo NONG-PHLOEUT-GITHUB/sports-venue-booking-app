@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/layout.dart';
+import 'package:frontend/presentation/screens/layout.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/core/widgets/app_primary_button.dart';
 

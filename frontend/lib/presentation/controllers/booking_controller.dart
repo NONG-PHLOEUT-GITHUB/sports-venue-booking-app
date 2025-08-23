@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import '../../domain/entities/booking.dart';
 import '../../domain/entities/ticket.dart';
-import '../../domain/entities/venue.dart';
 import '../../domain/repositories/booking_repository.dart';
 
 class BookingController extends GetxController {

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:frontend/screens/layout.dart';
+import 'package:frontend/presentation/screens/layout.dart';
 import 'package:get/get.dart';
 
 class FacebookService {

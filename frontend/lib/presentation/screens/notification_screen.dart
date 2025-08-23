@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/notification_controller.dart';
-import '../core/utils/date_utils.dart';
-import '../core/widgets/custom_back_button.dart';
-import '../models/notification_model.dart';
+import '../../core/utils/date_utils.dart';
+import '../../core/widgets/custom_back_button.dart';
+import '../../domain/entities/notification_model.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
 class NotificationPage extends StatelessWidget {

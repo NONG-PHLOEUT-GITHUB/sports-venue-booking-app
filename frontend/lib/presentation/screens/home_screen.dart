@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/notification_controller.dart';
-import '../core/widgets/carousel_slider.dart';
+import 'package:frontend/presentation/controllers/notification_controller.dart';
+import '../../core/widgets/carousel_slider.dart';
 import 'explore_venues_screen.dart';
 import 'notification_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';

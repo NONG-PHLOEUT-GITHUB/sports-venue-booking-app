@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/domain/entities/venue.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/presentation/pages/booking/confirm_booking_screen.dart';
+import 'package:frontend/presentation/screens/booking/confirm_booking_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/core/widgets/app_primary_button.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';

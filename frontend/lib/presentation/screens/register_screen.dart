@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/register_controller.dart';
-import 'package:frontend/controllers/social_login_controller.dart';
+import 'package:frontend/presentation/controllers/register_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/screens/login_screen.dart';
+import 'package:frontend/presentation/screens/login_screen.dart';
 import 'package:frontend/services/facebook_service.dart';
 import 'package:frontend/services/google_service.dart';
 import 'package:get/get.dart';
@@ -10,10 +9,6 @@ import 'package:get/get.dart';
 class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final RegisterController controller = Get.put(RegisterController());
-
-  final SocialLoginController socialLoginController = Get.put(
-    SocialLoginController(),
-  );
   // Error strings
   String? _usernameError;
   String? _emailError;

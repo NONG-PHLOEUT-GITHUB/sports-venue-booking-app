@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/layout.dart';
-import 'package:frontend/screens/otp_comfirm_screen.dart';
+import 'package:frontend/presentation/screens/layout.dart';
+import 'package:frontend/presentation/screens/otp_comfirm_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';

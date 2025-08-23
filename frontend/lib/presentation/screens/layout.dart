@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/presentation/pages/venue/venu_screen.dart';
+import 'package:frontend/presentation/screens/venue/venu_screen.dart';
 import 'home_screen.dart';
 import 'account_screen.dart';
 import 'ticket_screen.dart';

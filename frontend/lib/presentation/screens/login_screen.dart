@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/locale_controller.dart';
-import 'package:frontend/controllers/login_controller.dart';
-import 'package:frontend/controllers/social_login_controller.dart';
-import 'package:frontend/screens/layout.dart';
-import 'package:frontend/screens/otp_comfirm_screen.dart'; // This screen might not be needed for password login, but I'll keep the import for now
-import 'package:frontend/screens/register_screen.dart';
+import 'package:frontend/presentation/controllers/login_controller.dart';
+import 'package:frontend/presentation/screens/layout.dart';
+import 'package:frontend/presentation/screens/otp_comfirm_screen.dart'; // This screen might not be needed for password login, but I'll keep the import for now
+import 'package:frontend/presentation/screens/register_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:flutter/gestures.dart';
 import 'package:frontend/services/facebook_service.dart';
@@ -13,9 +11,6 @@ import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());
-  final SocialLoginController socialLoginController = Get.put(
-    SocialLoginController(),
-  );
   // UI constants
   final Color primaryColor = Get.theme.colorScheme.primary;
   final Color _textColor = Colors.black87;

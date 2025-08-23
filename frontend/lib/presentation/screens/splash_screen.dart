@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login_screen.dart';
-import 'package:frontend/controllers/locale_controller.dart';
+import 'package:frontend/presentation/controllers/locale_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
 class SplashScreen extends StatelessWidget {

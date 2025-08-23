@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/layout.dart';
+import 'package:frontend/presentation/screens/layout.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,28 +41,6 @@ class LoginController extends GetxController {
 
         Get.offAll(() => MainLayout());
       }
-
-      /// ❌ Old API login (commented out)
-      /*
-      var url = Uri.parse(apiUrl);
-      var response = await http.post(url, body: {
-        "email": emailController.text,
-        "password": passwordController.text,
-      });
-
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        String token = data['access_token'];
-        storage.write('access_token', token);
-        Get.snackbar("Success", "Logged in successfully",
-            backgroundColor: Colors.green, colorText: Colors.white);
-        Get.offAll(() => MainLayout());
-      } else {
-        var error = json.decode(response.body);
-        Get.snackbar("Error", error.toString(),
-            backgroundColor: Colors.red, colorText: Colors.white);
-      }
-      */
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error",

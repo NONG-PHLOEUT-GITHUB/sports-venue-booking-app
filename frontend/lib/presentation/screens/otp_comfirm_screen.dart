@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/layout.dart';
+import 'package:frontend/presentation/screens/layout.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/presentation/screens/home_screen.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:get/get.dart';
 

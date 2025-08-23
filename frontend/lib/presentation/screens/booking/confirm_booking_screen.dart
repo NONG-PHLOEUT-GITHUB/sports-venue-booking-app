@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/domain/entities/venue.dart';
 import 'package:frontend/domain/repositories/booking_repository.dart';
 import 'package:frontend/presentation/controllers/booking_controller.dart';
-import 'package:frontend/screens/payment_options.dart';
+import 'package:frontend/presentation/screens/payment_options.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/core/widgets/app_primary_button.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';

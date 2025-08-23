@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import '../models/notification_model.dart';
+import '../../domain/entities/notification_model.dart';
 
 class NotificationController extends GetxController {
   var notifications = <NotificationModel>[].obs;

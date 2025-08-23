@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/locale_controller.dart';
-import 'package:frontend/controllers/profile_controller.dart';
-import 'package:frontend/screens/change_password_screen.dart';
-import 'package:frontend/screens/login_screen.dart';
-import 'package:frontend/screens/theme_screen.dart';
+import 'package:frontend/presentation/controllers/locale_controller.dart';
+import 'package:frontend/presentation/controllers/profile_controller.dart';
+import 'package:frontend/presentation/screens/change_password_screen.dart';
+import 'package:frontend/presentation/screens/login_screen.dart';
+import 'package:frontend/presentation/screens/theme_screen.dart';
 import 'package:get/get.dart';
-import 'package:frontend/screens/edite_account.dart';
-import 'package:frontend/screens/switch_language_screen.dart';
-import 'package:frontend/controllers/theme_controller.dart';
+import 'package:frontend/presentation/screens/edite_account.dart';
+import 'package:frontend/presentation/screens/switch_language_screen.dart';
+import 'package:frontend/presentation/controllers/theme_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {

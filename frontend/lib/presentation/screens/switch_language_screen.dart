@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/locale_controller.dart';
+import 'package:frontend/presentation/controllers/locale_controller.dart';
 import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/core/widgets/custom_back_button.dart';
 import 'package:get/get.dart';
