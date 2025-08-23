@@ -16,6 +16,7 @@ class ProfileController extends GetxController {
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void onInit() {
@@ -117,7 +118,11 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
 
       //  Sign out from Google
-      await GoogleSignIn().signOut();
+      // Sign out from Google (if signed in)
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.signOut();
+        await _googleSignIn.disconnect(); // revokes token
+      }
 
       //  Sign out from Facebook
       await FacebookAuth.instance.logOut();

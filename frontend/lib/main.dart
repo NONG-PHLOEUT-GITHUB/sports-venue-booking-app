@@ -151,8 +151,8 @@ class _MyAppState extends State<MyApp> {
         theme: AppThemes.lightTheme,
         darkTheme: AppThemes.darkTheme,
         themeMode: themeController.themeMode.value,
-        home: MainLayout(),
-        // home: const SplashScreen(),
+        // home: MainLayout(),
+        home: const SplashScreen(),
       ),
       // home: const OtpVerificationPage(),
     );
