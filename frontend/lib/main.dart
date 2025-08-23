@@ -12,7 +12,6 @@ import 'package:frontend/domain/repositories/venue_repository.dart';
 import 'package:frontend/l10n/l10n.dart';
 import 'package:frontend/presentation/controllers/booking_controller.dart';
 import 'package:frontend/presentation/controllers/venue_controller.dart';
-import 'package:frontend/presentation/screens/login_screen.dart';
 import 'package:frontend/presentation/screens/splash_screen.dart';
 import 'presentation/screens/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
